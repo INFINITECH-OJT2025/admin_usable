@@ -4,6 +4,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminNotificationController;
+use App\Http\Controllers\FileManagerController;
+use App\Http\Controllers\FormController;
+
+use Illuminate\Support\Facades\Broadcast;
+use Pusher\Pusher;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -40,11 +48,64 @@ Route::get('/users', [AuthController::class, 'index']);
 
 
 // UserController
+Route::get('/allUsers', [UserController::class, 'index']);
 Route::get('/countUsers', [UserController::class, 'countUsers']);
 Route::get('/admins', [UserController::class, 'getAdmins']);
 Route::post('/registerAdmin', [UserController::class, 'registerAdmin']);
 Route::put('/update/{id}', [UserController::class, 'update']);
-Route::put('/updateAdmin/{id}', [UserController::class, 'updateAdmin']);
+Route::post('/updateAdmin/{id}', [UserController::class, 'updateAdmin']);
 Route::post('/updateUser/{id}', [UserController::class, 'updateUser']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::put('/users/{id}/status', [UserController::class, 'updateStatus']);
+Route::get('/user-registrations', [UserController::class, 'getUserRegistrations']); // GRAPH PURPOSES
+Route::get('/users/{id}/permissions', [UserController::class, 'getPermissions']);
+Route::put('/users/{id}/updatePermissions', [UserController::class, 'updatePermissions']);
+Route::get('/users/{id}/getUserPermissions', [UserController::class, 'getUserPermissions']);
+Route::get('/filteredUsers', [UserController::class, 'filterUsers']); // FILTERATION
+Route::get('/export-users', [UserController::class, 'exportUsers']);
+
+
+
+//AdminNotificationController
+Route::get('/notifications', [AdminNotificationController::class, 'getNotification']); // GRAPH PURPOSES
+Route::get('/activities', [AdminNotificationController::class, 'getActivity']); // GRAPH PURPOSES
+Route::put('/notifications/{id}/read', [AdminNotificationController::class, 'markAsRead']);
+Route::put('/notifications/read-all', [AdminNotificationController::class, 'markAllAsRead']);
+// Route::get('/notifications/stream', [NotificationController::class, 'streamNotifications']);
+Route::put('/notifications/read', [AdminNotificationController::class, 'updateStatusToRead']);
+
+Route::get('/pusher-test', function () {
+    try {
+        $pusher = new Pusher(
+            config('broadcasting.connections.pusher.key'),
+            config('broadcasting.connections.pusher.secret'),
+            config('broadcasting.connections.pusher.app_id'),
+            ['cluster' => config('broadcasting.connections.pusher.options.cluster'), 'useTLS' => true]
+        );
+
+        $pusher->trigger('notifications', 'test-event', ['message' => 'Pusher is working!']);
+
+        return response()->json(['status' => 'success', 'message' => 'Pusher is connected!']);
+    } catch (\Exception $e) {
+        return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+    }
+});
+
+
+
+Route::get('/files', [FileManagerController::class, 'listFiles']);
+Route::post('/upload', [FileManagerController::class, 'uploadFile']);
+Route::post('/rename', [FileManagerController::class, 'renameFile']);
+Route::delete('/delete', [FileManagerController::class, 'deleteFile']);
+Route::get('/file-properties', [FileManagerController::class, 'fileProperties']);
+
+Route::post('/create-folder', [FileManagerController::class, 'createFolder']);
+Route::post('/rename-folder', [FileManagerController::class, 'renameFolder']);
+Route::delete('/delete-folder', [FileManagerController::class, 'deleteFolder']);
+
+
+
+
+Route::post('/forms', [FormController::class, 'store']);
+Route::post('/tables', [FormController::class, 'createTable']);
+Route::get('/forms', [FormController::class, 'show']);

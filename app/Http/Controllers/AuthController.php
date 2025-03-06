@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+// use App\Events\SendNotification;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +21,19 @@ class AuthController extends Controller
 
         // Return response as JSON
         return response()->json($users);
+    }
+
+    private function sendNotification($message)
+    {
+        // Create the notification
+        $notification = Notification::create([
+            'message' => $message,
+            'status' => 'unread', // Set default status if not provided
+        ]);
+        
+
+        // Broadcast the notification
+        // event(new SendNotification($notification));
     }
 
 
@@ -88,6 +103,8 @@ class AuthController extends Controller
             'usertype' => 'user', // Default user type
         ]);
 
+        $this->sendNotification('New user registered: ' . $user->fullname);
+
         return response()->json(['message' => 'User registered successfully!', 'user' => $user], 201);
     }
 
@@ -115,6 +132,8 @@ class AuthController extends Controller
         // Update the user's authToken in the database
         $user->authToken = $token;
         $user->save();
+
+        $this->sendNotification($user->fullname . ' logged in.');
     
         // Return the response with the user details, usertype, and generated token
         return response()->json([

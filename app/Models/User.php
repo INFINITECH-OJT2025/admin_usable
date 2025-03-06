@@ -25,7 +25,8 @@ class User extends Authenticatable
         'authToken',
         'profile_image',
         'usertype',
-        'status'
+        'status',
+        'created_at'
     ];
 
     /**
