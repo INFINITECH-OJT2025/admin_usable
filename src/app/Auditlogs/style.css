@@ -1,0 +1,128 @@
+/* log Content */
+.log-content {
+    display: flex;
+    flex-direction: column; /* Stack message and time vertically */
+    justify-content: center; /* Align items vertically */
+    flex-grow: 1;
+    gap: 5px; /* Add space between message and time */
+}
+
+/* Align message and time on the same line */
+.log-content p {
+    margin: 0;
+    font-size: 14px; /* Adjust the font size */
+}
+
+/* Align the small tag (time) */
+.log-content small {
+    font-size: 12px;
+    color: #888;
+    margin-top: 0; /* Remove default top margin */
+}
+
+/* Align message and time properly when hovered */
+.log-item:hover .log-content p {
+    font-weight: bold;
+}
+
+/* Make sure the button section remains properly positioned */
+.open-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Main Container */
+.log-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 80%;
+    padding: 2px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    border-bottom: 1px solid #e0e0e0;
+    overflow: hidden;
+}
+
+/* Initially Hidden Button Section */
+.open-button-container {
+    width: 100px; /* Adjust to fit */
+    height: 100px; /* Expand to match the log-item height */
+    margin: -20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    transform: translateX(100%); /* Move it off-screen */
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Button */
+.open-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden; /* Ensure the liquid effect stays within the button */
+}
+
+/* Liquid Effect on Button */
+.open-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+/* Activate Liquid Effect on Hover */
+.open-button:hover::before {
+    transform: scale(1.2); /* Scale up for liquid effect */
+    opacity: 1; /* Make it visible */
+}
+
+/* Slide in from Right to Left */
+.log-item:hover .open-button-container {
+    transform: translateX(0); /* Slide in when hovered */
+}
+
+/* Liquid Effect on Left Border */
+.open-button-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0; /* Align to the left border */
+    width: 5px; /* Thickness of the liquid border */
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6); /* Light liquid color */
+    border-radius: 50%;
+    opacity: 0;
+    transform: scaleY(0);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10; /* Ensure the loader is above other content */
+    justify-items: center;
+  }
+  

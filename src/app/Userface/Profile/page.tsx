@@ -20,6 +20,10 @@ import "@/app/assets/vendor/libs/apex-charts/apex-charts.css";
 import Sidebar from '@/app/Components/Userface/Sidebar';
 import Navbar from '@/app/Components/Userface/Navbar';
 import Script from 'next/script';
+<<<<<<< Updated upstream
+=======
+import withAuth from '@/app/utils/withAuth';
+>>>>>>> Stashed changes
 
 // const schema = yup.object().shape({
 //   username: yup.string().required("Username is required"),
@@ -27,7 +31,11 @@ import Script from 'next/script';
 //   password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
 // });
 
+<<<<<<< Updated upstream
 export default function Profile() {
+=======
+const Profile = () => {
+>>>>>>> Stashed changes
     const [user, setUser] = useState({ 
         id: "", 
         username: "", 
@@ -185,7 +193,11 @@ export default function Profile() {
           defer
         ></script>
       </Head>
+<<<<<<< Updated upstream
       <div className="layout-wrapper layout-content-navbar">
+=======
+      <div className="layout-wrapper layout-content-navbar light-style layout-menu-fixed">
+>>>>>>> Stashed changes
       <div className="layout-container">
         {/* Menu */}
         <Sidebar />
@@ -356,3 +368,9 @@ export default function Profile() {
     </>
   );
 }
+<<<<<<< Updated upstream
+=======
+
+
+export default withAuth(Profile);
+>>>>>>> Stashed changes

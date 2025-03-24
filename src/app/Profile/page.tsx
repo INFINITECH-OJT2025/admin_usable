@@ -309,7 +309,11 @@ export default function Profile() {
           defer
         ></script>
       </Head>
+<<<<<<< Updated upstream
       <div className="layout-wrapper layout-content-navbar">
+=======
+      <div className="layout-wrapper layout-content-navbar light-style layout-menu-fixed layout-navbar-fixed">
+>>>>>>> Stashed changes
       <div className="layout-container">
         {/* Menu */}
         <Sidebar />
@@ -408,7 +412,11 @@ export default function Profile() {
                             <h5 className="mb-2">User Information</h5>
                             {isEditing ? (
                               <div>
+<<<<<<< Updated upstream
                                 <button className="btn btn-sm btn-success ml-2" onClick={handleSaveChanges}>
+=======
+                                <button className="btn btn-sm btn-success me-2" onClick={handleSaveChanges}>
+>>>>>>> Stashed changes
                                   Save Changes
                                 </button>
                                 <button className="btn btn-sm btn-secondary ml-2" onClick={handleCancelClick}>
@@ -421,7 +429,11 @@ export default function Profile() {
                               </button>
                             )}
                           </div>
+<<<<<<< Updated upstream
                           <hr style={{ border: "1.5px solid" }} />
+=======
+                          <hr style={{ border: "0.5px" }} />
+>>>>>>> Stashed changes
 
                           <div className="row mb-3">
                             <div className="col-md-4">
@@ -533,7 +545,11 @@ export default function Profile() {
                                {/* Title and Button Side by Side */}
                                <div className="d-flex justify-content-between align-items-center mb-3">
                                    <h5 className="mb-0">Admin List</h5>
+<<<<<<< Updated upstream
                                    <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+=======
+                                   <button className="btn btn-sm btn-primary me-3" onClick={() => setShowModal(true)}>
+>>>>>>> Stashed changes
                                        Add Admin
                                    </button>
                                </div>

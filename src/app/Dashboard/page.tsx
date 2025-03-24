@@ -1,11 +1,19 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+<<<<<<< Updated upstream
 import Head from 'next/head';
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 // import { useEffect } from "react";
 import axios from "axios";
+=======
+import Image from 'next/image';
+import Head from 'next/head';
+// import { useEffect } from "react";
+import axios from "axios";
+import "../assets/css/dark-mode.css";
+>>>>>>> Stashed changes
 
 import "../assets/vendor/fonts/boxicons.css";
 import "../assets/vendor/css/core.css";
@@ -17,12 +25,23 @@ import Sidebar from '../Components/Admin/Sidebar';
 import Navbar from '../Components/Admin/Navbar';
 
 import Script from 'next/script';
+<<<<<<< Updated upstream
 
 export default function Dashboard() {
   
   const router = useRouter(); // ✅ Move useRouter() here
   const [userCount, setUserCount] = useState(0);
   const [adminCount, setAdminCount] = useState(0);
+=======
+import UserRegistrationChart from './UserRegistrationChart';
+import NotificationCard from './NotificationCard';
+
+export default function Dashboard() {
+  const [userCount, setUserCount] = useState(0);
+  const [adminCount, setAdminCount] = useState(0);
+  const [user, setUser] = useState({ username: "", email: "", profile_image: "", fullname: "" });
+  const [loading, setLoading] = useState(true);
+>>>>>>> Stashed changes
 
   useEffect(() => {
     const fetchUserCounts = async () => {
@@ -44,6 +63,33 @@ export default function Dashboard() {
   
     fetchUserCounts();
   }, []);
+<<<<<<< Updated upstream
+=======
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+         try {
+            const authToken = sessionStorage.getItem("authToken");
+             if (authToken) {
+                 const response = await axios.get("http://127.0.0.1:8000/api/user", {
+                     headers: { Authorization: `Bearer ${authToken}` }
+                 });
+                 setUser({
+                     username: response.data.username,
+                     email: response.data.email,
+                     profile_image: response.data.profile_image,
+                     fullname: response.data.fullname
+                 });
+             }
+         } catch (error) {
+             console.error("Failed to fetch user data:", error);
+         } finally {
+             setLoading(false);
+         }
+     };
+   fetchUserData();
+}, []);
+>>>>>>> Stashed changes
   
   
   useEffect(() => {
@@ -57,7 +103,11 @@ export default function Dashboard() {
     <>
       <Script
         src="/assets/vendor/js/helpers.js"
+<<<<<<< Updated upstream
         strategy="afterInteractive" // Choose strategy: 'afterInteractive', 'afterInteractive', or 'lazyOnload'
+=======
+        strategy="afterInteractive"
+>>>>>>> Stashed changes
       />
       <Script src="/assets/js/config.js"
         strategy="afterInteractive"
@@ -95,6 +145,7 @@ export default function Dashboard() {
         strategy="afterInteractive"
       />
       {/* Include External Fonts & Scripts */}
+<<<<<<< Updated upstream
       <Head>
         <link
           href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
@@ -107,6 +158,9 @@ export default function Dashboard() {
         ></script>
       </Head>
       <div className="layout-wrapper layout-content-navbar">
+=======
+      <div className="layout-wrapper layout-content-navbar light-style layout-menu-fixed layout-navbar-fixed">
+>>>>>>> Stashed changes
       <div className="layout-container">
         {/* Menu */}
         <Sidebar />
@@ -130,8 +184,20 @@ export default function Dashboard() {
                   <div className="card">
                     <div className="d-flex align-items-end row">
                       <div className="col-sm-7">
+<<<<<<< Updated upstream
                         <div className="card-body">
                           <h5 className="card-title text-primary">Congratulations Ariel James De Guzman Pogi! 🎉</h5>
+=======
+                      <div className="card-body">
+                          
+                          {loading ? (
+                              <span className="fw-semibold d-block card-title text-primary">Loading...</span>
+                          ) : (
+                              <>
+                                  <span className="fw-semibold d-block"> <h5 className="card-title text-primary">Welcome! {user.fullname} Pogi! 🎉</h5></span>
+                              </>
+                          )}
+>>>>>>> Stashed changes
                           <p className="mb-4">
                             You have done <span className="fw-bold">72%</span> more sales today. Check your new badge in
                             your profile.
@@ -140,6 +206,7 @@ export default function Dashboard() {
                           <a href="javascript:;" className="btn btn-sm btn-outline-primary">View Badges</a>
                         </div>
                       </div>
+<<<<<<< Updated upstream
                       <div className="col-sm-5 text-center text-sm-left">
                         <div className="card-body pb-0 px-0 px-md-4">
                           <img
@@ -151,6 +218,19 @@ export default function Dashboard() {
                             data-app-light-img="illustrations/man-with-laptop-light.png"
                           />
                         </div>
+=======
+                      <div className="col-5 text-center text-sm-left">
+                      <div className="card-body pb-0 px-0 px-md-4 d-flex justify-content-center align-items-center"> {/* Added flex classes */}
+                        <Image
+                          src="/gifs/Main Scene Robot.gif" // Ensure the path is correct
+                          width={160} // Use curly braces for numbers
+                          height={160} // Use curly braces for numbers
+                          alt="View Badge User"
+                          className="img-fluid" // Use Bootstrap's class for responsive images
+                          priority // Optional: Use this if you want to load the image eagerly
+                        />
+                      </div>
+>>>>>>> Stashed changes
                       </div>
                     </div>
                   </div>
@@ -227,6 +307,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                 </div>
+<<<<<<< Updated upstream
                 {/* Total Revenue */}
                 <div className="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
                   <div className="card">
@@ -368,15 +449,44 @@ export default function Dashboard() {
                             <div id="profileReportChart"></div>
                           </div>
                         </div>
+=======
+
+
+
+                
+                {/* Total Revenue */}
+                <div className="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
+                  <UserRegistrationChart />
+                </div>
+
+
+
+
+
+
+
+                {/*/ Real-time Notification */}
+                <div className="col-12 col-md-8 col-lg-4 order-3 order-md-2">
+                  <div className="row">
+                    <div className="col-12 mb-4">
+                      <div className="card">
+                        <NotificationCard />
+>>>>>>> Stashed changes
                       </div>
                     </div>
                   </div>
                 </div>
+<<<<<<< Updated upstream
+=======
+
+                
+>>>>>>> Stashed changes
               </div>
               <div className="row">
                 {/* Order Statistics */}
                 <div className="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
                   <div className="card h-100">
+<<<<<<< Updated upstream
                     <div className="card-header d-flex align-items-center justify-content-between pb-0">
                       <div className="card-title mb-0">
                         <h5 className="m-0 me-2">Order Statistics</h5>
@@ -471,6 +581,9 @@ export default function Dashboard() {
                         </li>
                       </ul>
                     </div>
+=======
+
+>>>>>>> Stashed changes
                   </div>
                 </div>
                 {/*/ Order Statistics */}
@@ -478,6 +591,7 @@ export default function Dashboard() {
                 {/* Expense Overview */}
                 <div className="col-md-6 col-lg-4 order-1 mb-4">
                   <div className="card h-100">
+<<<<<<< Updated upstream
                     <div className="card-header">
                       <ul className="nav nav-pills" role="tablist">
                         <li className="nav-item">
@@ -532,6 +646,9 @@ export default function Dashboard() {
                         </div>
                       </div>
                     </div>
+=======
+
+>>>>>>> Stashed changes
                   </div>
                 </div>
                 {/*/ Expense Overview */}
@@ -539,6 +656,7 @@ export default function Dashboard() {
                 {/* Transactions */}
                 <div className="col-md-6 col-lg-4 order-2 mb-4">
                   <div className="card h-100">
+<<<<<<< Updated upstream
                     <div className="card-header d-flex align-items-center justify-content-between">
                       <h5 className="card-title m-0 me-2">Transactions</h5>
                       <div className="dropdown">
@@ -653,6 +771,9 @@ export default function Dashboard() {
                         </li>
                       </ul>
                     </div>
+=======
+
+>>>>>>> Stashed changes
                   </div>
                 </div>
                 {/*/ Transactions */}
@@ -660,6 +781,7 @@ export default function Dashboard() {
             </div>
             {/* / Content */}
 
+<<<<<<< Updated upstream
             {/* Footer */}
             <footer className="content-footer footer bg-footer-theme">
               <div className="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
@@ -693,6 +815,8 @@ export default function Dashboard() {
             </footer>
             {/* / Footer */}
 
+=======
+>>>>>>> Stashed changes
             <div className="content-backdrop fade"></div>
           </div>
           {/* Content wrapper */}
@@ -705,4 +829,8 @@ export default function Dashboard() {
     </div>
     </>
   );
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

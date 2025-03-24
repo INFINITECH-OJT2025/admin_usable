@@ -1,0 +1,58 @@
+/* Floating Label Styles */
+.form-floating {
+  position: relative;
+}
+
+.form-floating .form-control {
+  height: calc(3.5rem + 2px);
+  padding: 1rem 0.75rem;
+  padding-top: 1.5rem; /* Add padding to the top for the label */
+}
+
+.form-floating .form-label {
+  position: absolute;
+  top: 1rem; /* Position the label */
+  left: 0.75rem; /* Align the label */
+  transition: 0.2s ease all;
+  color: #6c757d; /* Default label color */
+}
+
+.form-floating .form-control:focus ~ .form-label,
+.form-floating .form-control:not(:placeholder-shown) ~ .form-label {
+  top: -0.5rem; /* Move the label up */
+  left: 0.75rem; /* Align the label */
+  font-size: 75%; /* Reduce the font size */
+  color: #007bff; /* Change label color on focus */
+}
+
+/* Table Styles */
+.table-responsive {
+  overflow-x: auto; /* Allow horizontal scrolling */
+}
+
+.table {
+  width: 100%; /* Full width */
+  margin-bottom: 1rem; /* Space below the table */
+  color: #212529; /* Text color */
+}
+
+.table th,
+.table td {
+  padding: 0.75rem; /* Padding for table cells */
+  vertical-align: top; /* Align text to the top */
+  border-top: 1px solid #dee2e6; /* Border for table cells */
+}
+
+.table th {
+  background-color: #f8f9fa; /* Header background color */
+  color: #495057; /* Header text color */
+}
+
+.table-bordered {
+  border: 1px solid #dee2e6; /* Border for the table */
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #dee2e6; /* Border for table cells */
+}

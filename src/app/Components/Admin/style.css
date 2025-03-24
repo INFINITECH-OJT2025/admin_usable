@@ -1,0 +1,92 @@
+.notification-drawer {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 400px; /* Increased width */
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    overflow-y: auto;
+    max-height: 350px;
+    padding: 10px;
+}
+
+/* Custom Scrollbar */
+.notification-drawer::-webkit-scrollbar {
+    width: 3px; /* Thinner scrollbar */
+}
+
+.notification-drawer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 12px;
+}
+
+.notification-drawer::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 12px; /* Rounder scrollbar */
+}
+
+.notification-drawer::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background 0.2s ease-in-out;
+}
+
+.notification-item:hover {
+    background: #e3f2fd;
+}
+
+.notification-item .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #007bff;
+    margin-left: auto;
+}
+
+.fixed-sidebar {
+    position: relative; /* Default for mobile */
+  }
+  
+  @media (min-width: 768px) {
+    .fixed-sidebar {
+      position: fixed; /* Fixed position for desktop */
+      top: 0; /* Align to the top */
+      left: 0; /* Align to the left */
+      height: 100vh; /* Full height */
+      overflow-y: auto; /* Allow scrolling if content overflows */
+    }
+  }
+
+  /* Centering the button */
+.nav-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+
+button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+}
+
+
+hr {
+    margin-top: 20px;
+    border: 0;
+    border-top: 1px solid #e0e0e0;
+}

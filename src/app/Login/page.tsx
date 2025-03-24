@@ -24,12 +24,21 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   // const router = useRouter();
 
+<<<<<<< Updated upstream
   useEffect(() => {
       // Reinitialize or load any JS libraries after navigation
       if (typeof window !== 'undefined') {
       // Example: Reinitialize Bootstrap or other JS libraries
       }
   }, []);
+=======
+    useEffect(() => {
+        // Reinitialize or load any JS libraries after navigation
+        if (typeof window !== 'undefined') {
+        // Example: Reinitialize Bootstrap or other JS libraries
+        }
+    }, []);
+>>>>>>> Stashed changes
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -133,10 +142,13 @@ export default function Login() {
         strategy="afterInteractive"
       />
       <Script
+<<<<<<< Updated upstream
         src="/assets/vendor/js/menu.js"
         strategy="afterInteractive"
       />
       <Script
+=======
+>>>>>>> Stashed changes
         src="/assets/vendor/libs/apex-charts/apexcharts.js"
         strategy="afterInteractive"
       />

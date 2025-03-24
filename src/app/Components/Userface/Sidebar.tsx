@@ -1,7 +1,14 @@
 'use client';
+<<<<<<< Updated upstream
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation'; // Correct hook for pathname
+=======
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation'; // Correct hook for pathname
+import { toast, ToastContainer } from 'react-toastify'; // Add your preferred toast notification library
+>>>>>>> Stashed changes
 
 import "@/app/assets/vendor/fonts/boxicons.css";
 import "@/app/assets/vendor/css/core.css";
@@ -12,6 +19,7 @@ import "@/app/assets/vendor/libs/apex-charts/apex-charts.css";
 
 export default function Sidebar() {
     const pathname = usePathname(); // Get the current path
+<<<<<<< Updated upstream
 
     const isActive = (path) => pathname === path; // Check if path is active
 
@@ -24,6 +32,49 @@ export default function Sidebar() {
 
     return (
         <>
+=======
+    const [permissions, setPermissions] = useState<string[]>([]); // Store permitted routes
+    const authToken = sessionStorage.getItem('authToken'); // Get auth token from session storage
+
+    useEffect(() => {
+        // Fetch user permissions from the backend using authToken
+        if (authToken) {
+            fetch(`http://127.0.0.1:8000/api/users/${authToken}/getUserPermissions`)
+                .then(response => {
+                    // Check if response is OK
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Set permissions if the response is valid JSON
+                    setPermissions(data.permitted_route || []);
+                })
+                .catch(error => {
+                    console.error('Error fetching permissions:', error);
+                    // Show a toast notification for the error
+                    toast.error("Failed to load permissions.");
+                });
+        }
+    }, [authToken]);
+
+    const isActive = (path: string) => pathname === path; // Check if path is active
+
+    const handleNavigation = (path: string) => (event: React.MouseEvent) => {
+        event.preventDefault(); // Prevent default Next.js behavior
+        if (!permissions.includes(path)) {
+            // If the path is not in the permitted_route array, show a toast notification
+            toast.error("You're restricted to access this feature. Kindly request for permission through customer service");
+            return;
+        }
+        window.location.href = path; // Force reload if permitted
+    };
+
+    return (
+        <>
+        <ToastContainer />
+>>>>>>> Stashed changes
         <aside id="layout-menu" className="layout-menu menu-vertical menu bg-menu-theme">
           <div className="app-brand demo">
             <a href="index.html" className="app-brand-link">
@@ -104,9 +155,31 @@ export default function Sidebar() {
                 </a>
             </li>
 
+<<<<<<< Updated upstream
             {/* Users */}
             <li className={`menu-item ${isActive('/User') ? 'active' : ''}`}>
                 <a href="/User" className="menu-link" onClick={handleNavigation('/User')}>
+=======
+            {/* Table */}
+            <li className={`menu-item ${isActive('/Userface/Table') ? 'active' : ''}`}>
+                <a href="/Userface/Table" className="menu-link" onClick={handleNavigation('/Userface/Table')}>
+                    <i className="menu-icon tf-icons bx bx-layout"></i>
+                    <div data-i18n="Table">Table</div>
+                </a>
+            </li>
+
+             {/* Form */}
+            <li className={`menu-item ${isActive('/Userface/Form') ? 'active' : ''}`}>
+                <a href="/Userface/Form" className="menu-link" onClick={handleNavigation('/Userface/Form')}>
+                    <i className="menu-icon tf-icons bx bx-layout"></i>
+                    <div data-i18n="Form">Form</div>
+                </a>
+            </li>
+
+            {/* Users */}
+            <li className={`menu-item ${isActive('/Userface/User') ? 'active' : ''}`}>
+                <a href="/User" className="menu-link" onClick={handleNavigation('/Userface/User')}>
+>>>>>>> Stashed changes
                     <i className="menu-icon tf-icons bx bx-layout"></i>
                     <div data-i18n="Users">Users</div>
                 </a>
@@ -116,11 +189,19 @@ export default function Sidebar() {
               <span className="menu-header-text">Pages</span>
             </li>
 
+<<<<<<< Updated upstream
             {/* Users */}
             <li className={`menu-item ${isActive('/Userface/Profile') ? 'active' : ''}`}>
                 <a href="/Userface/Profile" className="menu-link" onClick={handleNavigation('/Userface/Profile')}>
                     <i className="menu-icon tf-icons bx bx-layout"></i>
                     <div data-i18n="Users">Profile</div>
+=======
+            {/* Profile */}
+            <li className={`menu-item ${isActive('/Userface/Profile') ? 'active' : ''}`}>
+                <a href="/Userface/Profile" className="menu-link" onClick={handleNavigation('/Userface/Profile')}>
+                    <i className="menu-icon tf-icons bx bx-layout"></i>
+                    <div data-i18n="Profile">Profile</div>
+>>>>>>> Stashed changes
                 </a>
             </li>
           </ul>

@@ -1,0 +1,332 @@
+/* Modal Overlay */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 600px; /* Adjust width as needed */
+  max-width: 90%; /* Responsive */
+}
+  
+  /* Modal Header */
+  .modal-content h2 {
+    margin: 0 0 20px;
+  }
+  
+  /* Modal Form Elements */
+  .modal-content input[type="text"],
+  .modal-content input[type="email"],
+  .modal-content input[type="number"],
+  .modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Modal Buttons */
+  .modal-content button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .modal-content button[type="submit"] {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+  }
+  
+  .modal-content button[type="button"] {
+    background-color: #f44336; /* Red color for cancel */
+    color: white;
+  }
+  
+  .modal-content button:hover {
+    opacity: 0.9; /* Slightly fade on hover */
+  }
+  
+  /* Close Button */
+  .modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #aaa;
+  }
+  
+  .modal-content .close:hover {
+    color: #000; /* Change color on hover */
+  }
+
+
+  /* Add this to your CSS file */
+.card {
+  border: 1px solid #e5e7eb; /* Tailwind gray-300 */
+  border-radius: 0.375rem; /* Tailwind rounded-md */
+  overflow: hidden; /* Prevent overflow */
+}
+
+.card-body {
+  padding: 1rem; /* Tailwind p-4 */
+}
+
+.flex {
+  display: flex;
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  margin-left: 1rem; /* Tailwind space-x-4 */
+}
+
+.bg-gray-100 {
+  background-color: #f4fffe; /* Tailwind gray-100 */
+}
+
+.bg-gray-200 {
+  background-color: #ffffff; /* Tailwind gray-200 */
+}
+
+.bg-gray-300 {
+  background-color: #d1d5db; /* Tailwind gray-300 */
+}
+
+.overflow-y-auto {
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.fixed-height {
+  height: 400px; /* Fixed height for the containers */
+}
+
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .flex {
+    flex-direction: column; /* Stack items vertically on smaller screens */
+  }
+
+  .card {
+    margin-bottom: 1rem; /* Add some space between cards */
+  }
+
+  .card-body {
+    padding: 0.5rem; /* Reduce padding for smaller screens */
+  }
+
+  .nav {
+    flex-direction: column; /* Stack navigation items vertically */
+  }
+
+  .nav-item {
+    margin-bottom: 0.5rem; /* Space between navigation items */
+  }
+
+  .col-lg-6, .col-lg-12 {
+    flex: 1 0 100%; /* Make columns full width on small screens */
+  }
+
+  .row {
+    flex-direction: column; /* Stack rows vertically */
+  }
+
+
+
+  .scrollable {
+    max-height: 300px; /* Set a max height for scrollable areas */
+  }
+}
+
+
+/* Smaller inputs and tools */
+input,
+select,
+button {
+  font-size: 0.875rem; /* Smaller font size */
+  padding: 0.25rem 0.5rem; /* Smaller padding */
+}
+
+.card {
+  padding: 0.5rem; /* Reduce padding for cards */
+}
+
+.card-body {
+  padding: 0.5rem; /* Reduce padding for card body */
+}
+
+.btn {
+  font-size: 0.875rem; /* Smaller button font size */
+  padding: 0.25rem 0.5rem; /* Smaller button padding */
+}
+
+label {
+  font-size: 0.875rem; /* Smaller label font size */
+}
+
+/* Adjust the spacing between elements */
+.mb-4 {
+  margin-bottom: 0.5rem; /* Reduce bottom margin */
+}
+
+.px-3,
+.px-4 {
+  padding-left: 0.5rem; /* Reduce horizontal padding for pagination buttons */
+  padding-right: 0.5rem;
+}
+
+
+.nav-items {
+  transition: transform 0.2s ease-in-out;
+  background-color: #e4f1ff;
+  color: rgb(99, 99, 99);
+  text-align: center;
+}
+
+.nav-items:hover {
+  transform: scale(1.05); /* Zooms in by 5% */
+}
+
+/* Media query to hide text on mobile */
+@media (max-width: 640px) {
+  .nav-items span {
+    display: none; /* Hide text on mobile */
+  }
+}
+
+.bg-light-blue {
+  background-color: #e0f8ff; /* Light blue color */
+}
+
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10; /* Ensure the loader is above other content */
+  justify-items: center;
+}
+
+.blur {
+  filter: blur(4px); /* Adjust the blur amount as needed */
+  pointer-events: none; /* Prevent interaction with the blurred card */
+}
+
+
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  gap: 15px; /* Space between columns */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: #0070f3; /* Change to your theme color */
+  outline: none;
+}
+
+.form-checkbox {
+  margin-left: 10px;
+}
+
+.form-actions {
+  grid-column: span 2; /* Make the action buttons span both columns */
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px; /* Space above buttons */
+}
+
+.form-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #0070f3; /* Change to your theme color */
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.form-button:hover {
+  background-color: #005bb5; /* Darker shade for hover effect */
+}
+
+.cancel {
+  background-color: #ccc; /* Light gray for cancel button */
+}
+
+.cancel:hover {
+  background-color: #aaa; /* Darker gray for hover effect */
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center; /* Aligns checkbox and label vertically */
+}
+
+.checkbox-group label {
+  margin-right: 10px; /* Space between label and checkbox */
+}
+
+/* Media Query for Responsive Design */
+@media (max-width: 600px) {
+  .form {
+    grid-template-columns: 1fr; /* Switch to a single column */
+  }
+
+  .form-actions {
+    grid-column: span 1; /* Make action buttons span one column */
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: stretch; /* Stretch buttons to full width */
+  }
+
+  .form-button {
+    width: 100%; /* Full width for buttons */
+    margin-bottom: 10px; /* Space between buttons */
+  }
+
+  .form-button:last-child {
+    margin-bottom: 0; /* Remove margin from the last button */
+  }
+}

@@ -1,6 +1,10 @@
 'use client';
 
+<<<<<<< Updated upstream
 import React, { useEffect } from 'react';
+=======
+import React, { useState, useEffect } from 'react';
+>>>>>>> Stashed changes
 import Head from 'next/head';
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -15,12 +19,88 @@ import "@/app/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css";
 import "@/app/assets/vendor/libs/apex-charts/apex-charts.css";
 import Sidebar from '@/app/Components/Userface/Sidebar';
 import Navbar from '@/app/Components/Userface/Navbar';
+<<<<<<< Updated upstream
 
 import Script from 'next/script';
 
 export default function Dashboard() {
   
   const router = useRouter(); // ✅ Move useRouter() here
+=======
+import withAuth from '@/app/utils/withAuth';
+
+import Script from 'next/script';
+
+
+
+
+
+
+const Dashboard = () => {
+  const [user, setUser] = useState({ username: "", email: "", profile_image: "", fullname: "" });
+  const [loading, setLoading] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+      const fetchUserData = async () => {
+           try {
+              const authToken = sessionStorage.getItem("authToken");
+               if (authToken) {
+                   const response = await axios.get("http://127.0.0.1:8000/api/user", {
+                       headers: { Authorization: `Bearer ${authToken}` }
+                   });
+                   setUser({
+                       username: response.data.username,
+                       email: response.data.email,
+                       profile_image: response.data.profile_image,
+                       fullname: response.data.fullname
+                   });
+               }
+           } catch (error) {
+               console.error("Failed to fetch user data:", error);
+           } finally {
+               setLoading(false);
+           }
+       };
+     fetchUserData();
+  }, []);
+
+
+  useEffect(() => {
+    const savedTheme = sessionStorage.getItem('theme');
+    if (savedTheme) {
+      setIsDarkMode(savedTheme === 'dark');
+    }
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle('dark-mode', isDarkMode);
+    sessionStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    applyDarkModeStyles(isDarkMode); // Call the function to apply dark mode styles
+  }, [isDarkMode]);
+
+  const applyDarkModeStyles = (isDarkMode: boolean) => {
+    const elementsToDarken = [
+      'body',
+      '.layout-wrapper',
+      '.layout-container',
+      '.navbar',
+      '.sidebar',
+      '.card',
+      '.content-wrapper',
+      '.btn',
+    ];
+
+    elementsToDarken.forEach(selector => {
+      const elements = document.querySelectorAll(selector);
+      elements.forEach(element => {
+        element.classList.toggle('dark-mode', isDarkMode);
+      });
+    });
+  };
+
+
+>>>>>>> Stashed changes
   useEffect(() => {
     // Reinitialize or load any JS libraries after navigation
     if (typeof window !== 'undefined') {
@@ -81,7 +161,11 @@ export default function Dashboard() {
           defer
         ></script>
       </Head>
+<<<<<<< Updated upstream
       <div className="layout-wrapper layout-content-navbar">
+=======
+      <div className="layout-wrapper layout-content-navbar light-style layout-menu-fixed">
+>>>>>>> Stashed changes
       <div className="layout-container">
         {/* Menu */}
         <Sidebar />
@@ -106,7 +190,18 @@ export default function Dashboard() {
                     <div className="d-flex align-items-end row">
                       <div className="col-sm-7">
                         <div className="card-body">
+<<<<<<< Updated upstream
                           <h5 className="card-title text-primary">Congratulations Ariel James De Guzman Pogi! 🎉</h5>
+=======
+                          
+                          {loading ? (
+                              <span className="fw-semibold d-block card-title text-primary">Loading...</span>
+                          ) : (
+                              <>
+                                  <span className="fw-semibold d-block"> <h5 className="card-title text-primary">Welcome! {user.fullname} Pogi! 🎉</h5></span>
+                              </>
+                          )}
+>>>>>>> Stashed changes
                           <p className="mb-4">
                             You have done <span className="fw-bold">72%</span> more sales today. Check your new badge in
                             your profile.
@@ -681,3 +776,9 @@ export default function Dashboard() {
     </>
   );
 }
+<<<<<<< Updated upstream
+=======
+
+
+export default withAuth(Dashboard);
+>>>>>>> Stashed changes

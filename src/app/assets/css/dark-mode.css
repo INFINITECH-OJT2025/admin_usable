@@ -1,0 +1,588 @@
+/* styles.css or dark-mode.css */
+
+.dark-mode {
+    background-color: #27282e !important; /* Dark background */
+    color: #ffffff !important; /* Light text */
+}
+
+.dark-mode table {
+    background-color: #27282e; /* Dark background */
+    color: #ffffff; /* Light text */
+}
+
+.dark-mode .card {
+    background-color: #1e1e1e !important; /* Dark card background */
+    border: 1px solid #333 !important; /* Darker border */
+    color: #ffffff !important; /* Light text */
+}
+
+.dark-mode nav {
+    background-color: #1e1e1e !important;
+}
+
+.dark-mode aside {
+    background-color: #1e1e1e !important;
+}
+
+.dark-mode ul {
+    background-color: #1e1e1e !important;
+    color: #ffffff; /* Light text */    
+}
+
+.dark-mode .activity {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+}
+
+.dark-mode .activity .activity-item {
+    background-color: #2a2a2a !important; /* Darker background for items */
+    color: #ffffff !important;
+    box-shadow: none !important; /* Remove light shadow */
+}
+
+.dark-mode .activity .activite-label {
+    color: #bbbbbb !important; /* Light gray text */
+}
+
+.dark-mode .activity .bx.bxs-circle {
+    color: #6670ff !important; /* Keep unread notifications color */
+}
+
+
+.dark-mode .btn {
+    background-color: #333; /* Dark button background */
+    color: #ffffff; /* Light text for buttons */
+}
+
+
+
+.dark-mode .scrollable {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+}
+
+.dark-mode .folder-section {
+    background-color: #252525 !important;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.dark-mode .folder-card, 
+.dark-mode .file-card {
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: none !important;
+}
+
+.dark-mode .folder-icon, 
+.dark-mode .file-icon {
+    color: #ffcc00 !important; /* Yellow folder and file icons */
+}
+
+.dark-mode .ellipsis {
+    color: #ffffff !important;
+}
+
+.dark-mode .text-gray-800 {
+    color: #ffffff !important;
+}
+
+.dark-mode .text-gray-500 {
+    color: #bbbbbb !important;
+}
+
+.dark-mode .file-menu-button {
+    color: #ffffff !important;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.dark-mode .file-menu-dropdown {
+    background-color: #333333 !important;
+    border: 1px solid #444444;
+    border-radius: 6px;
+    padding: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .file-menu-item {
+    display: block;
+    width: 100%;
+    padding: 6px 12px;
+    text-align: left;
+    color: #ffffff !important;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.dark-mode .file-menu-item:hover {
+    background-color: #444444 !important;
+}
+
+.dark-mode .text-red-600 {
+    color: #ff4d4d !important;
+}
+
+.dark-mode .empty-folder-message {
+    color: #aaaaaa !important;
+}
+
+.dark-mode .path-container {
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+    border: 1px solid #444444;
+}
+
+.dark-mode .path-container::before {
+    color: #ffcc00; /* Yellow folder icon */
+}
+
+.dark-mode .card {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+    border: 1px solid #333333;
+    box-shadow: none;
+}
+
+/* styles.css or dark-mode.css */
+
+.dark-mode {
+    background-color: #27282e; /* Dark background */
+    color: #ffffff; /* Light text */
+}   
+
+.dark-mode table {
+    background-color: #27282e; /* Dark background */
+    color: #ffffff; /* Light text */
+}
+
+.dark-mode .card {
+    background-color: #1e1e1e; /* Dark card background */
+    border: 1px solid #333; /* Darker border */
+    color: #ffffff; /* Light text */
+}
+
+.dark-mode nav {
+    background-color: #1e1e1e !important;
+}
+
+.dark-mode aside {
+    background-color: #1e1e1e !important;
+}
+
+.dark-mode ul {
+    background-color: #1e1e1e !important;
+    color: #ffffff; /* Light text */    
+}
+
+.dark-mode .btn {
+    background-color: #333; /* Dark button background */
+    color: #ffffff; /* Light text for buttons */
+}
+
+
+
+.dark-mode .scrollable {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+}
+
+.dark-mode .folder-section {
+    background-color: #252525 !important;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.dark-mode .folder-card, 
+.dark-mode .file-card {
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: none !important;
+}
+
+.dark-mode .folder-icon, 
+.dark-mode .file-icon {
+    color: #ffcc00 !important; /* Yellow folder and file icons */
+}
+
+.dark-mode .ellipsis {
+    color: #ffffff !important;
+}
+
+.dark-mode .text-gray-800 {
+    color: #ffffff !important;
+}
+
+.dark-mode .text-gray-500 {
+    color: #bbbbbb !important;
+}
+
+.dark-mode .file-menu-button {
+    color: #ffffff !important;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.dark-mode .file-menu-dropdown {
+    background-color: #333333 !important;
+    border: 1px solid #444444;
+    border-radius: 6px;
+    padding: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .file-menu-item {
+    display: block;
+    width: 100%;
+    padding: 6px 12px;
+    text-align: left;
+    color: #ffffff !important;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.dark-mode .file-menu-item:hover {
+    background-color: #444444 !important;
+}
+
+.dark-mode .text-red-600 {
+    color: #ff4d4d !important;
+}
+
+.dark-mode .empty-folder-message {
+    color: #aaaaaa !important;
+}
+
+.dark-mode .path-container {
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+    border: 1px solid #444444;
+}
+
+.dark-mode .path-container::before {
+    color: #ffcc00; /* Yellow folder icon */
+}
+
+.dark-mode .card {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+    border: 1px solid #333333;
+    box-shadow: none;
+}
+
+
+.dark-mode .nav-items {
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+    border: 1px solid #444444;
+}
+
+.dark-mode .nav-items:hover {
+    background-color: #333333 !important;
+}
+
+.dark-mode .nav-items span {
+    color: #ffffff !important;
+}
+
+.dark-mode .text-gray-500 {
+    color: #bbbbbb !important;
+}
+
+.dark-mode .swiper-pagination-bullet {
+    background-color: #bbbbbb !important;
+}
+
+.dark-mode .swiper-pagination-bullet-active {
+    background-color: #ffffff !important;
+}
+
+.dark-mode .card {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+    border: 1px solid #333333;
+    box-shadow: none;
+}
+
+.dark-mode .bg-gray-100 {
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+}
+
+.dark-mode .bg-gray-200 {
+    background-color: #3a3a3a !important;
+    color: #ffffff !important;
+}
+
+.dark-mode .border {
+    border-color: #444444 !important;
+}
+
+.dark-mode .text-muted {
+    color: #bbbbbb !important;
+}
+
+.dark-mode .text-green-600 {
+    color: #60d394 !important;
+}
+
+.dark-mode .btn-outline-primary {
+    color: #60a5fa !important;
+    border-color: #60a5fa !important;
+}
+
+.dark-mode .btn-outline-primary:hover {
+    background-color: #60a5fa !important;
+    color: #ffffff !important;
+}
+
+.dark-mode .btn-outline-danger {
+    color: #f87171 !important;
+    border-color: #f87171 !important;
+}
+
+.dark-mode .btn-outline-danger:hover {
+    background-color: #f87171 !important;
+    color: #ffffff !important;
+}
+
+.dark-mode .bg-blue-100 {
+    background-color: #2d4a70 !important;
+}
+
+.dark-mode .bg-yellow-200 {
+    background-color: #7a5900 !important;
+}
+
+
+.dark-mode .bg-light-blue {
+    background-color: #2a4365 !important; /* Darker blue for dark mode */
+    color: #ffffff !important;
+}
+
+
+
+.dark-mode .btn-primary:hover {
+    background-color: #1e4db7 !important;
+    border-color: #1e4db7 !important;
+}
+
+.dark-mode .btn-warning {
+    background-color: #facc15 !important;
+    border-color: #facc15 !important;
+    color: #000 !important;
+}
+
+.dark-mode .btn-warning:hover {
+    background-color: #eab308 !important;
+    border-color: #eab308 !important;
+}
+
+.dark-mode .btn-danger {
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
+}
+
+.dark-mode .btn-danger:hover {
+    background-color: #b91c1c !important;
+    border-color: #b91c1c !important;
+}
+
+.dark-mode .btn-outline-primary {
+    color: #60a5fa !important;
+    border-color: #60a5fa !important;
+}
+
+.dark-mode .btn-outline-primary:hover {
+    background-color: #60a5fa !important;
+    color: #ffffff !important;
+}
+
+.dark-mode .btn-outline-danger {
+    color: #f87171 !important;
+    border-color: #f87171 !important;
+}
+
+.dark-mode .btn-outline-danger:hover {
+    background-color: #f87171 !important;
+    color: #ffffff !important;
+}
+
+.dark-mode .border {
+    border-color: #444444 !important;
+}
+
+.dark-mode .form-control,
+.dark-mode .form-select {
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+.dark-mode .form-control:disabled,
+.dark-mode .form-select:disabled {
+    background-color: #333333 !important;
+    color: #888888 !important;
+}
+
+.dark-mode .form-check-label {
+    color: #ffffff !important;
+}
+
+
+.dark-mode .form-input {
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+.overflow-y-auto {
+    background-color: #2a2a2a !important;
+}
+
+.dark-mode .collapse {
+    background-color: #252525 !important;
+    border: 1px solid #444444 !important;
+    padding: 10px;
+}
+
+.dark-mode .blur {
+    filter: blur(3px);
+    opacity: 0.7;
+}
+
+
+.dark-mode .modal-content {
+    background-color: #1f2937 !important; /* Darker shade for modal */
+    color: #ffffff !important;
+    border: 1px solid #374151 !important;
+}
+
+/* Modal header */
+.dark-mode .modal-header {
+    border-bottom: 1px solid #374151 !important;
+}
+
+/* Modal title */
+.dark-mode .modal-title {
+    color: #ffffff !important;
+}
+
+/* Close button */
+.dark-mode .btn-close {
+    filter: invert(1); /* Makes the close button visible in dark mode */
+}
+
+/* Modal body */
+.dark-mode .modal-body input {
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+    border: 1px solid #444444 !important;
+}
+
+/* Modal footer buttons */
+.dark-mode .modal-footer {
+    border-top: 1px solid #374151 !important;
+}
+
+.dark-mode .rounded-circle {
+    border: 4px solid #4b5563 !important;
+}
+
+.dark-mode .position-absolute {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* User info labels */
+.dark-mode strong {
+    color: #d1d5db !important;
+}
+
+/* Dark Mode for Notification Drawer */
+.dark-mode .notification-drawer {
+    background-color: #1f2937;
+    color: #ffffff;
+    border: 1px solid #374151;
+}
+
+.dark-mode .notification-drawer .card-header {
+    background-color: #3b3f46;
+    color: #fff;
+}
+
+.dark-mode .notification-item {
+    background-color: #3b3f46;
+    border-bottom: 1px solid #444;
+}
+
+
+.dark-mode .notification-item:hover {
+    background-color: #444;
+}
+
+.dark-mode .notification-drawer .text-muted {
+    color: #aaaaaa !important;
+}
+
+/* For the scrollbar appearance */
+.dark-mode .notification-drawer .card-body {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+
+
+.dark-mode .nav-items {
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+    border: 1px solid #444444;
+}
+
+.dark-mode .nav-items:hover {
+    background-color: #333333 !important;
+}
+
+.dark-mode .nav-items span {
+    color: #ffffff !important;
+}
+
+.dark-mode .text-gray-500 {
+    color: #bbbbbb !important;
+}
+
+.dark-mode .swiper-pagination-bullet {
+    background-color: #bbbbbb !important;
+}
+
+.dark-mode .swiper-pagination-bullet-active {
+    background-color: #ffffff !important;
+}
+
+/* Styling for the button */
+.dark-mode-toggle {
+    background-color: transparent; /* Remove default background */
+    border: none; /* Remove button border */
+    padding: 10px; /* Add padding to the button */
+    cursor: pointer;
+    border-radius: 50%; /* Make the button circular */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect for a circular background */
+.dark-mode-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Light background on hover */
+    transform: scale(1.1); /* Slight scale on hover */
+}
+
+.dark-mode .sign img {
+    content: url('/img/svg/light-enter-svgrepo-com.svg') !important; /* Default image */
+}

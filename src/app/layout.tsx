@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+<<<<<<< Updated upstream
+=======
+import "./assets/css/dark-mode.css";
+>>>>>>> Stashed changes
 import "./globals.css";
 
 const geistSans = Geist({

@@ -1,0 +1,44 @@
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the start */
+    width: 45px; /* Initial width for the button */
+    height: 45px; /* Height for the button */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: width 0.3s ease; /* Smooth transition for width */
+    background-color: transparent; /* Background color */
+    color: #007bff; /* Icon color */
+  }
+  
+  .buttonLabel {
+    margin-left: 10px; /* Space between icon and label */
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease, margin-left 0.3s ease; /* Smooth transition for opacity and margin */
+  }
+  
+  /* Hover effect */
+  .btn:hover {
+    width: 150px; /* Width when hovered */
+  }
+  
+  .btn:hover .buttonLabel {
+    opacity: 1; /* Show label on hover */
+    margin-left: 5px; /* Adjust margin for label */
+    color: #ffffff; /* Icon color */
+  }
+  
+  /* Ensure the icon is visible when not hovered */
+  .btn i {
+    transition: margin-left 0.3s ease; /* Smooth transition for icon */
+    color: #007bff; /* Ensure icon color matches */
+    margin-left: 6px;
+  }
+  
+  .btn:hover i {
+    margin-left: 5px; /* Optional: Add a slight margin to the icon on hover */
+    color: #ffffff; /* Icon color */
+  }

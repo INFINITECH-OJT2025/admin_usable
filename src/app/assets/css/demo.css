@@ -21,6 +21,13 @@
 
 /* ! For .layout-navbar-fixed added fix padding top tpo .layout-page */
 /* Detached navbar */
+<<<<<<< Updated upstream
+=======
+.navbar {
+  width: 2000px;
+}
+
+>>>>>>> Stashed changes
 .layout-navbar-fixed .layout-wrapper:not(.layout-horizontal):not(.layout-without-menu) .layout-page {
   padding-top: 76px !important;
 }

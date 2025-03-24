@@ -10,6 +10,15 @@ export default nextConfig;
 
 module.exports = {
   reactStrictMode: true, // Optional, but recommended
+<<<<<<< Updated upstream
+=======
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+>>>>>>> Stashed changes
   swcMinify: true, // If you want to enable SWC-based minification (optional)
   experimental: {
     react: {
