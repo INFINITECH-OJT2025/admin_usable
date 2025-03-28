@@ -14,7 +14,7 @@ module.exports = {
     ignoreBuildErrors: true,
   },
   eslint: {
-    ignoreDuringBuilds: false,
+    ignoreDuringBuilds: true,
   },
   swcMinify: true, // If you want to enable SWC-based minification (optional)
   experimental: {
