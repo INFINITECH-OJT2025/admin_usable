@@ -1,11 +1,6 @@
 'use client';
 
-<<<<<<< Updated upstream
-import React, { useEffect, useState } from 'react';
-import { useRouter } from "next/navigation";
-import axios from "axios";
-=======
-import React, { useEffect, useState, useRef  } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from "next/navigation";
 import { FaMoon, FaSun } from 'react-icons/fa';
 import axios from "axios";
@@ -13,21 +8,16 @@ import './style.css';
 import styles from './Button.module.css'; // Import the CSS module
 import Pusher from 'pusher-js';
 import "@/app/assets/css/dark-mode.css";
->>>>>>> Stashed changes
 
 export default function Navbar() {
     const router = useRouter();
     const [user, setUser] = useState({ username: "", email: "", profile_image: "" });
     const [loading, setLoading] = useState(true);
-<<<<<<< Updated upstream
-
-    // Fetch user data on component mount
-=======
     const [notifications, setNotifications] = useState<{ id: number; message: string; status: string }[]>([]);
     const [showNotifications, setShowNotifications] = useState(false);
     const drawerRef = useRef<HTMLDivElement>(null);
     const [isDarkMode, setIsDarkMode] = useState(false);
-    
+
     const toggleDarkMode = () => {
         setIsDarkMode(prev => {
             const newMode = !prev;
@@ -42,7 +32,6 @@ export default function Navbar() {
     };
 
     // Function to fetch notifications
->>>>>>> Stashed changes
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -64,22 +53,6 @@ export default function Navbar() {
             }
         };
 
-<<<<<<< Updated upstream
-        fetchUserData();
-    }, []);
-
-    const handleLogout = async () => {
-        try {
-            // Call Laravel logout API (if required)
-            await axios.post("http://127.0.0.1:8000/api/logout", {}, {
-                headers: { Authorization: `Bearer ${sessionStorage.getItem("authToken")}` }
-            });
-
-            // Remove the auth token
-            sessionStorage.removeItem("authToken");
-
-            // Redirect to Login page
-=======
         const fetchNotifications = async () => {
             try {
                 const authToken = sessionStorage.getItem("authToken");
@@ -111,28 +84,28 @@ export default function Navbar() {
             encrypted: true,
             logToConsole: true
         });
-    
+
         const channel = pusher.subscribe('notifications');
-    
+
         channel.bind('NotificationSent', (data: any) => {
             console.log("New Notification Received:", data);
             setNotifications(prev => [data, ...prev]);
             fetchNotifications();
         });
-    
-        pusher.connection.bind('connected', function() {
+
+        pusher.connection.bind('connected', function () {
             console.log('Connected to Pusher');
         });
-    
-        pusher.connection.bind('error', function(err: any) {
+
+        pusher.connection.bind('error', function (err: any) {
             console.error('Pusher Error:', err);
         });
-    
+
         return () => {
             channel.unbind_all();
             channel.unsubscribe();
         };
-    }, []); 
+    }, []);
 
     const markAsRead = async (id: number) => {
         try {
@@ -159,19 +132,19 @@ export default function Navbar() {
     const formatTimeAgo = (timestamp) => {
         const now = new Date();
         const timeDiff = now - new Date(timestamp); // Difference in milliseconds
-    
+
         const seconds = Math.floor(timeDiff / 1000);
         const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60);
         const days = Math.floor(hours / 24);
-    
+
         if (seconds < 60) return `${seconds} second${seconds === 1 ? '' : 's'} ago`;
         if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
         if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
         if (days < 30) return `${days} day${days === 1 ? '' : 's'} ago`;
         return `${Math.floor(days / 30)} month${Math.floor(days / 30) === 1 ? '' : 's'} ago`;
     };
-    
+
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -197,7 +170,6 @@ export default function Navbar() {
                 headers: { Authorization: `Bearer ${sessionStorage.getItem("authToken")}` }
             });
             sessionStorage.removeItem("authToken");
->>>>>>> Stashed changes
             router.push("/Login");
         } catch (error) {
             console.error("Logout failed:", error);
@@ -205,124 +177,7 @@ export default function Navbar() {
     };
 
     return (
-<<<<<<< Updated upstream
-        <>
-            <nav
-                className="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-                id="layout-navbar"
-            >
-                <div className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-                    <a className="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-                        <i className="bx bx-menu bx-sm"></i>
-                    </a>
-                </div>
-
-                <div className="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-                    <div className="navbar-nav align-items-center">
-                        <div className="nav-item d-flex align-items-center">
-                            <i className="bx bx-search fs-4 lh-0"></i>
-                            <input
-                                type="text"
-                                className="form-control border-0 shadow-none"
-                                placeholder="Search..."
-                                aria-label="Search..."
-                            />
-                        </div>
-                    </div>
-
-                    <ul className="navbar-nav flex-row align-items-center ms-auto">
-                        <li className="nav-item lh-1 me-3">
-                            <a
-                                className="github-button"
-                                href="https://github.com/themeselection/sneat-html-admin-template-free"
-                                data-icon="octicon-star"
-                                data-size="large"
-                                data-show-count="true"
-                                aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
-                            >
-                                Star
-                            </a>
-                        </li>
-
-                        {/* User */}
-                        <li className="nav-item navbar-dropdown dropdown-user dropdown">
-                            <a className="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                <div className="avatar avatar-online">
-                                    <img 
-                                        src={`http://127.0.0.1:8000/${user.profile_image}` ? `http://127.0.0.1:8000/${user.profile_image}` : "../assets/img/avatars/1.png"} 
-                                        alt="User Avatar" 
-                                        className="w-px-40 h-auto rounded-circle" 
-                                    />
-                                </div>
-                            </a>
-                            <ul className="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a className="dropdown-item" href="#">
-                                        <div className="d-flex">
-                                            <div className="flex-shrink-0 me-3">
-                                                <div className="avatar avatar-online">
-                                                    <img 
-                                                        src={`http://127.0.0.1:8000/${user.profile_image}` ? `http://127.0.0.1:8000/${user.profile_image}` : "../assets/img/avatars/1.png"} 
-                                                        alt="User Avatar" 
-                                                        className="w-px-40 h-auto rounded-circle" 
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="flex-grow-1">
-                                                {loading ? (
-                                                    <span className="fw-semibold d-block">Loading...</span>
-                                                ) : (
-                                                    <>
-                                                        <span className="fw-semibold d-block">{user.username}</span>
-                                                        <small className="text-muted">{user.email}</small>
-                                                    </>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div className="dropdown-divider"></div>
-                                </li>
-                                <li>
-                                    <a className="dropdown-item" href="#">
-                                        <i className="bx bx-user me-2"></i>
-                                        <span className="align-middle">My Profile</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className="dropdown-item" href="#">
-                                        <i className="bx bx-cog me-2"></i>
-                                        <span className="align-middle">Settings</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className="dropdown-item" href="#">
-                                        <span className="d-flex align-items-center align-middle">
-                                            <i className="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                            <span className="flex-grow-1 align-middle">Billing</span>
-                                            <span className="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div className="dropdown-divider"></div>
-                                </li>
-                                <li>
-                                    <button className="dropdown-item" onClick={handleLogout}>
-                                        <i className="bx bx-power-off me-2"></i>
-                                        <span className="align-middle">Log Out</span>
-                                    </button>
-                                </li>
-                            </ul>
-                        </li>
-                        {/*/ User */}
-                    </ul>
-                </div>
-            </nav>
-        </>
-=======
-        <nav className="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar" style={{ position: 'sticky', width: '100%'}}>
+        <nav className="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar" style={{ position: 'sticky', width: '100%' }}>
             <div className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
                 <a className="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
                     <i className="bx bx-menu bx-sm"></i>
@@ -330,9 +185,10 @@ export default function Navbar() {
             </div>
             <div className="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                 <ul className="navbar-nav flex-row align-items-center ms-auto gap-2">
-                <li className="nav-item">
-                        <button 
-                            onClick={toggleDarkMode} 
+
+                    <li className="nav-item">
+                        <button
+                            onClick={toggleDarkMode}
                             className="dark-mode-toggle"
                         >
                             {/* Conditionally render moon or sun icon */}
@@ -343,6 +199,7 @@ export default function Navbar() {
                             )}
                         </button>
                     </li>
+
                     <li className="nav-item dropdown" ref={drawerRef}>
                         <a className="nav-link position-relative" href="#" onClick={() => setShowNotifications(!showNotifications)}>
                             <i className="bx bx-bell fs-4"></i>
@@ -355,16 +212,16 @@ export default function Navbar() {
                         {showNotifications && (
                             <div className="notification-drawer card shadow-sm p-3">
                                 <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                    <h6 className="mb-0" style={{ color : 'white'}}>Notifications</h6>
+                                    <h6 className="mb-0" style={{ color: 'white' }}>Notifications</h6>
                                     <a href="/Notifications">
                                         <button>See all</button>
                                     </a>
                                     <button className={styles.button} onClick={markAllAsRead}>Mark All as Read</button>
                                     {/* <button className="btn btn-sm btn-light" onClick={markAllAsRead}>Mark All as Read</button> */}
                                 </div>
-                                <div className="card-body p-2" style={{ 
-                                    maxHeight: '300px', 
-                                    overflowY: 'auto', 
+                                <div className="card-body p-2" style={{
+                                    maxHeight: '300px',
+                                    overflowY: 'auto',
                                     scrollbarWidth: 'thin', /* For Firefox */
                                     scrollbarColor: '#888 #f1f1f1', /* For Firefox */
                                 }}>
@@ -377,7 +234,7 @@ export default function Navbar() {
                                                     <i className="bx bx-info-circle me-2 text-primary"></i>
                                                     <span>{notif.message}</span>
                                                 </div>
-                                                
+
                                                 {/* Wrapper container to isolate dot size */}
                                                 <div className="dot-container" style={{ width: '15px', height: '15px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                                     <span className="dot bg-primary rounded-circle" style={{ width: '10px', height: '10px' }}></span>
@@ -420,11 +277,15 @@ export default function Navbar() {
                     <li className="nav-item navbar-dropdown dropdown-user dropdown">
                         <a className="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                             <div className="avatar avatar-online">
+                                <div className="profile-image-circle">
                                 <img 
-                                    src={`http://127.0.0.1:8000/${user.profile_image}` ? `http://127.0.0.1:8000/${user.profile_image}` : "../assets/img/avatars/1.png"} 
-                                    alt="User Avatar" 
-                                    className="w-px-40 h-auto rounded-circle" 
+                                    src={`http://127.0.0.1:8000/${user.profile_image}`} 
+                                    alt="User Image" 
+                                    width={50} 
+                                    height={50} 
+                                    className="profile-image"
                                 />
+                                </div>
                             </div>
                         </a>
                         <ul className="dropdown-menu dropdown-menu-end">
@@ -433,10 +294,10 @@ export default function Navbar() {
                                     <div className="d-flex">
                                         <div className="flex-shrink-0 me-3">
                                             <div className="avatar avatar-online">
-                                                <img 
-                                                    src={`http://127.0.0.1:8000/${user.profile_image}` ? `http://127.0.0.1:8000/${user.profile_image}` : "../assets/img/avatars/1.png"} 
-                                                    alt="User Avatar" 
-                                                    className="w-px-40 h-auto rounded-circle" 
+                                                <img
+                                                    src={`http://127.0.0.1:8000/${user.profile_image}` ? `http://127.0.0.1:8000/${user.profile_image}` : "../assets/img/avatars/1.png"}
+                                                    alt="User Avatar"
+                                                    className="w-px-40 h-auto rounded-circle"
                                                 />
                                             </div>
                                         </div>
@@ -476,6 +337,5 @@ export default function Navbar() {
                 </ul>
             </div>
         </nav>
->>>>>>> Stashed changes
     );
 }

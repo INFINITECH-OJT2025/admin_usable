@@ -20,10 +20,7 @@ import "@/app/assets/vendor/libs/apex-charts/apex-charts.css";
 import Sidebar from '@/app/Components/Userface/Sidebar';
 import Navbar from '@/app/Components/Userface/Navbar';
 import Script from 'next/script';
-<<<<<<< Updated upstream
-=======
 import withAuth from '@/app/utils/withAuth';
->>>>>>> Stashed changes
 
 // const schema = yup.object().shape({
 //   username: yup.string().required("Username is required"),
@@ -31,11 +28,7 @@ import withAuth from '@/app/utils/withAuth';
 //   password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
 // });
 
-<<<<<<< Updated upstream
-export default function Profile() {
-=======
 const Profile = () => {
->>>>>>> Stashed changes
     const [user, setUser] = useState({ 
         id: "", 
         username: "", 
@@ -65,7 +58,7 @@ const Profile = () => {
             try {
                 const authToken = sessionStorage.getItem("authToken");
                 if (authToken) {
-                    const response = await axios.get("http://127.0.0.1:8000/api/user", {
+                    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}user`, {
                         headers: { Authorization: `Bearer ${authToken}` }
                     });
                     setUser(response.data);
@@ -120,7 +113,7 @@ const Profile = () => {
                 formDataToSend.append("profile_image", formData.profile_image);
             }
 
-            await axios.post(`http://127.0.0.1:8000/api/updateUser/${user.id}`, formDataToSend, {
+            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}updateUser/${user.id}`, formDataToSend, {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                     "Content-Type": "multipart/form-data"
@@ -193,11 +186,7 @@ const Profile = () => {
           defer
         ></script>
       </Head>
-<<<<<<< Updated upstream
-      <div className="layout-wrapper layout-content-navbar">
-=======
       <div className="layout-wrapper layout-content-navbar light-style layout-menu-fixed">
->>>>>>> Stashed changes
       <div className="layout-container">
         {/* Menu */}
         <Sidebar />
@@ -216,17 +205,34 @@ const Profile = () => {
                         <div className="card shadow-sm border-0">
                             <div className="card-body p-4 d-flex flex-column align-items-center justify-content-center">
                                 {/* Profile Image */}
-                                <Image
-                                    src={user.profile_image ? `http://127.0.0.1:8000/${user.profile_image}` : "/assets/img/avatars/1.png"}
-                                    alt="Profile Image"
-                                    width={210}  // Explicit width
-                                    height={210} // Explicit height
-                                    className="rounded-circle mb-3"
-                                    style={{
-                                        objectFit: "cover",
-                                        border: "4px solid #f8f9fa",
-                                    }}
-                                />
+                                <div className="profile-image-circle">
+                                    <img
+                                        src={user.profile_image ? `http://127.0.0.1:8000/${user.profile_image}` : "/assets/img/avatars/1.png"}
+                                        alt="Profile Image"
+                                        className="profile-image" // Add a class for the image
+                                    />
+                                    
+                                    <style jsx>{`
+                                        .profile-image-circle {
+                                            width: 210px; 
+                                            height: 210px;  /* Fixed size for the container */
+                                            border-radius: 50%;  /* Makes the container circular */
+                                            overflow: hidden;  /* Ensures that the image is cropped within the circle */
+                                            border: 4px solid #f8f9fa; /* Border around the circle */
+                                            display: flex; /* Use flexbox to center the image */
+                                            align-items: center; /* Center vertically */
+                                            justify-content: center; /* Center horizontally */
+                                        }
+
+                                        .profile-image {
+                                            width: 100%;  /* Make the image take the full width of the container */
+                                            height: auto; /* Maintain aspect ratio */
+                                            min-height: 100%; /* Ensure it covers the height */
+                                            object-fit: cover; /* Ensures the image covers the entire area */
+                                            object-position: center; /* Centers the image */
+                                        }
+                                    `}</style>
+                                </div>
                                 <h5 className="mb-1">{user.fullname}</h5>
                                 <p className="text-muted">{user.email}</p>
                             </div>
@@ -368,9 +374,6 @@ const Profile = () => {
     </>
   );
 }
-<<<<<<< Updated upstream
-=======
 
 
 export default withAuth(Profile);
->>>>>>> Stashed changes

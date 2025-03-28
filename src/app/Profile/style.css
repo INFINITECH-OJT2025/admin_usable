@@ -1,0 +1,17 @@
+.profile-image-circle {
+    width: 210px; 
+    height: 210px;  /* Fixed size for the container */
+    border-radius: 50%;  /* Makes the container circular */
+    overflow: hidden;  /* Ensures that the image is cropped within the circle */
+    border: 2px solid #f8f9fa; /* Border around the circle */
+    display: flex; /* Use flexbox to center the image */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+.profile-image {
+    width: 100%;  /* Make the image take the full width of the container */
+    height: 100%; /* Make the image take the full height of the container */
+    object-fit: cover; /* Ensures the image covers the entire area */
+    object-position: center; /* Centers the image */
+}

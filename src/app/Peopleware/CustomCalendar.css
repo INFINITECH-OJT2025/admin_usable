@@ -1,0 +1,19 @@
+/* CustomCalendar.css */
+.calendar-container {
+    height: 500px; /* Maximum width for larger screens */
+    width: 100%;
+    max-width: 1350px; /* Maximum width for larger screens */
+    margin: 0 auto; /* Center the calendar */
+  }
+  
+  @media (max-width: 768px) {
+    .calendar-container {
+      height: 400px; /* Adjust height for mobile */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .calendar-container {
+      height: 300px; /* Further adjust height for smaller screens */
+    }
+  }

@@ -8,13 +8,10 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-<<<<<<< Updated upstream
-=======
 import style from "./Loader.module.css";
 import style1 from "./Checkmark.module.css";
 import Tooltip from "./Tooltip.module.css";
->>>>>>> Stashed changes
-
+import "./image.css";
 
 import "../assets/vendor/fonts/boxicons.css";
 import "../assets/vendor/css/core.css";
@@ -24,12 +21,10 @@ import "../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css";
 import "../assets/vendor/libs/apex-charts/apex-charts.css";
 import Sidebar from '../Components/Admin/Sidebar';
 import Navbar from '../Components/Admin/Navbar';
-<<<<<<< Updated upstream
-=======
 import ValidateAdmin from '../Components/Admin/ValidateAdmin';
->>>>>>> Stashed changes
 
 import Script from 'next/script';
+
 
 interface User {
     id: number;
@@ -37,10 +32,7 @@ interface User {
     fullname: string;
     email: string;
     usertype: string;
-<<<<<<< Updated upstream
-=======
     status: string;
->>>>>>> Stashed changes
     created_at: string;
     updated_at: string;
     profile_image: string; // Add this field
@@ -51,16 +43,9 @@ export default function Users() {
     const [updatedUsername, setUpdatedUsername] = useState('');
     const [updatedFullname, setUpdatedFullname] = useState('');
     const [updatedEmail, setUpdatedEmail] = useState('');
-<<<<<<< Updated upstream
-
-    const [selectedUser, setSelectedUser] = useState<User | null>(null);
-    const [users, setUsers] = useState<User[]>([]);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
-    const usersPerPage = 2;
-=======
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
+    const [sortConfig, setSortConfig] = useState({ key: 'username', direction: 'ascending' });
 
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [selectedUserCheck, setSelectedUserCheck] = useState<User | null>(null);
@@ -69,19 +54,6 @@ export default function Users() {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const usersPerPage = 4;
->>>>>>> Stashed changes
-
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await axios.get('http://127.0.0.1:8000/api/users');
-                setUsers(response.data);
-            } catch (error) {
-                console.error("Error fetching users:", error);
-            }
-        };
-        fetchUsers();
-    }, []);
 
     // ✅ Ensure users is properly referenced inside the component
     const filteredUsers = users.filter(user =>
@@ -101,7 +73,7 @@ export default function Users() {
         // Fetch users data from API
         const fetchUsers = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/users'); // Update API URL if needed
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}users`); // Update API URL if needed
                 const data = await response.json();
                 setUsers(data); // Store user data in state
             } catch (error) {
@@ -125,12 +97,9 @@ export default function Users() {
     const handleUpdate = async () => {
         if (!editingUser) return;
     
-<<<<<<< Updated upstream
-=======
         setLoading(true); // Start loading
->>>>>>> Stashed changes
         try {
-            const response = await axios.put(`http://127.0.0.1:8000/api/update/${editingUser.id}`, {
+            const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}update/${editingUser.id}`, {
                 username: updatedUsername,
                 fullname: updatedFullname,
                 email: updatedEmail
@@ -151,17 +120,11 @@ export default function Users() {
                 pauseOnHover: true,
                 draggable: true,
                 theme: "colored",
-<<<<<<< Updated upstream
-              });
-        } catch (error) {
-            console.error('Error updating user:', error.response?.data || error.message);
-=======
             });
         } catch (error) {
             console.error('Error updating user:', error.response?.data || error.message);
         } finally {
             setLoading(false); // Stop loading
->>>>>>> Stashed changes
         }
     };
     
@@ -170,7 +133,7 @@ export default function Users() {
     const handleDelete = async (id: number) => {
         if (!confirm('Are you sure you want to delete this user?')) return;
         try {
-            await fetch(`http://127.0.0.1:8000/api/users/${id}`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL}users/${id}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' }
             });
@@ -217,7 +180,7 @@ export default function Users() {
             }
     
             // Update status in the database
-            await axios.put(`http://127.0.0.1:8000/api/users/${user.id}/status`, {
+            await axios.put(`${process.env.NEXT_PUBLIC_API_URL}users/${user.id}/status`, {
                 status: newStatus
             });
     
@@ -234,8 +197,6 @@ export default function Users() {
             console.error("Error updating status:", error);
         }
     };
-<<<<<<< Updated upstream
-=======
 
 
 
@@ -250,7 +211,7 @@ export default function Users() {
     // Handle user permission click
     const handlePermission = async (userId: number) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}/permissions`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}users/${userId}/permissions`);
             const data = await response.json();
             
             if (data) {
@@ -282,7 +243,7 @@ export default function Users() {
     const savePermissions = async () => {
         if (!selectedUserCheck) return;
         try {
-            await fetch(`http://127.0.0.1:8000/api/users/${selectedUserCheck}/updatePermissions`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL}users/${selectedUserCheck}/updatePermissions`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ permitted_route: permittedRoutes }) // Don't double stringify
@@ -317,7 +278,6 @@ export default function Users() {
 
 
 
->>>>>>> Stashed changes
     
 
         // Pagination logic
@@ -328,7 +288,30 @@ export default function Users() {
     
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-    
+    const sortedUsers = React.useMemo(() => {
+        let sortableUsers = [...currentUsers];
+        if (sortConfig !== null) {
+            sortableUsers.sort((a, b) => {
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+        return sortableUsers;
+    }, [currentUsers, sortConfig]);
+
+    const requestSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+    };
+
   
   const router = useRouter(); // ✅ Move useRouter() here
   useEffect(() => {
@@ -340,10 +323,7 @@ export default function Users() {
 
   return (
     <>
-<<<<<<< Updated upstream
-=======
     <ValidateAdmin onSuccess={handleAdminValidationSuccess} />
->>>>>>> Stashed changes
     <ToastContainer />
       <Script
         src="/assets/vendor/js/helpers.js"
@@ -396,11 +376,7 @@ export default function Users() {
           defer
         ></script>
       </Head>
-<<<<<<< Updated upstream
-      <div className="layout-wrapper layout-content-navbar">
-=======
       <div className="layout-wrapper layout-content-navbar light-style layout-menu-fixed layout-navbar-fixed">
->>>>>>> Stashed changes
       <div className="layout-container">
         {/* Menu */}
         <Sidebar />
@@ -432,35 +408,33 @@ export default function Users() {
                                         </div>
 
                                         <div className="table-responsive">
-                                            <table className="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th style={{ width: "5%" }}>Image</th>
-                                                        <th style={{ width: "11%" }}>Username</th>
-                                                        <th style={{ width: "18%" }}>Fullname</th>
-                                                        <th style={{ width: "21%" }}>Email</th>
-                                                        <th style={{ width: "10%" }}>User Type</th>
-                                                        <th style={{ width: "15%" }}>Created At</th>
-                                                        <th style={{ width: "30%" }}>Actions</th>
-                                                    </tr>
-                                                </thead>
+                                            <table className="table data-table">
+                                            <thead>
+                                                <tr>
+                                                    <th style={{ width: "5%" }}>Image</th>
+                                                    <th style={{ width: "11%" }} onClick={() => requestSort('username')}>Username</th>
+                                                    <th style={{ width: "18%" }} onClick={() => requestSort('fullname')}>Fullname</th>
+                                                    <th style={{ width: "21%" }} onClick={() => requestSort('email')}>Email</th>
+                                                    <th style={{ width: "10%" }} onClick={() => requestSort('usertype')}>User  Type</th>
+                                                    <th style={{ width: "15%" }} onClick={() => requestSort('created_at')}>Created At</th>
+                                                    <th style={{ width: "30%", position: 'sticky', right: 0, zIndex: 1 }}>Actions</th>
+                                               </tr>
+                                            </thead>
                                                 <tbody>
-                                                    {currentUsers.length > 0 ? (
-                                                        currentUsers.map((user) => (
-<<<<<<< Updated upstream
-                                                            <tr key={user.id}>
-=======
+                                                    {sortedUsers.length > 0 ? (
+                                                        sortedUsers.map((user) => (
                                                             <tr key={user.id} className={selectedUserCheck === user.id ? "table-warning" : ""}>
->>>>>>> Stashed changes
                                                                 <td>
                                                                     {user.profile_image ? (
-                                                                        <Image 
+                                                                        <div className="profile-image-circle">
+                                                                        <img 
                                                                             src={`http://127.0.0.1:8000/${user.profile_image}`} 
                                                                             alt="User Image" 
                                                                             width={50} 
                                                                             height={50} 
-                                                                            className="rounded-circle"
+                                                                            className="profile-image"
                                                                         />
+                                                                        </div>
                                                                     ) : (
                                                                         <span>No Image</span>
                                                                     )}
@@ -512,19 +486,9 @@ export default function Users() {
                                                                 </td>
                                                                 <td>{user.usertype}</td>
                                                                 <td>{new Date(user.created_at).toLocaleString()}</td>
-                                                                <td>
+                                                                <td style={{ position: 'sticky', right: 0, zIndex: 1 }}>
                                                                     {editingUser?.id === user.id ? (
                                                                         <>
-<<<<<<< Updated upstream
-                                                                            <button className="btn btn-sm btn-success me-2" onClick={handleUpdate}>Save</button>
-                                                                            <button className="btn btn-sm btn-secondary" onClick={() => setEditingUser(null)}>Cancel</button>
-                                                                        </>
-                                                                    ) : (
-                                                                        <>
-                                                                            <button className="btn btn-sm btn-primary me-2" onClick={() => handleUserClick(user)}>View</button>
-                                                                            <button className="btn btn-sm btn-warning me-2" onClick={() => handleEdit(user)}>Edit</button>
-                                                                            <button className="btn btn-sm btn-danger" onClick={() => handleDelete(user.id)}>Delete</button>
-=======
                                                                             <div className="d-flex align-items-center"> {/* Flex container for proper alignment */}
                                                                                 <button 
                                                                                     className="btn btn-sm btn-success me-2" 
@@ -551,7 +515,7 @@ export default function Users() {
                                                                             </div>
                                                                         </>
                                                                     ) : (
-                                                                        <>
+                                                                        <div style={{ display: 'flex', flexDirection: 'row' }}>
                                                                             <div className={Tooltip.tooltip}>
                                                                                 <button className="btn btn-sm btn-primary me-2" onClick={() => handleUserClick(user)}><i className='bx bx-info-circle'></i></button>
                                                                                 <div className={Tooltip.tooltiptext}>Show</div>
@@ -568,8 +532,7 @@ export default function Users() {
                                                                                 <button className="btn btn-sm btn-success" onClick={() => handlePermission(user.id)}><i className='bx bx-check-square'></i></button>
                                                                                 <div className={Tooltip.tooltiptext}>Permit</div>
                                                                             </div>
->>>>>>> Stashed changes
-                                                                        </>
+                                                                        </div>
                                                                     )}
                                                                 </td>
                                                             </tr>
@@ -585,21 +548,25 @@ export default function Users() {
                                     </div>
                                     <nav>
                                         <ul className="pagination justify-content-center">
-                                            {Array.from({ length: totalPages }, (_, index) => (
-                                                <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-                                                    <button onClick={() => paginate(index + 1)} className="page-link">
-                                                        {index + 1}
-                                                    </button>
-                                                </li>
-                                            ))}
+                                        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                            <button className="page-link" onClick={() => paginate(currentPage - 1)}>&laquo;</button>
+                                        </li>
+                                        {Array.from({ length: totalPages }, (_, index) => (
+                                            <li key={index + 1} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                                            <button className="page-link" onClick={() => paginate(index + 1)}>
+                                                {index + 1}
+                                            </button>
+                                            </li>
+                                        ))}
+                                        <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                            <button className="page-link" onClick={() => paginate(currentPage + 1)}>&raquo;</button>
+                                        </li>
                                         </ul>
                                     </nav>
                                 </div>
                             </div>
                         </div>
                     </div>
-<<<<<<< Updated upstream
-=======
 
 
                     <div className="col-lg-12 mb-4 order-0">
@@ -673,7 +640,6 @@ export default function Users() {
                     `}</style>
 
 
->>>>>>> Stashed changes
                 </div>
             </div>
         </div>
@@ -689,49 +655,6 @@ export default function Users() {
       </div>
 
       {/* Overlay */}
-<<<<<<< Updated upstream
-      <div className="layout-overlay layout-menu-toggle">
-      {selectedUser && (
-                <div className="modal fade show d-block" tabIndex={-1} style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">User Details</h5>
-                                <button type="button" className="btn-close" onClick={() => setSelectedUser(null)}></button>
-                            </div>
-                            <div className="modal-body d-flex align-items-center">
-                                <div className="me-3">
-                                    <Image
-                                        src={`http://127.0.0.1:8000/${selectedUser.profile_image}`}
-                                        alt="User Image"
-                                        width={150}
-                                        height={150}
-                                        className="rounded-circle"
-                                    />
-                                </div>
-                                <div>
-                                    <p><strong>ID:</strong> {selectedUser.id}</p>
-                                    <p><strong>Username:</strong> {selectedUser.username}</p>
-                                    <p><strong>Email:</strong> {selectedUser.email}</p>
-                                    <p><strong>User Type:</strong> {selectedUser.usertype}</p>
-                                    <p><strong>Created At:</strong> {new Date(selectedUser.created_at).toLocaleString()}</p>
-                                    <p><strong>Status:</strong> {selectedUser.status}</p>
-                                    <p><strong>Action: </strong> 
-                                    <button 
-                                        className={`btn btn-outline ${selectedUser?.status === "Allowed" ? "btn btn-outline-danger" : "btn btn-outline-success"}`}
-                                        onClick={() => selectedUser && handleToggleStatus(selectedUser)}
-                                    >
-                                        {selectedUser?.status === "Allowed" ? "Block" : "Allow"}
-                                    </button>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-      </div>
-=======
       {selectedUser  && (
         <div className="modal fade show d-block" tabIndex={-1} style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
             <div className="modal-dialog modal-dialog-centered">
@@ -747,39 +670,41 @@ export default function Users() {
                 <div className="modal-body d-flex flex-column flex-md-row"> {/* Use flex-column for mobile and flex-md-row for larger screens */}
                 {/* Image Container */}
                 <div className="me-3 d-flex justify-content-center align-items-center mb-3 mb-md-0"> {/* Add margin for mobile spacing */}
-                    <Image
-                    src={`http://127.0.0.1:8000/${selectedUser .profile_image}`}
-                    alt="User  Image"
-                    width={150}
-                    height={150}
-                    className="rounded-circle"
+                    <div className="profile-image-circle" style={{ width: '150px', height: '150px'}}>
+                    <img 
+                        src={`http://127.0.0.1:8000/${selectedUser.profile_image}`} 
+                        alt="User Image" 
+                        width={50} 
+                        height={50} 
+                        className="profile-image"
                     />
+                    </div>
                 </div>
                 {/* Info Container */}
                 <div className="flex-grow-1">
                     <div className="d-flex justify-content-between">
                     <p className="mb-0"><strong>ID:</strong></p>
-                    <p className="mb-0">{selectedUser .id}</p>
+                    <p className="mb-0">{selectedUser.id}</p>
                     </div>
                     <div className="d-flex justify-content-between">
                     <p className="mb-0"><strong>Username:</strong></p>
-                    <p className="mb-0">{selectedUser .username}</p>
+                    <p className="mb-0">{selectedUser.username}</p>
                     </div>
                     <div className="d-flex justify-content-between">
                     <p className="mb-0"><strong>Email:</strong></p>
-                    <p className="mb-0">{selectedUser .email}</p>
+                    <p className="mb-0">{selectedUser.email}</p>
                     </div>
                     <div className="d-flex justify-content-between">
                     <p className="mb-0"><strong>User Type:</strong></p>
-                    <p className="mb-0">{selectedUser .usertype}</p>
+                    <p className="mb-0">{selectedUser.usertype}</p>
                     </div>
                     {/* <div className="d-flex justify-content-between">
                     <p className="mb-0"><strong>Created At:</strong></p>
-                    <p className="mb-0">{new Date(selectedUser .created_at).toLocaleString()}</p>
+                    <p className="mb-0">{new Date(selectedUser.created_at).toLocaleString()}</p>
                     </div> */}
                     <div className="d-flex justify-content-between">
                     <p className="mb-0"><strong>Status:</strong></p>
-                    <p className="mb-0">{selectedUser .status}</p>
+                    <p className="mb-0">{selectedUser.status}</p>
                     </div>
                     <div className="mt-3 d-flex justify-content-between">
                     <strong>Action:</strong>
@@ -797,7 +722,6 @@ export default function Users() {
         </div>
         )}
         <div className="layout-overlay layout-menu-toggle"></div>
->>>>>>> Stashed changes
     </div>
     </>
   );

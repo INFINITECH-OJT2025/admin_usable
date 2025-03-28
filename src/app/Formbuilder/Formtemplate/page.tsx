@@ -7,17 +7,17 @@ import Head from 'next/head';
 import "react-toastify/dist/ReactToastify.css";
 
 
-import "../assets/vendor/fonts/boxicons.css";
-import "../assets/vendor/css/core.css";
-import "../assets/vendor/css/theme-default.css";
-import "../assets/css/demo.css";
-import "../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css";
-import "../assets/vendor/libs/apex-charts/apex-charts.css";
-import Sidebar from '../Components/Admin/Sidebar';
-import Navbar from '../Components/Admin/Navbar';
-
+import "@/app/assets/vendor/fonts/boxicons.css";
+import "@/app/assets/vendor/css/core.css";
+import "@/app/assets/vendor/css/theme-default.css";
+import "@/app/assets/css/demo.css";
+import "@/app/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css";
+import "@/app/assets/vendor/libs/apex-charts/apex-charts.css";
+import Sidebar from '@/app/Components/Admin/Sidebar';
+import Navbar from '@/app/Components/Admin/Navbar';
 import Script from 'next/script';
-import FormBuilder from "./FormBuilder";
+import FormTemplate from './FormTemplate';
+import { ToastContainer } from 'react-toastify';
 
 export default function Manager() {
 
@@ -34,6 +34,7 @@ export default function Manager() {
 
   return (
     <>
+    <ToastContainer />
       <Script
         src="/assets/vendor/js/helpers.js"
         strategy="afterInteractive" // Choose strategy: 'afterInteractive', 'afterInteractive', or 'lazyOnload'
@@ -98,10 +99,7 @@ export default function Manager() {
           <Navbar />
           <div className="content-wrapper">
             <div className="container-xxl flex-grow-1 container-p-y">
-              <div className="divider">
-                  <div className="divider-text"><h4 className="text-3xl font-semibold text-right text-green-600 mb-2">📝 Form Builder</h4></div>
-              </div>
-              <FormBuilder />
+              <FormTemplate />
             </div>
         </div>
       </div>

@@ -2,18 +2,18 @@
 
 import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from "react-toastify";
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import axios from 'axios';
 
 const ValidateAdmin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
     const router = useRouter();
+    const pathname = usePathname(); // Get current path
     const [isLoading, setIsLoading] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
     const [password, setPassword] = useState('');
     const [showModal, setShowModal] = useState(() => {
-        return sessionStorage.getItem('showModal') !== 'false'; // Defaults to true unless explicitly set to false
+        return sessionStorage.getItem('showModal') !== 'false';
     });
-    
 
     useEffect(() => {
         const authToken = sessionStorage.getItem('authToken');
@@ -22,13 +22,13 @@ const ValidateAdmin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
             return;
         }
 
-        // Check if the admin validation exists in sessionStorage
+        // Check if admin validation exists in sessionStorage
         const adminValidated = sessionStorage.getItem('adminValidated');
         if (adminValidated === 'true') {
             setShowModal(false);
             setIsAdmin(true);
-            onSuccess(); // Call the onSuccess callback
-            return; // Skip the admin verification
+            onSuccess();
+            return; // Skip verification
         }
 
         // Verify if the user is an admin
@@ -39,7 +39,7 @@ const ValidateAdmin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
                 });
                 if (response.data.usertype === 'admin') {
                     setIsAdmin(true);
-                    onSuccess(); // Call the onSuccess callback
+                    onSuccess();
                 } else {
                     setShowModal(true);
                 }
@@ -53,6 +53,21 @@ const ValidateAdmin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
 
         verifyAdmin();
     }, [router, onSuccess]);
+
+    useEffect(() => {
+        const handleRouteChange = (url: string) => {
+            if (url != pathname) {
+                sessionStorage.removeItem('adminValidated');
+            }
+        };
+
+        // Listen for route changes
+        router.events?.on('routeChangeStart', handleRouteChange);
+
+        return () => {
+            router.events?.off('routeChangeStart', handleRouteChange);
+        };
+    }, [router, pathname]);
 
     const handlePasswordSubmit = async () => {
         const authToken = sessionStorage.getItem('authToken');
@@ -71,7 +86,7 @@ const ValidateAdmin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
 
             if (response.data.valid) {
                 setIsAdmin(true);
-                onSuccess(); // Call the onSuccess callback
+                onSuccess();
                 sessionStorage.setItem('adminValidated', 'true'); // Store validation in sessionStorage
                 setShowModal(false);
                 toast.success("Got In! Enjoy", {
@@ -84,7 +99,6 @@ const ValidateAdmin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
                     theme: "colored",
                 });
             } else {
-                alert('Invalid password');
                 toast.error("Oops! Wrong Password. Please Try again!", {
                     position: "top-center",
                     autoClose: 5000,
@@ -129,7 +143,7 @@ const ValidateAdmin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
                                     placeholder="Enter admin password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                                                    />
+                                />
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
@@ -139,7 +153,6 @@ const ValidateAdmin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
                     </div>
                 </div>
             )}
-            <ToastContainer />
         </>
     );
 };

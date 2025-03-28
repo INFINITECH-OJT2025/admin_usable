@@ -1,14 +1,8 @@
 'use client';
-<<<<<<< Updated upstream
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // Correct hook for pathname
-=======
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation'; // Correct hook for pathname
 import { toast, ToastContainer } from 'react-toastify'; // Add your preferred toast notification library
->>>>>>> Stashed changes
 
 import "@/app/assets/vendor/fonts/boxicons.css";
 import "@/app/assets/vendor/css/core.css";
@@ -19,20 +13,6 @@ import "@/app/assets/vendor/libs/apex-charts/apex-charts.css";
 
 export default function Sidebar() {
     const pathname = usePathname(); // Get the current path
-<<<<<<< Updated upstream
-
-    const isActive = (path) => pathname === path; // Check if path is active
-
-    // Function to force reload
-    const handleNavigation = (path) => (event) => {
-        event.preventDefault(); // Prevent default Next.js behavior
-        window.location.href = path; // Force reload
-    };
-
-
-    return (
-        <>
-=======
     const [permissions, setPermissions] = useState<string[]>([]); // Store permitted routes
     const authToken = sessionStorage.getItem('authToken'); // Get auth token from session storage
 
@@ -74,7 +54,6 @@ export default function Sidebar() {
     return (
         <>
         <ToastContainer />
->>>>>>> Stashed changes
         <aside id="layout-menu" className="layout-menu menu-vertical menu bg-menu-theme">
           <div className="app-brand demo">
             <a href="index.html" className="app-brand-link">
@@ -155,11 +134,6 @@ export default function Sidebar() {
                 </a>
             </li>
 
-<<<<<<< Updated upstream
-            {/* Users */}
-            <li className={`menu-item ${isActive('/User') ? 'active' : ''}`}>
-                <a href="/User" className="menu-link" onClick={handleNavigation('/User')}>
-=======
             {/* Table */}
             <li className={`menu-item ${isActive('/Userface/Table') ? 'active' : ''}`}>
                 <a href="/Userface/Table" className="menu-link" onClick={handleNavigation('/Userface/Table')}>
@@ -179,7 +153,6 @@ export default function Sidebar() {
             {/* Users */}
             <li className={`menu-item ${isActive('/Userface/User') ? 'active' : ''}`}>
                 <a href="/User" className="menu-link" onClick={handleNavigation('/Userface/User')}>
->>>>>>> Stashed changes
                     <i className="menu-icon tf-icons bx bx-layout"></i>
                     <div data-i18n="Users">Users</div>
                 </a>
@@ -189,19 +162,11 @@ export default function Sidebar() {
               <span className="menu-header-text">Pages</span>
             </li>
 
-<<<<<<< Updated upstream
-            {/* Users */}
-            <li className={`menu-item ${isActive('/Userface/Profile') ? 'active' : ''}`}>
-                <a href="/Userface/Profile" className="menu-link" onClick={handleNavigation('/Userface/Profile')}>
-                    <i className="menu-icon tf-icons bx bx-layout"></i>
-                    <div data-i18n="Users">Profile</div>
-=======
             {/* Profile */}
             <li className={`menu-item ${isActive('/Userface/Profile') ? 'active' : ''}`}>
                 <a href="/Userface/Profile" className="menu-link" onClick={handleNavigation('/Userface/Profile')}>
                     <i className="menu-icon tf-icons bx bx-layout"></i>
                     <div data-i18n="Profile">Profile</div>
->>>>>>> Stashed changes
                 </a>
             </li>
           </ul>

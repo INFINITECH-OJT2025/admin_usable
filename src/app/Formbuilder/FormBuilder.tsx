@@ -19,7 +19,6 @@ import button from "./Button.module.css";
 import style from "./Loader.module.css"
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import styles from './HoverButton.module.css';
-import Cookies from 'js-cookie';
 
 interface FormField {
   id: string; // Unique ID for each field
@@ -95,16 +94,16 @@ export default function FormBuilder() {
   });
 
   const fieldIcons: Record<string, JSX.Element> = {
-    text: <FaRegKeyboard size={20} />,
-    email: <FaEnvelope size={20} />,
-    number: <FaHashtag size={20} />,
-    select: <FaList size={20} />,
-    datetime: <FaCalendarAlt size={20} />,
-    checkbox: <FaCheckSquare size={20} />,
-    radio: <FaDotCircle size={20} />,
-    button: <FaMousePointer size={20} />,
-    file: <FaFileUpload size={20} />,
-    textarea: <FaChalkboard size={20} />
+    text: <FaRegKeyboard size={20} color={'#5A9BD5'}/>,
+    email: <FaEnvelope size={20} color={'#5A9BD5'}/>,
+    number: <FaHashtag size={20} color={'#5A9BD5'}/>,
+    select: <FaList size={20} color={'#5A9BD5'}/>,
+    datetime: <FaCalendarAlt size={20} color={'#5A9BD5'}/>,
+    checkbox: <FaCheckSquare size={20} color={'#5A9BD5'}/>,
+    radio: <FaDotCircle size={20} color={'#5A9BD5'}/>,
+    button: <FaMousePointer size={20} color={'#5A9BD5'}/>,
+    file: <FaFileUpload size={20} color={'#5A9BD5'}/>,
+    textarea: <FaChalkboard size={20} color={'#5A9BD5'}/>
   };
 
   const schema = yup.object().shape(
@@ -123,25 +122,13 @@ export default function FormBuilder() {
   });
 
   useEffect(() => {
-    // Load saved configuration from cookies
-    const savedToolSections = Cookies.get('toolSections');
-    const savedTableName = Cookies.get('tableName');
-
-    if (savedToolSections) {
-      setToolSections(JSON.parse(savedToolSections));
-    }
-
-    if (savedTableName) {
-      setTableName(savedTableName);
-    }
-
     fetchExistingTables(); // Fetch existing tables on component mount
     fetchForms(); // Fetch forms as before
   }, [])
 
   const fetchForms = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/forms");
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}forms`);
       const formsWithParsedFields = response.data.map((form: any) => {
         let parsedFields = [];
         try {
@@ -178,7 +165,7 @@ export default function FormBuilder() {
     }
     
     try {
-      await axios.post("http://127.0.0.1:8000/api/forms", formData, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}forms`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -202,12 +189,13 @@ export default function FormBuilder() {
                   nullValue: field.nullValue,
                   index: field.index,
                   autoIncrement: field.autoIncrement,
+                  options: field.options || [], // Include options for ENUM fields
               })),
           };
 
           console.log("Request Data:", requestData); // Log the request data
 
-          const response = await axios.post("http://127.0.0.1:8000/api/tables", requestData);
+          const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}tables`, requestData);
           console.log(response.data);
       } catch (error) {
           console.error("Error creating table:", error);
@@ -260,7 +248,7 @@ export default function FormBuilder() {
   
     try {
       const formData = { fields: toolSections, tableName }; // Include tableName in the form data
-      await axios.post("http://127.0.0.1:8000/api/forms", formData);
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}forms`, formData);
       toast.success(`${tableName} saved successfully!`, {
         position: "top-right",
         autoClose: 5000,
@@ -270,9 +258,6 @@ export default function FormBuilder() {
         draggable: true,
         theme: "colored",
       });
-      // Clear cookies after saving the form
-      Cookies.remove('toolSections');
-      Cookies.remove('tableName');
 
       fetchExistingTables();
       fetchForms();
@@ -296,15 +281,13 @@ export default function FormBuilder() {
   };
   
   useEffect(() => {
-    Cookies.set('toolSections', JSON.stringify(toolSections), { expires: 7 }); // Save for 7 days
-    Cookies.set('tableName', tableName, { expires: 7 }); // Save for 7 days
   }, [toolSections, tableName]);
 
   const useFormTemplate = async (tableName: string, formId: number) => {
     setLoadingTemplate(true); // Set loading state to true
       try {
           // Call the backend to create the model and controller
-          const response = await axios.post(`http://127.0.0.1:8000/api/createModelAndController`, { tableName, formId });
+          const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}createModelAndController`, { tableName, formId });
           
           // Check the response message and alert accordingly
           if (response.data.message) {
@@ -348,7 +331,7 @@ export default function FormBuilder() {
   // Function to fetch existing forms
   const fetchExistingTables = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/getTables");
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}getTables`);
       const tables = response.data.map((table: any) => Object.values(table)[0]); // Adjust based on your response structure
       setExistingTables(tables);
     } catch (error) {
@@ -384,7 +367,7 @@ export default function FormBuilder() {
 
   const deleteForm = async (formId: number, tableName: string) => {
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/forms/${formId}/${tableName}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}forms/${formId}/${tableName}`);
       toast.success(`${tableName} deleted successfully!`, {
         position: "top-right",
         autoClose: 5000,
@@ -422,6 +405,21 @@ export default function FormBuilder() {
 
   const removeSection = (sectionId: string) => {
     setToolSections((prevSections) => prevSections.filter((section) => section.id !== sectionId));
+  };
+
+
+  const clearAll = () => {
+    setToolSections([]); // Clear all sections
+    setTableName(''); // Clear the table name
+    toast.success("All sections and tools have been cleared!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+    });
   };
 
   const addNewSection = () => {
@@ -469,7 +467,7 @@ export default function FormBuilder() {
     setLoadingTemplate(true);
     try {
       if (currentStatus === 'enabled') {
-        await axios.put(`http://127.0.0.1:8000/api/forms/${formId}`, { status: 'disabled' });
+        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}forms/${formId}`, { status: 'disabled' });
         setEnabledFormId(null); // Reset the enabled form ID
         setLoadingTemplate(false);
         toast.success(`${tableName.toUpperCase()} enabled successfully!`, {
@@ -483,7 +481,7 @@ export default function FormBuilder() {
         });
       } else {
         // Enable the current form and disable any previously enabled form
-        await axios.put(`http://127.0.0.1:8000/api/forms/${formId}`, { status: 'enabled' });
+        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}forms/${formId}`, { status: 'enabled' });
         setEnabledFormId(formId); // Set the current form as enabled
         setLoadingTemplate(false);
         toast.success(`${tableName.toUpperCase()} enabled successfully!`, {
@@ -536,19 +534,19 @@ export default function FormBuilder() {
     <ToastContainer />
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="row">
-        <div className="col-lg-12 mb-4 order-0">
+        <div className="col-lg-12 mb-2 order-0">
           <div className="card">
             <div className="d-flex align-items-end row">
               <div className="col-sm-12">
                 <div className="card-body">
                   {/* Navigation Bar for Tools */}
                   <Swiper
-                    spaceBetween={10}
+                    spaceBetween={20} // Increased space between slides
                     slidesPerView={3}
                     loop={true} // Enable infinite loop
                     pagination={{ clickable: true }}
                     breakpoints={{
-                      640: {
+                      430: {
                         slidesPerView: 3, // Show 3 items on mobile
                       },
                       768: {
@@ -562,12 +560,20 @@ export default function FormBuilder() {
                     {availableFields.map((field) => (
                       <SwiperSlide key={field.id}>
                         <div
-                          className="p-2 bg-gray-100 border rounded cursor-pointer nav-items flex flex-col items-center text-center" // Added text-center for better alignment
+                          className="p-2 bg-light-blue border rounded cursor-pointer nav-items flex flex-col items-center text-center space-y-4"
                           onClick={() => handleToolboxItemDrop(field)}
                         >
-                          <span className="mb-1">{fieldIcons[field.type]}</span> {/* Icon on the top */}
-                          <span className="font-semibold text-black">{field.label}</span> {/* Highlighted label */}
-                          <span className="text-gray-500 text-sm">({field.type})</span> {/* Less highlighted type */}
+                          {/* Icon displayed on all screen sizes */}
+                          <div className="icon-container mb-1">
+                            <span className="text-3xl">{fieldIcons[field.type]}</span>
+                          </div>
+
+                          {/* Label and Type shown only on larger screens */}
+                          <div className="label-container hidden md:block">
+                            <span className="font-semibold text-black text-base">
+                              {field.label}
+                            </span>
+                          </div>
                         </div>
                       </SwiperSlide>
                     ))}
@@ -579,7 +585,7 @@ export default function FormBuilder() {
         </div>
 
         <div className="col-lg-7 mb-4 order-1">
-          <div className="card scrollable" style={{ height: '500px', overflowY: 'auto' }}>
+          <div className="card scrollable" style={{ height: '630px', overflowY: 'auto' }}>
             <div className="d-flex align-items-end row">
               <div className="col-sm-12">
                 <div className="card-body">
@@ -596,15 +602,14 @@ export default function FormBuilder() {
                             value={tableName}
                             onChange={(e) => setTableName(e.target.value)}
                             id="tableNameInput"
-                            placeholder="Enter table name"
+                            placeholder=""
                             className="form-control border rounded"
                           />
                           <label htmlFor="tableNameInput" className="text-muted">Table Name</label> {/* Floating label */}
                         </div>
-                        <button onClick={addNewSection} className={`${styles.btn} btn btn-primary`}>
-                          <i className='bx bx-rectangle'></i>
-                          <span className={styles.buttonLabel}>Add Section</span>
-                          <i className='bx bx-rectangle'></i>
+                        <button onClick={addNewSection} className="btn btn-primary" style={{ padding: '8px'}}>
+                          <span>Add Section </span>
+                          <i className='bx bx-folder-plus' style={{ padding: '3px'}}></i>
                         </button>
                       </div>
                       <br />
@@ -661,7 +666,7 @@ export default function FormBuilder() {
         
 
         <div className="col-lg-5 mb-4 order-2">
-          <div className="card scrollable" style={{ height: '500px', overflowY: 'auto' }}>
+          <div className="card scrollable" style={{ height: '630px', overflowY: 'auto' }}>
             <div className="d-flex align-items-end row">
               <div className="col-sm-12">
                 <div className="card-body">
@@ -669,359 +674,139 @@ export default function FormBuilder() {
                   <div className="mt-6 p-4 bg-gray-100 border rounded-lg">
                     <div className="d-flex justify-content-between align-items-center w-full">
                       <h4 className="text-lg font-semibold">📃 Form Preview</h4>
-                      <button className={`${styles.btn} btn btn-primary`} onClick={saveForm}>
-                      <i className='bx bx-save' ></i>
-                        <span className={styles.buttonLabel}>Save Form</span>
-                        <i className='bx bx-save' ></i>
-                      </button>
+                      <div>
+                        <button className="btn btn-primary" onClick={saveForm} style={{ padding: '8px'}}>
+                          <i className='bx bx-save'></i>
+                          <span>Save Form</span>
+                        </button>
+                      </div>
                     </div>
                     <br />
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                      {toolSections.flatMap(section => 
-                        section.fields.length > 0 ? (
-                          <div key={section.id} className="row">
-                            {section.fields.map((field) => (
-                              <div key={field.id} className={`col-6 ${section.fields.length === 1 ? 'col-12' : ''}`}>
-                                <label className="block font-medium">{field.label}</label>
-                                {field.type === "text" || field.type === "email" || field.type === "number" ? (
-                                  <Controller
-                                    name={field.label}
-                                    control={control}
-                                    render={({ field }) => (
-                                      <Input {...field} type={field.type} placeholder={field.placeholder} />
-                                    )}
-                                  />
-                                ) : field.type === "select" ? (
-                                  <Controller
-                                    name={field.label}
-                                    control={control}
-                                    render={({ field }) => (
-                                      <Select {...field}>
-                                        {field.options?.map((option, index) => (
-                                          <option key={index} value={option}>
-                                            {option}
-                                          </option>
-                                        ))}
-                                      </Select>
-                                    )}
-                                  />
-                                ) : field.type === "datetime" ? (
-                                  <Controller
-                                    name={field.label}
-                                    control={control}
-                                    render={({ field }) => <Input {...field} type="datetime-local" placeholder={field.placeholder} />}
-                                  />
-                                ) : field.type === "checkbox" ? (
-                                  <Controller
-                                    name={field.label}
-                                    control={control}
-                                    render={({ field }) => (
-                                      <div>
-                                        <input
-                                          type="checkbox"
-                                          checked={field.value}
-                                          onChange={field.onChange}
-                                        />
-                                        <span className="ml-2">{field.label}</span>
-                                      </div>
-                                    )}
-                                  />
-                                ) : field.type === "radio" ? (
-                                  <Controller
-                                    name={field.label}
-                                    control={control}
-                                    render={({ field }) => (
-                                      <div>
-                                        {field.options?.map((option, index) => (
-                                          <div key={index}>
-                                            <input
-                                              type="radio"
-                                              value={option}
-                                              checked={field.value === option}
-                                              onChange={field.onChange}
-                                            />
-                                            <span className="ml-2">{option}</span>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    )}
-                                  />
-                                ) : field.type === "file" ? (
-                                  <Controller
-                                    name={field.label}
-                                    control={control}
-                                    render={({ field }) => (
-                                      <input
-                                        type="file"
-                                        onChange={(e) => {
-                                          field.onChange(e.target.files);
-                                        }}
-                                      />
-                                    )}
-                                  />
-                                ) :field.type === "textarea" ? ( // Handling for Text Area
-                                  <Controller
-                                    name={field.label}
-                                    control={control}
-                                    render={({ field }) => (
-                                      <textarea
-                                        {...field}
-                                        placeholder={field.placeholder}
-                                        className="border rounded w-full p-2"
-                                        rows={4} // Adjust the number of rows as needed
-                                      />
-                                    )}
-                                  />
-                                ) : field.type === "button" ? (
-                                  <button className="btn btn-primary" type="button">{field.label}</button>
-                                ) : null}
-                              </div>
-                            ))}
-                          </div>
-                        ) : null
-                      )}
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-
-      <div className="divider">
-        <div className="divider-text"><h4 className="text-3xl font-semibold text-right text-green-600 mb-6">📄 Form Templates</h4></div>
-      </div>
-      <div className="row">
-        <div className="col-lg-12 mb-4 order-4">
-          <div className="card">
-            <div className="card-body">
-              <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap">
-                <div className="d-flex justify-content-between align-items-center mb-2">
-                  <button
-                    className={button.btn}
-                    type="button"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasBackdrop"
-                    aria-controls="offcanvasBackdrop"
-                  >
-                    Project NEXT Tables
-                    <span>
-                      <i className='bx bx-table'></i>
-                    </span>
-                  </button>
-                </div>
-
-                <div className="d-flex align-items-center">
-                  <button
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                    className="btn btn-outline-primary me-2"
-                  >
-                    ◀️
-                  </button>
-                  <span className="px-2">{currentPage} / {totalPages}</span>
-                  <button
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                    className="btn btn-outline-primary ms-2"
-                  >
-                    ▶️
-                  </button>
-                </div>
-              </div>
-
-              <div className="row">
-              {loadingTemplate && (
-                <div className="loader">
-                  <div className={`${style.spinner} ms-3`}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                  </div>
-                </div>
-              )}
-              {paginatedForms.length > 0 ? (
-                paginatedForms.map((form) => (
-                  <div key={form.id} className="col-md-4 mb-4">
-                    <div className={`p-4 border rounded h-100 ${form.status === 'enabled' ? 'bg-light-blue' : ''} ${loadingTemplate ? 'blur' : ''}`}>
-                      <div className="d-flex justify-content-between align-items-center w-100">
-                        <div className="mb-3"> {/* Add a margin-bottom for spacing */}
-                          <h5>
-                            <a
-                              className="btn btn-primary me-1"
-                              data-bs-toggle="collapse"
-                              href={`#collapse-${form.id}`} // Unique ID for each collapse
-                              role="button"
-                              aria-expanded={collapsedForms[form.id] ? "true" : "false"}
-                              aria-controls={`collapse-${form.id}`}
-                              onClick={() => toggleCollapse(form.id)} // Toggle collapse state
-                            >
-                              <span>
-                                <i className='bx bx-table'></i>
-                              </span>
-                              {form.tableName}
-                              <span className="ms-2">
-                                <i className={`bx ${collapsedForms[form.id] ? 'bx-chevron-up' : 'bx-chevron-down'}`}></i>
-                              </span>
-                            </a>
-                          </h5>
-
-                          <div className="collapse" id={`collapse-${form.id}`}>
-                            <div className="d-grid d-sm-flex p-3 border">
-                              <span>
-                                <button
-                                    className={`btn ${form.status === 'enabled' ? 'btn-warning' : 'btn-primary'}`}
-                                    onClick={() => toggleFormStatus(form.id, form.status)}
-                                  >
-                                  {form.status === 'enabled' ? (
-                                    <>
-                                      <i className='bx bx-message-square-x'></i> Disable
-                                    </>
-                                  ) : (
-                                    <>
-                                      <i className='bx bx-message-square-check'></i> Enable
-                                    </>
+                    {toolSections.flatMap(section => 
+                      section.fields.length > 0 ? (
+                        <div key={section.id} className="row">
+                          {section.fields.map((field) => (
+                            <div key={field.id} className={`col-6 ${section.fields.length === 1 ? 'col-12' : ''}`}>
+                              <label className="block font-medium">{field.label}</label>
+                              {field.type === "text" || field.type === "email" || field.type === "number" ? (
+                                <Controller
+                                  name={field.label}
+                                  control={control}
+                                  render={({ field }) => (
+                                    <Input {...field} type={field.type} placeholder={field.placeholder} />
                                   )}
-                                </button>
-                                <button
-                                  className="btn btn-success"
-                                  onClick={() => useFormTemplate(form.tableName, form.id)}
-                                >
-                                  <i className='bx bx-log-in-circle'></i>
-                                  Use Form
-                                </button>
-                                <button
-                                  className="btn btn-danger"
-                                  onClick={() => handleDeleteForm(form.id, form.tableName)} // Use the new handler
-                                >
-                                  <i className='bx bx-trash-alt'></i>
-                                  Delete
-                                </button>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="card">
-                        {Array.isArray(form.fields) && form.fields.length > 0 ? (
-                          form.fields.map((section: any) => (
-                            <div key={section.id} className="mb-4">
-                              {Array.isArray(section.fields) && section.fields.length > 0 ? (
-                                <form className="row g-3">
-                                  {section.fields.map((field: FormField) => (
-                                    <div key={field.id} className={`col-md-6 ${section.fields.length === 1 ? 'col-12' : ''}`}>
-                                      <label className="block font-medium">{field.label}</label>
-                                      {field.type === "text" || field.type === "email" || field.type === "number" ? (
-                                        <Input type={field.type} placeholder={field.placeholder} readOnly className="form-control" />
-                                      ) : field.type === "select" ? (
-                                        <select className="form-select" disabled>
-                                          {field.options?.map((option, index) => (
-                                            <option key={index} value={option}>{option}</option>
-                                          ))}
-                                        </select>
-                                      ) : field.type === "datetime" ? (
-                                        <Input type="datetime-local" placeholder={field.placeholder} readOnly className="form-control" />
-                                      ) : field.type === "checkbox" ? (
-                                        <div>
-                                                                        <input type="checkbox" disabled />
-                                          <span className="ml-2">{field.label}</span>
-                                        </div>
-                                      ) : field.type === "radio" ? (
-                                        <div>
-                                          {field.options?.map((option, index) => (
-                                            <div key={index} className="form-check">
-                                              <input type="radio" className="form-check-input" value={option} disabled />
-                                              <label className="form-check-label ml-2">{option}</label>
-                                            </div>
-                                          ))}
-                                        </div>
-                                      ) : field.type === "button" ? (
-                                        <button className="btn btn-primary" type="button" disabled>
-                                          {field.label}
-                                        </button>
-                                      ) : field.type === "file" ? (
-                                        <div>
-                                          <input type="file" disabled />
-                                          <span className="ml-2">{field.label}</span>
-                                        </div>
-                                      ) : field.type === "textarea" ? (
-                                        <textarea
-                                          className="form-control"
-                                          placeholder={field.placeholder}
-                                          readOnly
-                                          rows={4} // Adjust the number of rows as needed
-                                        />
-                                      ) : null}
+                                />
+                              ) : field.type === "select" ? (
+                                <Controller
+                                  name={field.label}
+                                  control={control}
+                                  render={({ field: controllerField }) => (
+                                    <select {...controllerField} className="form-select">
+                                      <option value="">Select an option</option>
+                                      {field.options?.map((option, index) => (
+                                        <option key={index} value={option}>
+                                          {option}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  )}
+                                />
+                              ) : field.type === "datetime" ? (
+                                <Controller
+                                  name={field.label}
+                                  control={control}
+                                  render={({ field }) => <Input {...field} type="datetime-local" placeholder={field.placeholder} />}
+                                />
+                              ) : field.type === "checkbox" ? (
+                                <div>
+                                  {field.options?.map((option, index) => (
+                                    <div key={index} className="form-check">
+                                      <Controller
+                                        name={`${field.label}-${option}`} // Unique name for each checkbox
+                                        control={control}
+                                        render={({ field: checkboxField }) => (
+                                          <input
+                                            type="checkbox"
+                                            className="form-check-input"
+                                            checked={checkboxField.value}
+                                            onChange={(e) => {
+                                              const checked = e.target.checked;
+                                              checkboxField.onChange(checked);
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                      <label className="form-check-label ml-2">{option}</label>
                                     </div>
                                   ))}
-                                </form>
-                              ) : (
-                                <p>No fields available in this section.</p>
-                              )}
+                                </div>
+                              ) : field.type === "radio" ? (
+                                <div>
+                                  {field.options?.map((option, index) => (
+                                    <div key={index} className="form-check">
+                                      <Controller
+                                        name={field.label} // Use the same name for all radio buttons in the group
+                                        control={control}
+                                        render={({ field: radioField }) => (
+                                          <input
+                                            type="radio"
+                                            className="form-check-input"
+                                            value={option}
+                                            checked={radioField.value === option}
+                                            onChange={(e) => {
+                                              radioField.onChange(e.target.value);
+                                            }}
+                                          />
+                                        )}
+                                      />
+                                      <label className="form-check-label ml-2">{option}</label>
+                                    </div>
+                                  ))}
+                                </div>
+                              ) : field.type === "file" ? (
+                                  <Controller
+                                  name={field.label}
+                                  control={control}
+                                  render={({ field }) => (
+                                    <input
+                                      type="file"
+                                      className="form-control"
+                                      onChange={(e) => {
+                                        field.onChange(e.target.files);
+                                      }}
+                                    />
+                                  )}
+                                />
+                              ) : field.type === "textarea" ? (
+                                <Controller
+                                  name={field.label}
+                                  control={control}
+                                  render={({ field }) => (
+                                    <textarea
+                                      {...field}
+                                      placeholder={field.placeholder}
+                                      className="border rounded w-full p-2"
+                                      rows={4} // Adjust the number of rows as needed
+                                    />
+                                  )}
+                                />
+                              ) : field.type === "button" ? (
+                                <button className="btn btn-primary" type="button">{field.label}</button>
+                              ) : null}
                             </div>
-                          ))
-                        ) : (
-                          <p>No fields available for this form.</p>
-                        )}
-                      </div>
-                    </div>
+                          ))}
+                        </div>
+                      ) : null
+                    )}
+                  </form>
                   </div>
-                ))
-              ) : (
-                <div className="col-12 text-center">
-                  <p>No templates available.</p>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div
-       className="offcanvas offcanvas-end"
-       tabIndex={-1}
-       id="offcanvasBackdrop"
-       aria-labelledby="offcanvasBackdropLabel"
-     >
-       <div className="offcanvas-header">
-         <h5 id="offcanvasBackdropLabel" className="offcanvas-title">Project Next Tables</h5>
-         <button
-           type="button"
-           className="btn-close btn-danger"
-           data-bs-dismiss="offcanvas"
-           aria-label="Close"
-         ></button>
-       </div>
-       <div className="offcanvas-body my-auto mx-0 flex-grow-0">
-        <div className="card-body">
-            <ul className="list-group" style={{ height: '400px', overflowY: 'auto', overflowX: 'hidden', fontSize: 'small' }}>
-              {existingTables.length > 0 ? (
-                existingTables.map((table, index) => (
-                  <li key={index} className="list-group-item d-flex justify-content-between align-items-center bg-gray-100">
-                    <span>{table}</span>
-                  </li>
-                ))
-              ) : (
-                <li className="list-group-item text-center">No tables available</li>
-              )}
-            </ul>
-          </div>
-         <button type="button" className="btn btn-primary mb-2 d-grid w-100" onClick={handleRedirect}>Access Database?</button>
-         <button
-           type="button"
-           className="btn btn-outline-secondary d-grid w-100"
-           data-bs-dismiss="offcanvas"
-         >
-           Cancel
-         </button>
-     </div>
-    </div>
 
     {/* Modal for editing field */}
     {isModalOpen && currentField && (

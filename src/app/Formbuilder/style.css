@@ -12,67 +12,142 @@
   z-index: 1000;
 }
 
+/* Modal Content */
 .modal-content {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 600px; /* Adjust width as needed */
-  max-width: 90%; /* Responsive */
+  width: 90%; /* Responsive */
+  max-width: 600px; /* Max width for larger screens */
+  overflow: auto; /* Allow scrolling if content overflows */
 }
-  
-  /* Modal Header */
-  .modal-content h2 {
-    margin: 0 0 20px;
+
+/* Modal Header */
+.modal-content h2 {
+  margin: 0 0 20px;
+  font-size: 1.5rem; /* Increased font size */
+}
+
+/* Modal Form Elements */
+.form-group {
+  margin-bottom: 15px; /* Consistent spacing */
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="email"],
+.modal-content input[type="number"],
+.modal-content select {
+  width: 100%;
+  padding: 12px; /* Increased padding for better touch targets */
+  margin-bottom: 10px; /* Reduced margin for better spacing */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem; /* Increased font size */
+}
+
+/* Modal Buttons */
+.modal-content button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem; /* Increased font size */
+}
+
+.modal-content button[type="submit"] {
+  background-color: #007bff; /* Bootstrap primary color */
+  color: white;
+}
+
+.modal-content button[type="option"] {
+  background-color: #ffee00; /* Bootstrap primary color */
+  color: white;
+}
+
+.modal-content button[type="button"] {
+  background-color: #0b40ff; /* Red color for cancel */
+  color: white;
+}
+
+.modal-content button[type="reset"] {
+  background-color: #f44336; /* Red color for cancel */
+  color: white;
+}
+
+.modal-content button:hover {
+  opacity: 0.9; /* Slightly fade on hover */
+}
+
+/* Checkbox Group */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-right: 20px; /* Space between checkboxes */
+}
+
+.checkbox-group label {
+  margin-right: 5px; /* Space between label and checkbox */
+}
+
+/* Options List */
+.options-list {
+  margin-top: 10px;
+}
+
+.option-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  color: #f44336; /* Red color for delete */
+  cursor: pointer;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: space-between; /* Space between buttons */
+  margin-top: 20px; /* Space above buttons */
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+  .modal-content {
+    padding: 15px; /* Reduce padding on smaller screens */
   }
-  
-  /* Modal Form Elements */
+
+  .modal-content h2 {
+    font-size: 1.25rem; /* Smaller header font size */
+  }
+
   .modal-content input[type="text"],
   .modal-content input[type="email"],
   .modal-content input[type="number"],
   .modal-content select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 10px; /* Adjust padding for smaller screens */
+    font-size: 0.9rem; /* Smaller font size */
   }
-  
-  /* Modal Buttons */
+
   .modal-content button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    padding: 8px 12px; /* Smaller button padding */
+    font-size: 0.9rem; /* Smaller button font size */
   }
-  
-  .modal-content button[type="submit"] {
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white;
+
+  .form-actions {
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: stretch; /* Stretch buttons to full width */
   }
-  
-  .modal-content button[type="button"] {
-    background-color: #f44336; /* Red color for cancel */
-    color: white;
+
+  .form-actions button {
+    margin-bottom: 10px; /* Space between stacked buttons */
   }
-  
-  .modal-content button:hover {
-    opacity: 0.9; /* Slightly fade on hover */
-  }
-  
-  /* Close Button */
-  .modal-content .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 20px;
-    color: #aaa;
-  }
-  
-  .modal-content .close:hover {
-    color: #000; /* Change color on hover */
-  }
+}
 
 
   /* Add this to your CSS file */
@@ -149,6 +224,7 @@
 
   .scrollable {
     max-height: 300px; /* Set a max height for scrollable areas */
+    max-width: none;
   }
 }
 
@@ -189,27 +265,53 @@ label {
   padding-right: 0.5rem;
 }
 
-
 .nav-items {
   transition: transform 0.2s ease-in-out;
   background-color: #e4f1ff;
   color: rgb(99, 99, 99);
   text-align: center;
+  border-radius: 0.375rem; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-items:hover {
-  transform: scale(1.05); /* Zooms in by 5% */
+  transform: scale(1.05); /* Zoom in by 5% */
+  cursor: pointer;
+  background-color: #d1e7ff; /* Slightly darker blue on hover */
 }
 
-/* Media query to hide text on mobile */
+.nav-items .label-container {
+  text-transform:uppercase;
+  font-weight: bold;
+  font-size: small;
+}
+
+/* Hide label and type on mobile, show only icon */
 @media (max-width: 640px) {
-  .nav-items span {
+  .nav-items .label-container,
+  .nav-items .type-container {
     display: none; /* Hide text on mobile */
+  }
+
+  .nav-items .icon-container {
+    margin-bottom: 0.5rem; /* Reduce space for mobile */
+  }
+}
+
+/* Display label and type only on medium and larger screens */
+@media (min-width: 768px) {
+  .nav-items .label-container,
+  .nav-items .type-container {
+    display: block; /* Show text on tablet and larger */
   }
 }
 
 .bg-light-blue {
-  background-color: #e0f8ff; /* Light blue color */
+  background-color: #e0f8ff; /* Light blue background */
 }
 
 
@@ -329,4 +431,111 @@ label {
   .form-button:last-child {
     margin-bottom: 0; /* Remove margin from the last button */
   }
+}
+
+
+
+/* Floating Label Styles */
+.form-floating {
+  position: relative;
+}
+
+.form-floating .form-control {
+  height: calc(3.5rem + 2px);
+  padding: 1rem 0.75rem;
+  padding-top: 1.5rem; /* Add padding to the top for the label */
+}
+
+.form-floating .form-label {
+  position: absolute;
+  top: 1rem; /* Position the label */
+  left: 0.75rem; /* Align the label */
+  transition: 0.2s ease all;
+  color: #6c757d; /* Default label color */
+}
+
+.form-floating .form-control:focus ~ .form-label,
+.form-floating .form-control:not(:placeholder-shown) ~ .form-label {
+  top: -0.5rem; /* Move the label up */
+  left: 0.75rem; /* Align the label */
+  font-size: 75%; /* Reduce the font size */
+  color: #007bff; /* Change label color on focus */
+}
+
+/* Table Styles */
+.table-responsive {
+  overflow-x: auto; /* Allow horizontal scrolling */
+}
+
+.table {
+  width: 100%; /* Full width */
+  margin-bottom: 1rem; /* Space below the table */
+  color: #212529; /* Text color */
+}
+
+.table th,
+.table td {
+  padding: 0.75rem; /* Padding for table cells */
+  vertical-align: top; /* Align text to the top */
+  border-top: 1px solid #dee2e6; /* Border for table cells */
+}
+
+.table th {
+  background-color: #f8f9fa; /* Header background color */
+  color: #495057; /* Header text color */
+}
+
+.table-bordered {
+  border: 1px solid #dee2e6; /* Border for the table */
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #dee2e6; /* Border for table cells */
+}
+
+
+
+
+.btn-cancel {
+  background-color: transparent;
+  border: 2px solid #e6eaf2;
+  color: #1c2b4a;
+}
+
+.btn-cancel:hover {
+  background-color: rgba(44, 62, 80, 0.06);
+}
+
+.btn-save {
+  background-color: #5464f0;
+  color: white;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-save::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: all 0.6s ease;
+}
+
+.btn-save:hover::before {
+  left: 100%;
+}
+
+.btn-save::after {
+  content: '→';
+  margin-left: 10px;
+  transition: transform 0.3s ease;
+}
+
+.btn-save:hover::after {
+  transform: translateX(4px);
 }

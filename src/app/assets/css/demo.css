@@ -2,7 +2,14 @@
 * demo.css
 * File include item demo only specific css only
 ******************************************************************************/
-
+.btn {
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  letter-spacing: -0.3px;
+}
 .menu .app-brand.demo {
   height: 64px;
   margin-top: 12px;
@@ -21,13 +28,10 @@
 
 /* ! For .layout-navbar-fixed added fix padding top tpo .layout-page */
 /* Detached navbar */
-<<<<<<< Updated upstream
-=======
 .navbar {
   width: 2000px;
 }
 
->>>>>>> Stashed changes
 .layout-navbar-fixed .layout-wrapper:not(.layout-horizontal):not(.layout-without-menu) .layout-page {
   padding-top: 76px !important;
 }

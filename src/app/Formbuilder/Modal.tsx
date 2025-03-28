@@ -28,6 +28,7 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, field }) => {
   const [formData, setFormData] = useState<FormField | null>(field);
   const [showInput, setShowInput] = useState(formData?.defaultValue === "defined");
+  const [newOption, setNewOption] = useState("");
 
   useEffect(() => {
     setFormData(field);
@@ -35,10 +36,64 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, field }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type, checked } = e.target;
+  
+    // Update formData based on the input type
     setFormData((prev) => ({
       ...prev!,
       [name]: type === 'checkbox' ? checked : value,
     }));
+  
+    // Update columnName and datatype based on label and type
+    if (name === 'label') {
+      // Only update columnName if the type is not 'file'
+      const columnName = formData?.type === 'file' ? 'file' : value.toLowerCase().replace(/\s+/g, '_');
+      const datatype = getDataType(formData?.type);
+      setFormData((prev) => ({
+        ...prev!,
+        columnName,
+        datatype,
+      }));
+    }
+  
+    if (name === 'type') {
+      let columnName = '';
+      let datatype = '';
+  
+      if (value === 'file') {
+        columnName = 'file'; // Set column name to 'file' for File Upload
+        datatype = 'VARCHAR'; // Set data type to VARCHAR for File Upload
+      } else {
+        columnName = formData?.label.toLowerCase().replace(/\s+/g, '_') || ''; // Generate column name from label
+        datatype = getDataType(value as FormField['type']); // Get data type based on selected type
+      }
+  
+      setFormData((prev) => ({
+        ...prev!,
+        columnName,
+        datatype,
+      }));
+    }
+  };
+
+  const getDataType = (type: FormField['type'] | undefined): FormField['datatype'] => {
+    switch (type) {
+      case 'text':
+      case 'email':
+      case 'number':
+      case 'select':
+      case 'textarea':
+        return 'VARCHAR';
+      case 'datetime':
+        return 'DATETIME';
+      case 'checkbox':
+        return 'JSON';
+      case 'radio':
+        return 'VARCHAR';
+      case 'file':
+        return 'VARCHAR'; // File Upload will be handled as VARCHAR
+      default:
+        return 'VARCHAR'; // Default case
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -49,161 +104,168 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, field }) => {
     }
   };
 
-  if (!isOpen || !formData) return null;
-
   const handleDefaultChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
     setShowInput(value === "defined");
     handleChange(event);
   };
 
-  return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>Edit Field</h2>
-        <form onSubmit={handleSubmit} className="form">
-          <div className="form-group">
-            <label>Label</label>
-            <input
-              type="text"
-              name="label"
-              value={formData.label}
-              onChange={handleChange}
-              placeholder="Enter Label"
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <label>Type</label>
-            <select name="type" value={formData.type} onChange={handleChange} className="form-select">
-              <option value="text">Text</option>
-              <option value="number">Number</option>
-              <option value="email">Email</option>
-              <option value="select">Select</option>
-              <option value="datetime">Datetime</option>
-              <option value="checkbox">Checkbox</option>
-              <option value="radio">Radio</option>
-              <option value="button">Button</option>
-              <option value="file">File Upload</option>
-              <option value="textarea">Text Area</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Column Name</label>
-            <input
-              type="text"
-              name="columnName"
-              value={formData.columnName || ''}
-              onChange={handleChange}
-              placeholder="Enter column name"
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <label>Data Type</label>
-            <select name="datatype" value={formData.datatype || ''} onChange={handleChange} className="form-select">
-              <option value="" hidden>Choose datatype</option>
-              <option value="INT">INT</option>
-              <option value="TINYINT">TINYINT</option>
-              <option value="SMALLINT">SMALLINT</option>
-              <option value="MEDIUMINT">MEDIUMINT</option>
-              <option value="BIGINT">BIGINT</option>
-              <option value="DECIMAL">DECIMAL</option>
-              <option value="FLOAT">FLOAT</option>
-              <option value="DOUBLE">DOUBLE</option>
-              <option value="BIT">BIT</option>
-              <option value="CHAR">CHAR</option>
-              <option value="VARCHAR">VARCHAR</option>
-              <option value="TEXT">TEXT</option>
-              <option value="TINYTEXT">TINYTEXT</option>
-              <option value="MEDIUMTEXT">MEDIUMTEXT</option>
-              <option value="LONGTEXT">LONGTEXT</option>
-              <option value="DATE">DATE</option>
-              <option value="DATETIME">DATETIME</option>
-              <option value="TIMESTAMP">TIMESTAMP</option>
-              <option value="TIME">TIME</option>
-              <option value="YEAR">YEAR</option>
-              <option value="BOOLEAN">BOOLEAN</option>
-              <option value="JSON">JSON</option>
-              <option value="BLOB">BLOB</option>
-              <option value="TINYBLOB">TINYBLOB</option>
-              <option value="MEDIUMBLOB">MEDIUMBLOB</option>
-              <option value="LONGBLOB">LONGBLOB</option>
-              <option value="ENUM">ENUM</option>
-              <option value="SET">SET</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Length/Values</label>
-            <input
-              type="number"
-              name="length"
-              value={formData.length || ''}
-              onChange={handleChange}
-              placeholder="Enter length or values"
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <label>Default</label>
-            <select name="defaultOption" value={formData.defaultValue || ''} onChange={handleDefaultChange} className="form-select">
-              <option value="none">None</option>
-              <option value="defined">As defined:</option>
-              <option value="NULL">NULL</option>
-              <option value="CURRENT_TIMESTAMP">CURRENT_TIMESTAMP</option>
-            </select>
+  const addOption = () => {
+    if (newOption.trim() && formData) {
+      const updatedOptions = [...(formData.options || []), newOption];
+      setFormData({ ...formData, options: updatedOptions });
+      setNewOption(""); // Clear the input after adding
+    }
+  };
 
-            {showInput && (
-              <input
-                type="text"
-                name="defaultValue"
-                value={formData.defaultValue || ""}
-                onChange={handleChange}
-                placeholder="Enter default value"
-                className="form-input"
-              />
-            )}
-          </div>
-          <div className="form-group">
-            <label>Index</label>
-            <select name="index" value={formData.index || ''} onChange={handleChange} className="form-select">
-              <option value="">None</option>
-              <option value="PRIMARY">PRIMARY</option>
-              <option value="UNIQUE">UNIQUE</option>
-              <option value="INDEX">INDEX</option>
-              <option value="FULLTEXT">FULLTEXT</option>
-              <option value="SPATIAL">SPATIAL</option>
-            </select>
-          </div>
-          <div className="form-group" style={{ marginTop: '25px'}}>
-            <div className="checkbox-group">
-              <label>Null</label>
-              <input
-                type="checkbox"
-                name="nullValue"
-                checked={formData.nullValue || false}
-                onChange={handleChange}
-                className="form-checkbox"
-              />
-            </div>
-            <div className="checkbox-group">
-              <label>Auto Increment</label>
-              <input
-                type="checkbox"
-                name="autoIncrement"
-                checked={formData.autoIncrement || false}
-                onChange={handleChange}
-                className="form-checkbox"
-              />
-            </div>
-          </div>
-          <div className="form-actions">
-            <button type="button" onClick={onClose} className="form-button cancel">Cancel</button>
-            <button type="submit" className="form-button">Save</button>
-          </div>
-        </form>
+  const removeOption = (optionToRemove: string) => {
+    if (formData) {
+      const updatedOptions = formData.options?.filter(option => option !== optionToRemove);
+      setFormData({ ...formData, options: updatedOptions });
+    }
+  };
+
+  if (!isOpen || !formData) return null;
+
+  return (
+<div className="modal">
+  <div className="modal-content">
+    <div className="modal-curve"></div>
+    <div className="bottom-left-gradient"></div>
+    <div className="divider">
+      <div className="divider-text">
+        <h4 className="text-3xl font-semibold text-right text-green-600 mb-6">📝Edit Tool</h4>
       </div>
     </div>
+    <form onSubmit={handleSubmit} className="form">
+      <div className="form-group">
+        <label className="form-label">Label <span style={{ color: 'red' }}>*</span></label>
+        <input
+          type="text"
+          name="label"
+          onChange={handleChange}
+          placeholder="Enter Label"
+          className="form-input"
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="form-label">Type <span style={{ color: 'red' }}>*</span></label>
+        <select name="type" value={formData.type} onChange={handleChange} className="form-select" required>
+          <option value="text">Text</option>
+          <option value="number">Number</option>
+          <option value="email">Email</option>
+          <option value="select">Select</option>
+          <option value="datetime">Datetime</option>
+          <option value="checkbox">Checkbox</option>
+          <option value="radio">Radio</option>
+          <option value="button">Button</option>
+          <option value="file">File Upload</option>
+          <option value="textarea">Text Area</option>
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label className="form-label">Column Name <span style={{ color: 'red' }}>*</span></label>
+        <input
+          type="text"
+          name="columnName"
+          value={formData.columnName || ''}
+          readOnly
+          className="form-input"
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="form-label">Data Type <span style={{ color: 'red' }}>*</span></label>
+        <input
+          type="text"
+          name="datatype"
+          value={formData.datatype || ''}
+          readOnly
+          className="form-input"
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="form-label">Length/Values <span style={{ color: 'red' }}>*</span></label>
+        <input
+          type="number"
+          name="length"
+          value={formData.length || ''}
+          onChange={handleChange}
+          placeholder="Enter length or values"
+          className="form-input"
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="form-label">Default</label>
+        <select name="defaultOption" value={formData.defaultValue || ''} onChange={handleDefaultChange} className="form-select">
+          <option value="none">None</option>
+          <option value="defined">As defined:</option>
+          <option value="NULL">NULL</option>
+          <option value="CURRENT_TIMESTAMP">CURRENT_TIMESTAMP</option>
+        </select>
+
+        {showInput && (
+          <input
+            type="text"
+            name="defaultValue"
+            value={formData.defaultValue || ""}
+            onChange={handleChange}
+            placeholder="Enter default value"
+            className="form-input"
+          />
+        )}
+      </div>
+
+      <div className="form-group">
+        {(formData.type === "select" || formData.type === "radio" || formData.type === "checkbox") && (
+          <>
+            <label className="form-label">Options (for Select, Radio, and Checkbox Types)</label>
+            <div className="option-input-container">
+              <input
+                type="text"
+                value={newOption}
+                onChange={(e) => setNewOption(e.target.value)}
+                placeholder="Add new option"
+                className="form-input attached-input"
+              />
+              <button type="button" onClick={addOption} className="form-button small-button attached-button">
+                Add
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+
+      <div className="form-group">
+        {(formData.type === "select" || formData.type === "radio" || formData.type === "checkbox") && (
+                    <div className="options-list-container">
+                    <label className="form-label">Options:</label>
+                    <div className="options-list">
+                      {formData.options?.map((option, index) => (
+                        <div key={index} className="option-item">
+                          {option}
+                          <button onClick={() => removeOption(option)} className="btn btn-outline-primary">
+                            🗑️
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="modal-footer">
+                <button type="reset" onClick={onClose} className="btn btn-cancel">Cancel</button>
+                <button type="submit" className="btn btn-save">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
   );
 };
 

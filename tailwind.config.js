@@ -1,12 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-<<<<<<< Updated upstream
-  content: [],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-=======
     darkMode: ["class"],
     content: [],
   theme: {
@@ -61,6 +54,5 @@ module.exports = {
   	}
   },
   plugins: [require("tailwindcss-animate")],
->>>>>>> Stashed changes
 }
 

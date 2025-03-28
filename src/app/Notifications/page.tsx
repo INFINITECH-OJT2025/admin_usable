@@ -28,7 +28,7 @@ export default function Notifications() {
         try {
             const authToken = sessionStorage.getItem("authToken");
             if (authToken) {
-                const response = await fetch("http://127.0.0.1:8000/api/notifications", {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}notifications`, {
                     headers: { Authorization: `Bearer ${authToken}` }
                 });
                 const data = await response.json();

@@ -4,18 +4,27 @@ import { useEffect, useState } from "react";
 import Pusher from "pusher-js";
 import { motion } from "framer-motion";
 import './style.css';
-import styles from './Card.module.css';
+import styles from './Card.module.css'; // Import the CSS module
 import "@/app/assets/css/dark-mode.css";
 
-export default function NotificationCard() {
+export default function AuditlogsCard() {
     const [notifications, setNotifications] = useState<{ id: number; message: string; status: string, created_at: string }[]>([]);
     const [loading, setLoading] = useState(true);
+    const [currentTime, setCurrentTime] = useState(new Date()); // Track current time for live updates
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentTime(new Date()); // Update the state every second
+        }, 1000);
+
+        return () => clearInterval(interval); // Cleanup interval on component unmount
+    }, []);
 
     const fetchNotifications = async () => {
         try {
             const authToken = sessionStorage.getItem("authToken");
             if (authToken) {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}notifications`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}activities`, {
                     headers: { Authorization: `Bearer ${authToken}` }
                 });
                 const data = await response.json();
@@ -32,14 +41,14 @@ export default function NotificationCard() {
         fetchNotifications(); // Initial fetch
 
         // Initialize Pusher
-        const pusher = new Pusher('9f53dd48143edd426e9a', {
+        const pusher = new Pusher('c1693f80d13146933399', {
             cluster: 'ap1',
             encrypted: true,
         });
 
-        const channel = pusher.subscribe('notifications');
+        const channel = pusher.subscribe('logs');
 
-        channel.bind('NotificationSent', (data: any) => {
+        channel.bind('AuditLogEvent', (data: any) => {
             console.log("New Notification Received:", data);
 
             if (!data || !data.message || !data.status) {
@@ -54,7 +63,7 @@ export default function NotificationCard() {
                 created_at: data.created_at ? new Date(data.created_at).toISOString() : new Date().toISOString(),
             };
 
-            setNotifications(prev => [formattedData, ...prev]);
+            setNotifications(prev => [formattedData, ...prev]); // Add new notification at the top
         });
 
         return () => {
@@ -63,39 +72,30 @@ export default function NotificationCard() {
         };
     }, []);
 
-    // Function to calculate "time ago"
-    const calculateTimeAgo = (dateString: string) => {
-        const now = new Date();
-        const timeDiff = now.getTime() - new Date(dateString).getTime(); // Difference in milliseconds
+    const formatDate = (dateString: string) => {
+        const now = currentTime; // Use live updated currentTime
+        const timeDiff = now - new Date(dateString);
 
         const seconds = Math.floor(timeDiff / 1000);
         const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60);
         const days = Math.floor(hours / 24);
 
-        if (seconds < 60) return `${seconds} second${seconds === 1 ? '' : 's'} ago`;
-        if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
-        if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
-        return `${days} day${days === 1 ? '' : 's'} ago`;
+        if (seconds < 60) return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
+        if (minutes < 60) return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+        if (hours < 24) return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+        if (days < 30) return `${days} day${days !== 1 ? 's' : ''} ago`;
+        return `${Math.floor(days / 30)} month${Math.floor(days / 30) !== 1 ? 's' : ''} ago`;
     };
-
-    // Auto-update the "time ago" every second
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setNotifications((prev) => [...prev]); // Trigger re-render
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, []);
 
     return (
         <div className="card">
             <div className="card-body">
                 <div className="card-title-container">
                     <h5 className="card-title">
-                        Recent Notifications <span>| Today</span>
+                        Recent Activity <span>| Today</span>
                     </h5>
-                    <a href="/Notifications">
+                    <a href="/Auditlogs">
                         <button>See all</button>
                     </a>
                 </div>
@@ -123,15 +123,22 @@ export default function NotificationCard() {
                                         stiffness: 150,
                                         damping: 25,
                                     }}
-                                    className={`activity-item d-flex items-center justify-between text-xs`}
+                                    className={`activity-item d-flex items-center justify-between text-xs ${index === 0 ? styles.newNotification : ''}`}
                                     style={{ fontSize: '12px', padding: '8px', borderRadius: '8px', marginBottom: '6px', backgroundColor: '#fff', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}
                                 >
-                                    <div className="activity-label mr-2" style={{ width: '90px', fontSize: '14px' }} title={new Date(notification.created_at).toLocaleString()}>
-                                        {calculateTimeAgo(notification.created_at)}
+                                    <div 
+                                        className="activity-label mr-2" 
+                                        style={{ width: '90px', fontSize: '14px' }} 
+                                        title={new Date(notification.created_at).toLocaleString()}
+                                    >
+                                        {formatDate(notification.created_at)}
                                     </div>
 
                                     <div className="activity-label ml-2" style={{ width: '20px' }}>
-                                        <i className={`bx bxs-circle align-self-start ${notification.status === 'unread' ? '' : 'text-muted'}`} style={{ fontSize: '10px', color: notification.status === 'unread' ? '#6670ff' : 'inherit' }}></i>
+                                        <i
+                                            className={`bx bxs-circle align-self-start ${notification.status === 'unread' ? '' : 'text-muted'}`}
+                                            style={{ fontSize: '10px', color: notification.status === 'unread' ? '#6670ff' : 'inherit' }}
+                                        ></i>
                                     </div>
 
                                     <div className="activity-content flex-1" style={{ fontSize: '14px' }}>

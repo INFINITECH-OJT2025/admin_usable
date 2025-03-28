@@ -5,6 +5,19 @@
     color: #ffffff !important; /* Light text */
 }
 
+.dark-mode .fullscreen-loader {
+    background: #27282e !important; /* Dark background */
+}
+
+.dark-mode html {
+    background-color: #27282e !important; /* Dark background */
+    color: #ffffff !important; /* Light text */
+}
+.dark-mode body {
+    background-color: #27282e !important; /* Dark background */
+    color: #ffffff !important; /* Light text */
+}
+
 .dark-mode table {
     background-color: #27282e; /* Dark background */
     color: #ffffff; /* Light text */
@@ -59,6 +72,8 @@
 .dark-mode .scrollable {
     background-color: #1e1e1e !important;
     color: #ffffff !important;
+    scrollbar-width: thin;
+    scrollbar-color: gray #1e1e1e;
 }
 
 .dark-mode .folder-section {
@@ -422,7 +437,6 @@
     border-color: #444444 !important;
 }
 
-.dark-mode .form-control,
 .dark-mode .form-select {
     background-color: #2a2a2a !important;
     color: #ffffff !important;
@@ -585,4 +599,89 @@
 
 .dark-mode .sign img {
     content: url('/img/svg/light-enter-svgrepo-com.svg') !important; /* Default image */
+}
+
+.dark-mode .rbc-calendar .rbc-calendar .rbc-month-view .rbc-month-row .rbc-row-bg .rbc-day-bg .rbc-off-range-bg{
+    background-color: #1f2937 !important;
+}
+.dark-mode .rbc-day-bg .rbc-off-range-bg {
+    background-color: #2d3b4f !important;
+}
+
+.dark-mode .rbc-off-range-bg {
+    background-color: #2d3b4f !important;
+    color: #000 !important;
+}
+
+.dark-mode .rbc-show-more {
+    background-color: #2d3b4f !important;
+}
+
+
+.dark-mode .rbc-btn-group button {
+    color: #ffffff !important;
+}
+
+.dark-mode .rbc-btn-group button:hover {
+    color: #000000 !important;
+}
+
+
+.dark-mode .rbc-toolbar button:active, .rbc-toolbar button.rbc-active {
+    color: #000000 !important;
+}
+
+.dark-mode .rbc-today {
+    background-color: #3174ad !important;
+}
+
+.dark-mode .bg-menu-theme .menu-item.active > .menu-link:not(.menu-toggle) {
+    background-color: aqua;
+}
+
+.dark-mode .rbc-time-slot {
+    flex: 0 0 0;
+}
+
+.dark-mode .rbc-day-slot .rbc-time-slot {
+    border-top: 0;
+}
+
+/* Dark mode styles for auto-filled inputs */
+.dark-mode input:-webkit-autofill,
+.dark-mode input:-webkit-autofill:hover,
+.dark-mode input:-webkit-autofill:focus,
+.dark-mode textarea:-webkit-autofill,
+.dark-mode textarea:-webkit-autofill:hover,
+.dark-mode textarea:-webkit-autofill:focus,
+.dark-mode select:-webkit-autofill,
+.dark-mode select:-webkit-autofill:hover,
+.dark-mode select:-webkit-autofill:focus {
+    background-color: #2d3b4f !important; /* Dark background */
+    color: #ffffff !important; /* Light text */
+    -webkit-text-fill-color: #ffffff !important;
+    transition: background-color 5000s ease-in-out 0s; /* Prevent flashing */
+}
+
+/* Ensure placeholders are visible in dark mode */
+.dark-mode input::placeholder,
+.dark-mode textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Default input styling in dark mode */
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+    background-color: #1f2937 !important;
+    color: #ffffff !important;
+    border: 1px solid #444 !important;
+}
+
+/* Hover and focus styles */
+.dark-mode input:focus,
+.dark-mode textarea:focus,
+.dark-mode select:focus {
+    border-color: #60a5fa !important; /* Light blue border on focus */
+    outline: none;
 }

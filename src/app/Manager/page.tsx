@@ -33,7 +33,7 @@ export default function Manager() {
     const fetchFiles = async () => {
         setLoading(true);
         try {
-            const response = await axios.get("http://127.0.0.1:8000/api/files", {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}files`, {
                 params: { path: currentPath },
             });
             setFiles(response.data.files);
@@ -62,7 +62,7 @@ export default function Manager() {
         setUploadProgress(0);
     
         try {
-            await axios.post("http://127.0.0.1:8000/api/upload", formData, {
+            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}upload`, formData, {
                 onUploadProgress: (progressEvent) => {
                     const total = progressEvent.total || 0;
                     const current = progressEvent.loaded;
@@ -105,7 +105,7 @@ export default function Manager() {
     const createFolder = async () => {
         const folderName = prompt("Enter new folder name");
         if (!folderName) return;
-        await axios.post("http://127.0.0.1:8000/api/create-folder", {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}create-folder`, {
             folder_name: currentPath ? `${currentPath}/${folderName}` : folderName,
         });
         toast.success(`${folderName} folder created successfully!`, {
@@ -121,7 +121,7 @@ export default function Manager() {
     };
 
     const deleteFolder = async (folderName: string) => {
-        await axios.delete("http://127.0.0.1:8000/api/delete-folder", {
+        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}delete-folder`, {
             data: { folder: currentPath ? `${currentPath}/${folderName}` : folderName },
         });
         toast.success(`${folderName} folder is deleted successfully!`, {
@@ -139,7 +139,7 @@ export default function Manager() {
     const renameFolder = async (oldName: string) => {
         const newName = prompt("Enter new folder name");
         if (!newName) return;
-        await axios.post("http://127.0.0.1:8000/api/rename-folder", {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}rename-folder`, {
             old_name: currentPath ? `${currentPath}/${oldName}` : oldName,
             new_name: currentPath ? `${currentPath}/${newName}` : newName,
         });
@@ -156,7 +156,7 @@ export default function Manager() {
     };
 
     const deleteFile = async (fileName: string) => {
-        await axios.delete("http://127.0.0.1:8000/api/delete", {
+        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}delete`, {
             data: { file: currentPath ? `${currentPath}/${fileName}` : fileName },
         });
         toast.success(`${fileName} file is deleted successfully!`, {
@@ -174,7 +174,7 @@ export default function Manager() {
     const renameFile = async (oldName: string) => {
         const newName = prompt("Enter new file name");
         if (!newName) return;
-        await axios.post("http://127.0.0.1:8000/api/rename", {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}rename`, {
             old_name: currentPath ? `${currentPath}/${oldName}` : oldName,
             new_name: currentPath ? `${currentPath}/${newName}` : newName,
         });

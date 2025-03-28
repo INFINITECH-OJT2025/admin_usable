@@ -18,6 +18,7 @@ import "../assets/vendor/css/theme-default.css";
 import "../assets/css/demo.css";
 import "../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css";
 import "../assets/vendor/libs/apex-charts/apex-charts.css";
+import "./style.css";
 
 import Sidebar from '../Components/Admin/Sidebar';
 import Navbar from '../Components/Admin/Navbar';
@@ -58,7 +59,7 @@ export default function Profile() {
         try {
             const authToken = sessionStorage.getItem("authToken");
             if (authToken) {
-                const response = await axios.get("http://127.0.0.1:8000/api/user", {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}user`, {
                     headers: { Authorization: `Bearer ${authToken}` }
                 });
                 setUser({
@@ -80,7 +81,7 @@ export default function Profile() {
 
     const fetchAdmins = async () => {
         try {
-            const response = await axios.get("http://127.0.0.1:8000/api/admins");
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}admins`);
             setAdmins(response.data);
         } catch (error) {
             console.error("Failed to fetch admin users:", error);
@@ -92,7 +93,7 @@ export default function Profile() {
     }, []);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:8000/api/csrf-cookie", { withCredentials: true })
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}csrf-cookie`, { withCredentials: true })
           .then(() => {
             const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "";
             setCsrfToken(token);
@@ -145,7 +146,7 @@ export default function Profile() {
                 }
         
                 const response = await axios.post(
-                    "http://127.0.0.1:8000/api/registerAdmin",
+                    `${process.env.NEXT_PUBLIC_API_URL}registerAdmin`,
                     formData,
                     {
                         headers: {
@@ -208,7 +209,7 @@ export default function Profile() {
             }
         
             const response = await axios.post(
-              `http://127.0.0.1:8000/api/updateUser/${user.id}`,
+              `${process.env.NEXT_PUBLIC_API_URL}updateUser/${user.id}`,
               formData,
               { 
                 headers: {
@@ -309,11 +310,7 @@ export default function Profile() {
           defer
         ></script>
       </Head>
-<<<<<<< Updated upstream
-      <div className="layout-wrapper layout-content-navbar">
-=======
       <div className="layout-wrapper layout-content-navbar light-style layout-menu-fixed layout-navbar-fixed">
->>>>>>> Stashed changes
       <div className="layout-container">
         {/* Menu */}
         <Sidebar />
@@ -332,68 +329,56 @@ export default function Profile() {
                     <div className="card shadow-sm border-0">
                         <div className="card-body p-4 d-flex flex-column align-items-center justify-content-center">
                             {/* Profile Image */}
-                            <div className="text-center" style={{ position: 'relative', height: 210, width: 210 }}>
-                                {isEditing ? (
-                                    // Profile Image Upload
-                                    <div className="position-relative d-inline-block">
-                                        {/* Existing or Uploaded Image */}
-                                        <Image
-                                            src={imagePreview || (user.profile_image ? `http://127.0.0.1:8000/${user.profile_image}` : "/assets/img/avatars/1.png")}
+                            <div className="text-center" style={{ position: 'relative', height: 210, width: 210, marginBottom: '10px' }}>
+                            {isEditing ? (
+                                // Profile Image Upload
+                                <div className="position-relative d-inline-block">
+                                    {/* Existing or Uploaded Image */}
+                                    <div className="profile-image-circle"style={{ width: '210px', height: '210px' }}>
+                                        <img
+                                            src={user.profile_image ? `http://127.0.0.1:8000/${user.profile_image}` : "/assets/img/avatars/1.png"}
                                             alt="Profile Image"
-                                            width={210}
-                                            height={210}
-                                            className="rounded-circle"
-                                            style={{
-                                                objectFit: "cover",
-                                                border: "4px solid #f8f9fa",
-                                                position: "relative",
-                                            }}
+                                            className="profile-image" // Add a class for the image
                                         />
-                                        {/* Overlay for Half Image Upload Effect */}
-                                        <div
-                                        className="position-absolute top-0 start-50 w-50 h-100 d-flex align-items-center justify-content-center"
-                                        style={{
-                                          background: "rgba(255, 255, 255, 0.5)",
-                                          borderRadius: "50%",
-                                          cursor: "pointer",
-                                          position: "relative",
-                                          transition: "transform 0.3s ease",
-                                        }}
-                                        onMouseEnter={(e) => {
-                                          const target = e.target as HTMLElement; // Cast to HTMLElement
-                                          target.style.transform = "scale(1.2)";
-                                        }}
-                                        onMouseLeave={(e) => {
-                                          const target = e.target as HTMLElement; // Cast to HTMLElement
-                                          target.style.transform = "scale(1)";
-                                        }}
+
+                                    </div>
+                                    {/* Overlay for Half Image Upload Effect */}
+                                    <div
+                                          className="position-absolute top-0 start-50 d-flex align-items-center justify-content-center"
+                                          style={{
+                                              background: "rgba(255, 255, 255, 0.5)",
+                                              borderRadius: "50%", // Ensures the div is a circle
+                                              cursor: "pointer",
+                                              position: "relative",
+                                              transition: "transform 0.3s ease",
+                                              transform: "translateX(-50%)", // Center the overlay
+                                              width: "100%",  // Set a fixed width
+                                              height: "100%", // Set the same height to make it a perfect circle
+                                          }}
                                       >
                                         <label htmlFor="profileUpload" className="p-0 m-0">
-                                          <i className="bx bx-camera" style={{ fontSize: "36px", color: "#fff" }}></i> {/* Camera Icon */}
+                                            <i className="bx bx-camera" style={{ fontSize: "36px", color: "#fff" }}></i> {/* Camera Icon */}
                                         </label>
                                         <input
-                                          type="file"
-                                          id="profileUpload"
-                                          className="d-none"
-                                          accept="image/*"
-                                          onChange={handleImageChange}
+                                            type="file"
+                                            id="profileUpload"
+                                            className="d-none"
+                                            accept="image/*"
+                                            onChange={handleImageChange}
                                         />
-                                      </div>
                                     </div>
-                                ) : (
-                                    <Image
-                                        src={user.profile_image ? `http://127.0.0.1:8000/${user.profile_image}` : "/assets/img/avatars/1.png"}
-                                        alt="Profile Image"
-                                        width={210}  // Explicit width
-                                        height={210} // Explicit height
-                                        className="rounded-circle mb-3"
-                                        style={{
-                                            objectFit: "cover",
-                                            border: "4px solid #f8f9fa",
-                                        }}
-                                    />
-                                )}
-                            </div>
+                                </div>
+                            ) : (
+                              <div className="profile-image-circle" style={{ width: '210px', height: '210px' }}>
+                              <img
+                                  src={user.profile_image ? `http://127.0.0.1:8000/${user.profile_image}` : "/assets/img/avatars/1.png"}
+                                  alt="Profile Image"
+                                  className="profile-image" // Add a class for the image
+                              />
+
+                          </div>
+                            )}
+                        </div>
 
                             <h5 className="mb-1 mt-3">{user.fullname}</h5> {/* Added margin-top to keep space */}
                             <p className="text-muted">{user.email}</p>
@@ -412,11 +397,7 @@ export default function Profile() {
                             <h5 className="mb-2">User Information</h5>
                             {isEditing ? (
                               <div>
-<<<<<<< Updated upstream
-                                <button className="btn btn-sm btn-success ml-2" onClick={handleSaveChanges}>
-=======
                                 <button className="btn btn-sm btn-success me-2" onClick={handleSaveChanges}>
->>>>>>> Stashed changes
                                   Save Changes
                                 </button>
                                 <button className="btn btn-sm btn-secondary ml-2" onClick={handleCancelClick}>
@@ -429,11 +410,7 @@ export default function Profile() {
                               </button>
                             )}
                           </div>
-<<<<<<< Updated upstream
-                          <hr style={{ border: "1.5px solid" }} />
-=======
                           <hr style={{ border: "0.5px" }} />
->>>>>>> Stashed changes
 
                           <div className="row mb-3">
                             <div className="col-md-4">
@@ -545,11 +522,7 @@ export default function Profile() {
                                {/* Title and Button Side by Side */}
                                <div className="d-flex justify-content-between align-items-center mb-3">
                                    <h5 className="mb-0">Admin List</h5>
-<<<<<<< Updated upstream
-                                   <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-=======
                                    <button className="btn btn-sm btn-primary me-3" onClick={() => setShowModal(true)}>
->>>>>>> Stashed changes
                                        Add Admin
                                    </button>
                                </div>
@@ -562,13 +535,15 @@ export default function Profile() {
                                            style={{ cursor: "pointer" }} // Makes list items clickable
                                        >
                                            <div className="d-flex align-items-center">
-                                               <Image
-                                                   src={admin.profile_image ? `http://127.0.0.1:8000/${admin.profile_image}` : "/assets/img/avatars/1.png"}
-                                                   alt="Admin Profile"
-                                                   width={50}
-                                                   height={50}
-                                                   className="rounded-circle me-3"
-                                               />
+                                              <div className="profile-image-circle" style={{width: '50px', height: '50px', marginRight: '10px'}}>
+                                                <img
+                                                    src={admin.profile_image ? `http://127.0.0.1:8000/${admin.profile_image}` : "/assets/img/avatars/1.png"}
+                                                    alt="Admin Profile"
+                                                    width={10}
+                                                    height={10}
+                                                    className="profile-image"
+                                                />
+                                              </div>
                                                <div>
                                                    <strong>{admin.fullname}</strong> <br />
                                                    <span className="text-muted">{admin.email}</span>

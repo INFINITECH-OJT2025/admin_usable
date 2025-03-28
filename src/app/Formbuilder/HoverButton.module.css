@@ -34,7 +34,7 @@
   /* Ensure the icon is visible when not hovered */
   .btn i {
     transition: margin-left 0.3s ease; /* Smooth transition for icon */
-    color: #007bff; /* Ensure icon color matches */
+    color: #ffffff; /* Ensure icon color matches */
     margin-left: 6px;
   }
   

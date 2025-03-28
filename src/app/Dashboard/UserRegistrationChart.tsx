@@ -16,7 +16,7 @@ const UserRegistrationChart = () => {
   const fetchData = async (groupBy: string) => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/user-registrations?groupBy=${groupBy}`
+        `${process.env.NEXT_PUBLIC_API_URL}user-registrations?groupBy=${groupBy}`
       );
       setData(response.data);
     } catch (error) {
@@ -31,8 +31,8 @@ const UserRegistrationChart = () => {
         label: "Number of Registered Users",
         data: data.map((item) => item.count),
         borderColor: "rgb(0, 81, 255)",
-        backgroundColor: "rgba(93, 255, 255, 0.2)",
-        borderWidth: 3,
+        backgroundColor: "hsla(180, 100.00%, 60.20%, 0.20)",
+        borderWidth: 2,
         fill: true,
         tension: 0.4, // Adjust for smooth waves (higher values make it wavier)
         pointRadius: 1.5, // Reduce points visibility
@@ -48,26 +48,18 @@ const UserRegistrationChart = () => {
     scales: {
       x: {
         grid: {
-          display: false, // Hide x-axis grid lines for a cleaner look
+          display: false, // Hide vertical grid lines
         },
       },
       y: {
         beginAtZero: true,
         grid: {
-          color: "rgba(200, 200, 200, 0.2)", // Lighter grid for better visuals
+          display: false, // Hide horizontal grid lines
         },
       },
     },
-    elements: {
-      line: {
-        borderJoinStyle: "round", // Makes corners smoother
-        shadowOffsetX: 5, // X-axis offset of the shadow
-        shadowOffsetY: 5, // Y-axis offset of the shadow
-        shadowBlur: 15, // Blur radius of the shadow
-        shadowColor: "rgba(0, 81, 255, 0.5)", // Shadow color (same as border color with opacity)
-      },
-    },
   };
+  
 
   return (
     <div className="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">

@@ -7,11 +7,7 @@ import axios from "axios";
 export default function Navbar() {
     const router = useRouter();
     const [user, setUser] = useState({ username: "", email: "", profile_image: "" });
-<<<<<<< Updated upstream
-    const [loading, setLoading] = useState(true);
-=======
     const [loading, setLoading] = useState(false);
->>>>>>> Stashed changes
 
     // Fetch user data on component mount
     useEffect(() => {

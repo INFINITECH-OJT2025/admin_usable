@@ -1,7 +1,4 @@
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 'use client'
 
 import { useEffect, useState } from "react";
@@ -15,7 +12,7 @@ export default function Users() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/users");
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}users`);
         setUsers(response.data); // Assuming response contains the array of users
       } catch (err) {
         setError("Failed to fetch users");

@@ -35,6 +35,10 @@
     width: 3rem;
     height: 100%;
   }
+
+  .btn i {
+    color: #ffffff;
+  }
   
   .btn span svg {
     width: 1.5rem;

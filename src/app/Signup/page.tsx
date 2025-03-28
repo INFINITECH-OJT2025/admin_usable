@@ -31,7 +31,7 @@ export default function Signup() {
   const router = useRouter();
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/csrf-cookie", { withCredentials: true })
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}csrf-cookie`, { withCredentials: true })
       .then(() => {
         const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "";
         setCsrfToken(token);
@@ -69,7 +69,7 @@ export default function Signup() {
       }
 
       await axios.post(
-        "http://127.0.0.1:8000/api/register",
+        `${process.env.NEXT_PUBLIC_API_URL}register`,
         formData,
         {
           headers: {

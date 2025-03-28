@@ -8,6 +8,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import style from "./Loader.module.css";
+import "./style.css";
 
 import "../assets/vendor/fonts/boxicons.css";
 import "../assets/vendor/css/core.css";
@@ -19,6 +20,7 @@ import Sidebar from '../Components/Admin/Sidebar';
 import Navbar from '../Components/Admin/Navbar';
 
 import Script from 'next/script';
+import CalendarRegister from './CalendarRegister';
 
 interface User {
     id: number;
@@ -50,7 +52,7 @@ export default function Users() {
 
     const fetchUsers = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/filteredUsers?userType=${selectedUserType}&status=${selectedStatus}&search=${searchTerm}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}filteredUsers?userType=${selectedUserType}&status=${selectedStatus}&search=${searchTerm}`);
             const data = await response.json();
             setUsers(data);
         } catch (error) {
@@ -65,7 +67,7 @@ export default function Users() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/allUsers');
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}allUsers`);
                 const data = await response.json();
                 setUsers(data);
             } catch (error) {
@@ -89,7 +91,7 @@ export default function Users() {
             if (selectedUserType) queryParams.append("usertype", selectedUserType);
             if (selectedStatus) queryParams.append("status", selectedStatus);
     
-            const response = await fetch(`http://127.0.0.1:8000/api/export-users?${queryParams.toString()}&type=${type}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}export-users?${queryParams.toString()}&type=${type}`, {
                 method: "GET",
             });
     
@@ -136,6 +138,7 @@ export default function Users() {
             });
         }
     };
+    
 
     useEffect(() => {
         // Reinitialize or load any JS libraries after navigation
@@ -188,6 +191,17 @@ export default function Users() {
                         <div className="content-wrapper">
                             <div className="container-xxl flex-grow-1 container-p-y">
                                 <div className="row">
+                                    <div className="col-lg-12 mb-4 order-0">
+                                        <div className="card">
+                                            <div className="d-flex align-items-end row">
+                                                <div className="col-sm-12">
+                                                    <div className="card-body">
+                                                        <CalendarRegister />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="col-lg-12 mb-4 order-0">
                                         <div className="card">
                                             <div className="d-flex align-items-end row">
@@ -260,14 +274,16 @@ export default function Users() {
                                                                         currentUsers.map((user) => (
                                                                             <tr key={user.id}>
                                                                                 <td>
-                                                                                    {user.profile_image ? (
-                                                                                        <Image 
-                                                                                            src={`http://127.0.0.1:8000/${user.profile_image}`} 
-                                                                                            alt="User  Image" 
-                                                                                            width={50} 
-                                                                                            height={50} 
-                                                                                            className="rounded-circle"
-                                                                                        />
+                                                                                {user.profile_image ? (
+                                                                                    <div className="profile-image-circle">
+                                                                                    <img 
+                                                                                        src={`http://127.0.0.1:8000/${user.profile_image}`} 
+                                                                                        alt="User Image" 
+                                                                                        width={50} 
+                                                                                        height={50} 
+                                                                                        className="profile-image"
+                                                                                    />
+                                                                                    </div>
                                                                                     ) : (
                                                                                         <span>No Image</span>
                                                                                     )}
@@ -306,13 +322,19 @@ export default function Users() {
                                                     </div>
                                                     <nav>
                                                         <ul className="pagination justify-content-center">
-                                                            {Array.from({ length: totalPages }, (_, index) => (
-                                                                <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-                                                                    <button onClick={() => paginate(index + 1)} className="page-link">
-                                                                        {index + 1}
-                                                                    </button>
-                                                                </li>
-                                                            ))}
+                                                        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                                            <button className="page-link" onClick={() => paginate(currentPage - 1)}>&laquo;</button>
+                                                        </li>
+                                                        {Array.from({ length: totalPages }, (_, index) => (
+                                                            <li key={index + 1} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                                                            <button className="page-link" onClick={() => paginate(index + 1)}>
+                                                                {index + 1}
+                                                            </button>
+                                                            </li>
+                                                        ))}
+                                                        <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                                            <button className="page-link" onClick={() => paginate(currentPage + 1)}>&raquo;</button>
+                                                        </li>
                                                         </ul>
                                                     </nav>
                                                 </div>
