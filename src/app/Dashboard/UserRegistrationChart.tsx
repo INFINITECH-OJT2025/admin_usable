@@ -59,6 +59,13 @@ const UserRegistrationChart = () => {
       },
     },
   };
+
+    useEffect(() => {
+      // Reinitialize or load any JS libraries after navigation
+      if (typeof window !== 'undefined') {
+        // Example: Reinitialize Bootstrap or other JS libraries
+      }
+    }, []);
   
 
   return (

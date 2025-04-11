@@ -70,7 +70,13 @@ const FormUsedChart = () => {
     },
   };
   
-
+  useEffect(() => {
+    // Reinitialize or load any JS libraries after navigation
+    if (typeof window !== 'undefined') {
+      // Example: Reinitialize Bootstrap or other JS libraries
+    }
+  }, []);
+  
   return (
     <div className="col-12 col-lg-12 mb-4">
       <div className="card">

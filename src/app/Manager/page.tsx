@@ -9,6 +9,10 @@ import Navbar from '../Components/Admin/Navbar';
 import './style.css';
 import style from './LineLoader.module.css'
 import ValidateAdmin from '../Components/Admin/ValidateAdmin';
+import DeleteConfirmationModal from './DeleteConfirmationModal'; // Update the path accordingly
+import CreateFolderModal from './CreateFolderModal'; // Update the path accordingly
+import RenameModal from './RenameModal'; // Adjust the path if necessary
+
 
 type FileItem = {
     name: string;
@@ -29,6 +33,13 @@ export default function Manager() {
     const [pathHistory, setPathHistory] = useState<string[]>([]);
     const [historyIndex, setHistoryIndex] = useState<number>(-1);
     const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [fileToDelete, setFileToDelete] = useState<string | null>(null);
+    const [folderToDelete, setFolderToDelete] = useState<string | null>(null);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
+    const [renameTarget, setRenameTarget] = useState<{ oldName: string; type: 'file' | 'folder' } | null>(null);
+
 
     const fetchFiles = async () => {
         setLoading(true);
@@ -102,93 +113,134 @@ export default function Manager() {
         event.preventDefault();
     };
 
-    const createFolder = async () => {
-        const folderName = prompt("Enter new folder name");
-        if (!folderName) return;
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}create-folder`, {
+    const openCreateModal = () => setIsCreateModalOpen(true);
+    const closeCreateModal = () => setIsCreateModalOpen(false);
+
+    const createFolder = async (folderName: string) => {
+        try {
+          await axios.post(`${process.env.NEXT_PUBLIC_API_URL}create-folder`, {
             folder_name: currentPath ? `${currentPath}/${folderName}` : folderName,
-        });
-        toast.success(`${folderName} folder created successfully!`, {
-            position: "top-right",
+          });
+      
+          toast.success(`${folderName} folder created successfully!`, {
+            position: 'top-right',
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
-            theme: "colored",
+            theme: 'colored',
           });
-        fetchFiles();
-    };
+      
+          fetchFiles();
+        } catch (error) {
+          console.error('Error creating folder:', error);
+        } finally {
+          closeCreateModal(); // close the modal after creation
+        }
+      };
 
-    const deleteFolder = async (folderName: string) => {
-        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}delete-folder`, {
-            data: { folder: currentPath ? `${currentPath}/${folderName}` : folderName },
-        });
-        toast.success(`${folderName} folder is deleted successfully!`, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "colored",
-          });
-        fetchFiles();
-    };
+      // Function to open the modal
+        const openRenameModal = (oldName: string, type: 'file' | 'folder') => {
+            setRenameTarget({ oldName, type });
+            setIsRenameModalOpen(true);
+        };
+    
+        // Function to close the modal
+        const closeRenameModal = () => {
+            setRenameTarget(null);
+            setIsRenameModalOpen(false);
+        };
 
-    const renameFolder = async (oldName: string) => {
-        const newName = prompt("Enter new folder name");
-        if (!newName) return;
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}rename-folder`, {
-            old_name: currentPath ? `${currentPath}/${oldName}` : oldName,
-            new_name: currentPath ? `${currentPath}/${newName}` : newName,
-        });
-        toast.success(`"${oldName}" is renamed into "${newName}" successfully!`, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "colored",
-          });
-        fetchFiles();
-    };
 
-    const deleteFile = async (fileName: string) => {
-        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}delete`, {
-            data: { file: currentPath ? `${currentPath}/${fileName}` : fileName },
-        });
-        toast.success(`${fileName} file is deleted successfully!`, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "colored",
-          });
-        fetchFiles();
-    };
+        const renameFile = async (oldName: string, newName: string) => {
+            try {
+              await axios.post(`${process.env.NEXT_PUBLIC_API_URL}rename`, {
+                old_name: currentPath ? `${currentPath}/${oldName}` : oldName,
+                new_name: currentPath ? `${currentPath}/${newName}` : newName,
+              });
+          
+              toast.success(`"${oldName}" is renamed into "${newName}" successfully!`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "colored",
+              });
+              fetchFiles();
+            } catch (error) {
+              console.error('Error renaming file:', error);
+            } finally {
+              closeRenameModal();  // Close modal after renaming
+            }
+          };
+          
+          const renameFolder = async (oldName: string, newName: string) => {
+            try {
+              await axios.post(`${process.env.NEXT_PUBLIC_API_URL}rename-folder`, {
+                old_name: currentPath ? `${currentPath}/${oldName}` : oldName,
+                new_name: currentPath ? `${currentPath}/${newName}` : newName,
+              });
+          
+              toast.success(`"${oldName}" is renamed into "${newName}" successfully!`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "colored",
+              });
+              fetchFiles();
+            } catch (error) {
+              console.error('Error renaming folder:', error);
+            } finally {
+              closeRenameModal();  // Close modal after renaming
+            }
+          };
+          
 
-    const renameFile = async (oldName: string) => {
-        const newName = prompt("Enter new file name");
-        if (!newName) return;
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}rename`, {
-            old_name: currentPath ? `${currentPath}/${oldName}` : oldName,
-            new_name: currentPath ? `${currentPath}/${newName}` : newName,
-        });
-        toast.success(`"${oldName}" is renamed into "${newName}" successfully!`, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "colored",
-          });
-        fetchFiles();
-    };
+    const openFileDeleteModal = (fileName: string) => {
+        setFileToDelete(fileName);
+        setFolderToDelete(null); // clear folder if any
+        setIsModalOpen(true);
+      };
+    
+      const openFolderDeleteModal = (folderName: string) => {
+        setFolderToDelete(folderName);
+        setFileToDelete(null); // clear file if any
+        setIsModalOpen(true);
+      };
+    
+      const closeDeleteModal = () => {
+        setFileToDelete(null);
+        setFolderToDelete(null);
+        setIsModalOpen(false);
+      };
+    
+      const confirmDelete = async () => {
+        try {
+          if (fileToDelete) {
+            await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}delete`, {
+              data: { file: currentPath ? `${currentPath}/${fileToDelete}` : fileToDelete },
+            });
+            toast.success(`${fileToDelete} file is deleted successfully!`);
+          } else if (folderToDelete) {
+            await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}delete-folder`, {
+              data: { folder: currentPath ? `${currentPath}/${folderToDelete}` : folderToDelete },
+            });
+            toast.success(`${folderToDelete} folder is deleted successfully!`);
+          }
+          fetchFiles();
+        } catch (error) {
+          console.error("Error deleting:", error);
+        } finally {
+          closeDeleteModal();
+        }
+      };
+
 
     const handleFileClick = (file: FileItem) => {
         setPreviewFile(file);
@@ -258,6 +310,14 @@ export default function Manager() {
         console.log("Admin validated successfully.");
     };
 
+      useEffect(() => {
+        // Reinitialize or load any JS libraries after navigation
+        if (typeof window !== 'undefined') {
+          // Example: Reinitialize Bootstrap or other JS libraries
+        }
+      }, []);
+    
+
     return (
         <>
         <ValidateAdmin onSuccess={handleAdminValidationSuccess} />
@@ -291,7 +351,7 @@ export default function Manager() {
                                                             <span className="path-container bg-gray-200 rounded flex-1 overflow-hidden whitespace-nowrap text-ellipsis px-2">
                                                                 public/{currentPath} 📂
                                                             </span>
-                                                            <button className="btn rounded-pill btn-primary" onClick={createFolder}>
+                                                            <button className="btn rounded-pill btn-primary" onClick={openCreateModal}>
                                                                 <i className='bx bx-folder-plus'></i>
                                                             </button>
                                                         </div>
@@ -331,10 +391,13 @@ export default function Manager() {
                                                                                         {isMenuOpen === folder.name && (
                                                                                             <div className="file-menu-dropdown">
                                                                                                 <div className="py-1">
-                                                                                                    <button className="file-menu-item" onClick={() => renameFolder(folder.name)}>
+                                                                                                    <button className="file-menu-item" onClick={() => openRenameModal(folder.name, 'folder')}>
                                                                                                         Rename
                                                                                                     </button>
-                                                                                                    <button className="file-menu-item text-red-600" onClick={() => deleteFolder(folder.name)}>
+                                                                                                    <button
+                                                                                                        className="file-menu-item text-red-600"
+                                                                                                        onClick={() => openFolderDeleteModal(folder.name)}
+                                                                                                    >
                                                                                                         Delete
                                                                                                     </button>
                                                                                                 </div>
@@ -367,18 +430,18 @@ export default function Manager() {
                                                                                         {isMenuOpen === file.name && (
                                                                                             <div className="file-menu-dropdown">
                                                                                                 <div className="py-1">
-                                                                                                    <button
-                                                                                                        className="file-menu-item"
-                                                                                                        onClick={() => renameFile(file.name)}
-                                                                                                    >
+                                                                                                    <button className="file-menu-item" onClick={() => openRenameModal(file.name, 'file')}>
                                                                                                         Rename
                                                                                                     </button>
-                                                                                                    <button
-                                                                                                        className="file-menu-item text-red-600"
-                                                                                                        onClick={() => deleteFile(file.name)}
-                                                                                                    >
-                                                                                                        Delete
-                                                                                                    </button>
+                                                                                                    <div key={file.name} className="file-item">
+                                                                                                        {/* Your file structure here */}
+                                                                                                        <button
+                                                                                                            className="file-menu-item text-red-600"
+                                                                                                            onClick={() => openFileDeleteModal(file.name)}
+                                                                                                        >
+                                                                                                            Delete
+                                                                                                        </button>
+                                                                                                    </div>
                                                                                                 </div>
                                                                                             </div>
                                                                                         )}
@@ -437,6 +500,22 @@ export default function Manager() {
                     </div>
                 </div>
             </div>
+            <CreateFolderModal
+                isOpen={isCreateModalOpen}
+                onClose={closeCreateModal}
+                onCreate={createFolder}
+                />
+            <RenameModal
+                isOpen={isRenameModalOpen}
+                onClose={closeRenameModal}
+                onRename={renameTarget?.type === 'file' ? renameFile : renameFolder}
+                oldName={renameTarget?.oldName || ''}
+                />
+            <DeleteConfirmationModal
+                isOpen={isModalOpen}
+                onClose={closeDeleteModal}
+                onConfirm={confirmDelete}
+            />
             <div className="layout-overlay layout-menu-toggle"></div>
         </div>
         </>

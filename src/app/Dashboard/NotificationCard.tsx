@@ -88,6 +88,13 @@ export default function NotificationCard() {
         return () => clearInterval(interval);
     }, []);
 
+      useEffect(() => {
+        // Reinitialize or load any JS libraries after navigation
+        if (typeof window !== 'undefined') {
+          // Example: Reinitialize Bootstrap or other JS libraries
+        }
+      }, []);
+
     return (
         <div className="card">
             <div className="card-body">

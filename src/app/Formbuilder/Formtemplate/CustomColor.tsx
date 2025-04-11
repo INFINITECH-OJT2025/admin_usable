@@ -146,7 +146,7 @@ export default function CustomColor() {
       console.error("Error removing color:", error);
     } finally {
       setLoading(false); // Stop loading
-      toast.error("Color Deleted", {
+      toast.success("Color Deleted", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

@@ -293,12 +293,14 @@ export default function Navbar() {
                                 <a className="dropdown-item" href="#">
                                     <div className="d-flex">
                                         <div className="flex-shrink-0 me-3">
-                                            <div className="avatar avatar-online">
-                                                <img
-                                                    src={`http://127.0.0.1:8000/${user.profile_image}` ? `http://127.0.0.1:8000/${user.profile_image}` : "../assets/img/avatars/1.png"}
-                                                    alt="User Avatar"
-                                                    className="w-px-40 h-auto rounded-circle"
-                                                />
+                                            <div className="profile-image-circle">
+                                            <img 
+                                                src={`http://127.0.0.1:8000/${user.profile_image}`} 
+                                                alt="User Image" 
+                                                width={50} 
+                                                height={50} 
+                                                className="profile-image"
+                                            />
                                             </div>
                                         </div>
                                         <div className="flex-grow-1">

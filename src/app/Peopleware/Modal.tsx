@@ -69,12 +69,16 @@ const Modal = ({ user, visible, onClose }) => {
                 </div>
               </div>
               <div className="modal-body d-flex flex-column flex-md-row">
-                <div className="me-3 d-flex justify-content-center align-items-center mb-3 mb-md-0">
-                  <img
-                    src={`http://127.0.0.1:8000/${user.profile_image}`}
-                    alt="User  Image"
-                    style={{ width: '100%', maxWidth: '150px', height: 'auto', borderRadius: '50%' }} // Responsive image
-                  />
+                <div className="me-3 d-flex justify-content-center align-items-center mb-3 mb-md-0"> {/* Add margin for mobile spacing */}
+                    <div className="profile-image-circle" style={{ width: '150px', height: '150px'}}>
+                    <img 
+                        src={`http://127.0.0.1:8000/${user.profile_image}`} 
+                        alt="User Image" 
+                        width={50} 
+                        height={50} 
+                        className="profile-image"
+                    />
+                    </div>
                 </div>
                 <div className="flex-grow-1">
                   <div className="d-flex justify-content-between">

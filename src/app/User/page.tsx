@@ -21,6 +21,7 @@ import "../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css";
 import "../assets/vendor/libs/apex-charts/apex-charts.css";
 import Sidebar from '../Components/Admin/Sidebar';
 import Navbar from '../Components/Admin/Navbar';
+import DeleteConfirmationModal from './DeleteConfirmationModal'; // adjust path if needed
 import ValidateAdmin from '../Components/Admin/ValidateAdmin';
 
 import Script from 'next/script';
@@ -51,6 +52,8 @@ export default function Users() {
     const [selectedUserCheck, setSelectedUserCheck] = useState<User | null>(null);
     const [permittedRoutes, setPermittedRoutes] = useState<string[]>([]);
     const [users, setUsers] = useState<User[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null);  
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const usersPerPage = 4;
@@ -130,27 +133,41 @@ export default function Users() {
     
 
     // Delete a user
-    const handleDelete = async (id: number) => {
-        if (!confirm('Are you sure you want to delete this user?')) return;
+    const openModal = (id: number) => {
+        setUserIdToDelete(id);
+        setIsModalOpen(true);
+      };
+    
+      const closeModal = () => {
+        setIsModalOpen(false);
+        setUserIdToDelete(null);
+      };
+    
+      const confirmDelete = async () => {
+        if (userIdToDelete === null) return;
+    
         try {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL}users/${id}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            setUsers(users.filter(user => user.id !== id)); // Remove user from UI
-            toast.error("You've successfully deleted a record", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "colored",
-              });
+          await fetch(`${process.env.NEXT_PUBLIC_API_URL}users/${userIdToDelete}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+          });
+          setUsers(users.filter(user => user.id !== userIdToDelete));
+          toast.error("You've successfully deleted a record", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "colored",
+          });
         } catch (error) {
-            console.error('Error deleting user:', error);
+          console.error('Error deleting user:', error);
+        } finally {
+          closeModal();
         }
-    };
+      };
+    
 
     const handleToggleStatus = async (user: User) => {
         try {
@@ -313,7 +330,6 @@ export default function Users() {
     };
 
   
-  const router = useRouter(); // ✅ Move useRouter() here
   useEffect(() => {
     // Reinitialize or load any JS libraries after navigation
     if (typeof window !== 'undefined') {
@@ -524,8 +540,13 @@ export default function Users() {
                                                                                 <button className="btn btn-sm btn-warning me-2" onClick={() => handleEdit(user)}><i className='bx bx-edit'></i></button>
                                                                                 <div className={Tooltip.tooltiptext}>Edit</div>
                                                                             </div>
-                                                                            <div className={Tooltip.tooltip}>
-                                                                                <button className="btn btn-sm btn-danger me-2" onClick={() => handleDelete(user.id)}><i className='bx bx-trash' ></i></button>
+                                                                            <div key={user.id} className={Tooltip.tooltip}>
+                                                                                <button
+                                                                                    className="btn btn-sm btn-danger me-2"
+                                                                                    onClick={() => openModal(user.id)}
+                                                                                >
+                                                                                    <i className='bx bx-trash'></i>
+                                                                                </button>
                                                                                 <div className={Tooltip.tooltiptext}>Delete</div>
                                                                             </div>
                                                                             <div className={Tooltip.tooltip}>
@@ -721,6 +742,11 @@ export default function Users() {
             </div>
         </div>
         )}
+        <DeleteConfirmationModal
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            onConfirm={confirmDelete}
+        />
         <div className="layout-overlay layout-menu-toggle"></div>
     </div>
     </>

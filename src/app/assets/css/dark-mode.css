@@ -5,6 +5,12 @@
     color: #ffffff !important; /* Light text */
 }
 
+.dark-mode .app-brand-logo.demo img {
+    width: 40px;
+    height: auto;
+    content: url('/img/NEXT_dark_logo.png');
+  }
+
 .dark-mode .fullscreen-loader {
     background: #27282e !important; /* Dark background */
 }
@@ -395,12 +401,16 @@
 .dark-mode .btn-warning {
     background-color: #facc15 !important;
     border-color: #facc15 !important;
-    color: #000 !important;
 }
 
 .dark-mode .btn-warning:hover {
     background-color: #eab308 !important;
     border-color: #eab308 !important;
+}
+
+.dark-mode .btn-success {
+    background-color: #29ff54 !important;
+    border-color: #00ff73 !important;
 }
 
 .dark-mode .btn-danger {
@@ -685,3 +695,214 @@
     border-color: #60a5fa !important; /* Light blue border on focus */
     outline: none;
 }
+
+.dark-mode .email-list {
+    background-color: #1e1e1e;
+}
+
+.dark-mode .list-header {
+    border-color: #374151;
+  }
+  
+  .dark-mode .list-actions input,
+  .dark-mode .list-view-options button,
+  .dark-mode .email-item,
+  .dark-mode .email-actions button {
+    background-color: #2d2d3a;
+    color: #e5e7eb;
+    border: none;
+  }
+
+  .dark-mode .folders li a:hover {
+    background-color: #f3f4f6;
+    color: #1f2937
+  }
+
+  .dark-mode .react-loading-skeleton {
+    --base-color: #222222;
+    --highlight-color: #3b3b4f;
+  }
+  
+  .dark-mode .folders li.active a {
+    background-color: #eff6ff;
+    color: #2563eb;
+    font-weight: 500;
+  }
+  
+  .dark-mode .action-button.refresh {
+    background-color: #374151;
+  }
+  
+  .dark-mode .action-button.delete {
+    background-color: #dc2626;
+    color: white;
+  }
+  
+  .dark-mode .action-button.archive {
+    background-color: #2563eb;
+    color: white;
+  }
+  
+  .dark-mode .view-button {
+    background-color: #2d2d3a;
+  }
+  
+  .dark-mode .view-button.active {
+    background-color: #4b5563;
+  }
+  
+  .dark-mode .email-time,
+  .dark-mode .email-to,
+  .dark-mode .email-preview {
+    color: #9ca3af;
+  }
+  
+  .dark-mode .email-actions .email-action {
+    background-color: #374151;
+    color: white;
+  }
+  
+  .dark-mode .email-actions .email-action:hover {
+    background-color: #4b5563;
+  }
+
+  .dark-mode .email-item:hover {
+    background-color: #333859;
+  }
+
+  .dark-mode .email-preview {
+    text-align: end !important;
+    padding: 12px !important;
+    border-radius: 12px !important;
+    border: 1px solid #e0e0e0 !important;
+    background-color: #50688a !important;
+    color: #e0e0e0 !important; /* Tailwind's text-gray-600 */
+  }
+
+
+
+  /* Dark Mode Styles */
+.dark-mode .email-card {
+    background-color: #1e1e1e !important;
+  }
+  
+  .dark-mode .email-header,
+  .dark-mode .email-footer {
+    border-color: #333 !important;
+  }
+  
+  .dark-mode .email-title {
+    color: #e5e7eb !important;
+  }
+  
+  .dark-mode .email-description {
+    color: #9ca3af !important;
+  }
+  
+  .dark-mode .email-content {
+    background-color: #1e1e1e !important;
+  }
+  
+  .dark-mode .form-label {
+    color: #e5e7eb !important;
+  }
+  
+  .dark-mode .form-input {
+    background-color: #2c2c2c !important;
+    border-color: #444 !important;
+    color: #f3f4f6 !important;
+  }
+  
+  .dark-mode .form-input:focus {
+    border-color: #818cf8 !important;
+  }
+  
+  .dark-mode .form-hint {
+    color: #9ca3af !important;
+  }
+  
+  .dark-mode .cc-container {
+    background-color: #2c2c2c !important;
+    border-color: #444 !important;
+  }
+  
+  .dark-mode .cc-container:focus-within {
+    border-color: #818cf8 !important;
+  }
+  
+  .dark-mode .cc-input {
+    color: #f3f4f6 !important;
+  }
+  
+  .dark-mode .email-tag {
+    background-color: #374151 !important;
+    color: #e5e7eb !important;
+  }
+  
+  .dark-mode .email-tag-remove {
+    color: #9ca3af !important;
+  }
+  
+  .dark-mode .email-tag-remove:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #f3f4f6 !important;
+  }
+  
+  .dark-mode .editor-container {
+    background-color: #1e1e1e !important;
+    border-color: #444 !important;
+  }
+  
+  .dark-mode .ck-editor__editable_inline {
+    background-color: #1e1e1e !important;
+    color: #f3f4f6 !important;
+  }
+
+  .dark-mode .ck-editor__editable_inline h2 {
+    color: #f3f4f6 !important;
+  }
+  
+  .dark-mode .ck-editor__editable_inline h3 {
+    color: #f3f4f6 !important;
+  }
+
+  .dark-mode .ck-editor__editable_inline h4 {
+    color: #f3f4f6 !important;
+  }
+
+  .dark-mode .ck-editor__editable_inline table{
+    color: #f3f4f6 !important;
+  }
+  .dark-mode .send-button {
+    background-color: #6366f1 !important;
+    color: #fff !important;
+  }
+  
+  .dark-mode .send-button:hover {
+    background-color: #4f46e5 !important;
+  }
+  
+  .dark-mode .send-button:disabled {
+    background-color: #6b7280 !important;
+  }
+  
+  .dark-mode .email-message-success {
+    background-color: #064e3b !important;
+    color: #d1fae5 !important;
+    border-color: #10b981 !important;
+  }
+  
+  .dark-mode .email-message-error {
+    background-color: #7f1d1d !important;
+    color: #fecaca !important;
+    border-color: #f87171 !important;
+  }
+  
+  /* Adjust spinner color for dark mode */
+  .dark-mode .spinners {
+    color: #f3f4f6 !important;
+  }
+  
+  .dark-mode .offcanvas {
+    background-color: #1e1e1e !important;
+  }

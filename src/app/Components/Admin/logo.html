@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project NEXT - N Logo Dark Mode</title>
+  <style>
+    body {
+      background-color: #111827; /* Dark background to preview the logo */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    
+    /* Container for the logo */
+    .n-logo-container {
+      width: 200px;
+      height: 200px;
+      background-color: #0f172a; /* Dark blue background */
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inner container with subtle gradient background */
+    .n-logo-inner {
+      width: 180px;
+      height: 180px;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    /* Main N letterform */
+    .n-letter {
+      position: relative;
+      width: 100px;
+      height: 120px;
+      filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.3));
+    }
+
+    /* Left vertical line of N */
+    .n-left {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 20px;
+      height: 120px;
+      background: linear-gradient(to bottom, #60a5fa, #3b82f6);
+      border-radius: 10px;
+    }
+
+    /* Right vertical line of N */
+    .n-right {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 20px;
+      height: 120px;
+      background: linear-gradient(to bottom, #93c5fd, #60a5fa);
+      border-radius: 10px;
+    }
+
+    /* Diagonal line of N */
+    .n-diagonal {
+      position: absolute;
+      width: 20px;
+      height: 140px;
+      background: linear-gradient(to bottom right, #60a5fa, #3b82f6);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(33deg);
+      border-radius: 10px;
+    }
+
+    /* Glow effect behind the N */
+    .n-glow {
+      position: absolute;
+      width: 120px;
+      height: 140px;
+      background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0) 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    /* Decorative elements */
+    .n-accent {
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    /* Top left accent */
+    .n-accent-1 {
+      width: 40px;
+      height: 40px;
+      top: 15px;
+      left: 15px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0) 70%);
+    }
+
+    /* Bottom right accent */
+    .n-accent-2 {
+      width: 50px;
+      height: 50px;
+      bottom: 15px;
+      right: 15px;
+      background: radial-gradient(circle, rgba(96, 165, 250, 0.1) 0%, rgba(96, 165, 250, 0) 70%);
+    }
+
+    /* Subtle dot accents with glow */
+    .n-dot {
+      position: absolute;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+
+    .n-dot-1 {
+      width: 6px;
+      height: 6px;
+      top: 30px;
+      right: 30px;
+      background-color: rgba(96, 165, 250, 0.8);
+    }
+
+    .n-dot-2 {
+      width: 4px;
+      height: 4px;
+      bottom: 40px;
+      left: 35px;
+      background-color: rgba(147, 197, 253, 0.8);
+    }
+
+    .n-dot-3 {
+      width: 8px;
+      height: 8px;
+      top: 50%;
+      right: 25px;
+      background-color: rgba(59, 130, 246, 0.8);
+    }
+
+    /* Subtle line accents */
+    .n-line {
+      position: absolute;
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0) 0%, rgba(59, 130, 246, 0.3) 50%, rgba(59, 130, 246, 0) 100%);
+      height: 1px;
+    }
+
+    .n-line-1 {
+      width: 60px;
+      top: 25px;
+      right: 20px;
+      transform: rotate(30deg);
+    }
+
+    .n-line-2 {
+      width: 40px;
+      bottom: 30px;
+      left: 25px;
+      transform: rotate(-20deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="n-logo-container">
+    <div class="n-logo-inner">
+      <!-- Glow effect -->
+      <div class="n-glow"></div>
+      
+      <!-- Main N letterform -->
+      <div class="n-letter">
+        <div class="n-left"></div>
+        <div class="n-diagonal"></div>
+        <div class="n-right"></div>
+      </div>
+      
+      <!-- Decorative elements -->
+      <div class="n-accent n-accent-1"></div>
+      <div class="n-accent n-accent-2"></div>
+      <div class="n-dot n-dot-1"></div>
+      <div class="n-dot n-dot-2"></div>
+      <div class="n-dot n-dot-3"></div>
+      <div class="n-line n-line-1"></div>
+      <div class="n-line n-line-2"></div>
+    </div>
+  </div>
+</body>
+</html>

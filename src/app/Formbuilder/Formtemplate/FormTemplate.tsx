@@ -301,7 +301,7 @@ export default function FormTemplate() {
           
           console.log("id:", formId);
       } catch {
-        toast.error('CONTROLLER, MODEL, and ROUTES already created!', {
+        toast.warning('CONTROLLER, MODEL, and ROUTES already created!', {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,

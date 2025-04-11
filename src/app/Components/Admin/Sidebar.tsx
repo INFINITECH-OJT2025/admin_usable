@@ -139,7 +139,7 @@ export default function Sidebar() {
         <>
       <Script
         src="/assets/vendor/js/helpers.js"
-        strategy="afterInteractive" // Choose strategy: 'afterInteractive', 'afterInteractive', or 'lazyOnload'
+        strategy="afterInteractive"
       />
       <Script src="/assets/js/config.js"
         strategy="afterInteractive"
@@ -181,14 +181,14 @@ export default function Sidebar() {
           className="sidebar layout-menu menu-vertical menu bg-menu-theme"
         >
           <div className="app-brand demo">
-          <a href="index.html" className="app-brand-link">
-              <span className="app-brand-logo demo">
-                <img src="../img/logo.png" alt="Logo" width="40" />
-              </span>
-              <span className="app-brand-text menu-text fw-bolder ms-2" style={{ fontSize: '1.5rem' }}>
-                Project NEXT
-              </span>
-            </a>
+          <a href="/Dashboard" className="app-brand-link">
+            <span className="app-brand-logo demo">
+              <img className="logo-img" src="../img/NEXT_light_logo.png" alt="Logo" />
+            </span>
+            <span className="app-brand-text menu-text fw-bolder ms-2" style={{ fontSize: '1.5rem' }}>
+              Project <span style={{ color: '#60B5FF'}}>ИEXT</span>
+            </span>
+          </a>
             <a
               href="javascript:void(0);"
               className="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none"
@@ -225,7 +225,7 @@ export default function Sidebar() {
                 className="menu-link"
                 onClick={handleNavigation("/Peopleware")}
               >
-                <i className="menu-icon tf-icons bx bx-table"></i>
+                <i className="menu-icon tf-icons bx bxs-user-account"></i>
                 <div data-i18n="Analytics">Peopleware</div>
               </a>
             </li>
@@ -264,6 +264,7 @@ export default function Sidebar() {
                     className="menu-link"
                     onClick={(e) => handleNavigation("/Formbuilder")} // Ensure you handle navigation properly
                   >
+                    <i className="menu-icon tf-icons bx bx-edit me-2"></i>
                     <div data-i18n="Account">Builder</div>
                   </a>
                 </li>
@@ -273,14 +274,26 @@ export default function Sidebar() {
                     className="menu-link"
                     onClick={(e) => handleNavigation("/Formbuilder/Formtemplate")} // Ensure you handle navigation properly
                   >
+                    <i className="menu-icon tf-icons bx bx-table me-2"></i>
                     <div data-i18n="Account">Templates</div>
                   </a>
                 </li>
               </ul>
             </li>
 
+            <li className={`menu-item ${isActive("/Mail") ? "active" : ""}`}>
+              <a
+                href="/Mail"
+                className="menu-link"
+                onClick={handleNavigation("/Mail")}
+              >
+                <i className="menu-icon tf-icons bx bx-mail-send"></i>
+                <div data-i18n="Analytics">Send Mail</div>
+              </a>
+            </li>
+
             <li className="menu-header small text-uppercase">
-              <span className="menu-header-text">Settings</span>
+              <span className="menu-header-text">Settings & Permissions</span>
             </li>
 
             {/* Users */}

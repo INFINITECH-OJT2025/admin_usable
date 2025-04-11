@@ -212,3 +212,75 @@ body {
     text-overflow: ellipsis; /* Show ellipsis */
     margin-bottom: -5px;
 }
+
+@media (max-width: 768px) {
+    /* Layout adjustments */
+    .layout-wrapper,
+    .layout-container,
+    .layout-page,
+    .content-wrapper {
+      padding: 10px;
+    }
+  
+    /* Cards */
+    .card,
+    .folder-card,
+    .file-card {
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+  
+    /* Buttons */
+    .btn,
+    .btn-back,
+    .btn-create {
+      padding: 8px 14px;
+      font-size: 14px;
+    }
+  
+    /* File inputs */
+    .file-input {
+      padding: 8px;
+    }
+  
+    /* Folder/File sections */
+    .folder-section,
+    .file-section {
+      padding: 10px;
+    }
+  
+    /* Icons */
+    .folder-icon,
+    .file-icon {
+      font-size: 20px;
+    }
+  
+    /* Dropdown items */
+    .file-menu-item {
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+  
+    /* Preview area */
+    .preview-content {
+      padding: 10px;
+    }
+  
+    /* Close button */
+    .btn-close {
+      padding: 4px 8px;
+      font-size: 13px;
+    }
+  
+    /* Path container */
+    .path-container {
+      padding: 8px;
+      font-size: 13px;
+    }
+  
+    .ellipsis {
+      max-width: 120px;
+      font-size: 13px;
+    }
+  }
+  

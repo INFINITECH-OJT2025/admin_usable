@@ -11,19 +11,23 @@ const ValidateAdmin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
     const [password, setPassword] = useState('');
-    const [showModal, setShowModal] = useState(() => {
-        return sessionStorage.getItem('showModal') !== 'false';
-    });
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        const authToken = sessionStorage.getItem('authToken');
+        if (typeof window !== 'undefined') {
+            // This ensures sessionStorage is only accessed in the browser
+            const storedShowModal = sessionStorage.getItem('showModal');
+            setShowModal(storedShowModal !== 'false');
+        }
+
+        const authToken = typeof window !== 'undefined' ? sessionStorage.getItem('authToken') : null;
         if (!authToken) {
             router.push('/Login');
             return;
         }
 
         // Check if admin validation exists in sessionStorage
-        const adminValidated = sessionStorage.getItem('adminValidated');
+        const adminValidated = typeof window !== 'undefined' ? sessionStorage.getItem('adminValidated') : null;
         if (adminValidated === 'true') {
             setShowModal(false);
             setIsAdmin(true);
@@ -56,7 +60,7 @@ const ValidateAdmin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
 
     useEffect(() => {
         const handleRouteChange = (url: string) => {
-            if (url != pathname) {
+            if (url !== pathname && typeof window !== 'undefined') {
                 sessionStorage.removeItem('adminValidated');
             }
         };
@@ -70,7 +74,7 @@ const ValidateAdmin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
     }, [router, pathname]);
 
     const handlePasswordSubmit = async () => {
-        const authToken = sessionStorage.getItem('authToken');
+        const authToken = typeof window !== 'undefined' ? sessionStorage.getItem('authToken') : null;
         if (!authToken) {
             router.push('/Login');
             return;
@@ -87,7 +91,9 @@ const ValidateAdmin: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
             if (response.data.valid) {
                 setIsAdmin(true);
                 onSuccess();
-                sessionStorage.setItem('adminValidated', 'true'); // Store validation in sessionStorage
+                if (typeof window !== 'undefined') {
+                    sessionStorage.setItem('adminValidated', 'true'); // Store validation in sessionStorage
+                }
                 setShowModal(false);
                 toast.success("Got In! Enjoy", {
                     position: "top-center",

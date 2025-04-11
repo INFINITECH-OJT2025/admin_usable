@@ -191,6 +191,9 @@ export default function Users() {
                         <div className="content-wrapper">
                             <div className="container-xxl flex-grow-1 container-p-y">
                                 <div className="row">
+                                    <div className="divider">
+                                        <div className="divider-text"><h4 className="text-3xl font-semibold text-right text-green-600 mb-6">👥 Peopleware</h4></div>
+                                    </div>
                                     <div className="col-lg-12 mb-4 order-0">
                                         <div className="card">
                                             <div className="d-flex align-items-end row">
@@ -207,7 +210,7 @@ export default function Users() {
                                             <div className="d-flex align-items-end row">
                                                 <div className="col-sm-12">
                                                     <div className="card-body">
-                                                        <h5 className="card-title">Users List</h5>
+                                                        <h5 className="card-title">Data Export</h5>
                                                         <div className="d-flex flex-wrap align-items-center gap-2 mb-3">
                                                             <input
                                                                 type="text"

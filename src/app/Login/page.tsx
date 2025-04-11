@@ -10,6 +10,8 @@ import "../assets/vendor/css/theme-default.css";
 import "../assets/css/demo.css";
 import "../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css";
 import "../assets/vendor/css/pages/page-auth.css";
+import "@/app/assets/css/dark-mode.css";
+
 
 // import "./style.css";
 import Script from "next/script";
@@ -31,24 +33,23 @@ export default function Login() {
         }
     }, []);
 
-  const handleLogin = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setLoading(true);
-    setMessage("");
-  
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}login`,
-        { username, password },
-        { withCredentials: true }
-      );
-      console.log(response.data); // Log the response to check the structure
-  
-      if (response.data.token) {
-        // Check user status and display appropriate message
-        switch (response.data.status) {
-          case 'pending':
-            toast.info("Your account is not yet allowed! Please wait for a bit, thanks for your patience!", {
+    const handleLogin = async (event: React.FormEvent) => {
+      event.preventDefault();
+      setLoading(true);
+      setMessage("");
+    
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}login`,
+          { username, password },
+          { withCredentials: true }
+        );
+        console.log(response.data); // Log the response to check the structure
+    
+        if (response.data.token) {
+          // Check if the user is verified
+          if (response.data.user.if_verified === 'unverified') {
+            toast.warn("You are not yet verified. Kindly check your email to verify!", {
               position: "top-right",
               autoClose: 5000,
               hideProgressBar: false,
@@ -57,69 +58,71 @@ export default function Login() {
               draggable: true,
               theme: "colored",
             });
-            break;
-          case 'Allowed':
-            toast.success("You've successfully logged in. Enjoy!", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              theme: "colored",
-            });
-            if (response.data.usertype === 'admin') {
-              sessionStorage.setItem("authToken", response.data.token); // Store token
-              window.location.href = '/Dashboard'; // Redirect to admin dashboard
-            } else if (response.data.usertype === 'user') {
-              sessionStorage.setItem("authToken", response.data.token); // Store token
-              window.location.href = '/Userface/Dashboard'; // Redirect to user dashboard
-            } else {
-              setMessage("User type is unknown.");
+          } else {
+            // Proceed to check user status and display appropriate message
+            switch (response.data.status) {
+              case 'pending':
+                toast.info("Your account is not yet allowed! Please wait for a bit, thanks for your patience!", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  theme: "colored",
+                });
+                break;
+              case 'Allowed':
+                toast.success("You've successfully logged in. Enjoy!", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  theme: "colored",
+                });
+                if (response.data.usertype === 'admin') {
+                  sessionStorage.setItem("authToken", response.data.token); // Store token
+                  window.location.href = '/Dashboard'; // Redirect to admin dashboard
+                } else if (response.data.usertype === 'user') {
+                  sessionStorage.setItem("authToken", response.data.token); // Store token
+                  window.location.href = '/Userface/Dashboard'; // Redirect to user dashboard
+                } else {
+                  setMessage("User  type is unknown.");
+                }
+                break;
+              case 'Blocked':
+                toast.error("You have been blocked. Kindly contact the Customer Service! Thank you!", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  theme: "colored",
+                });
+                break;
+              default:
+                setMessage("Unknown account status.");
+                break;
             }
-            break;
-          case 'Blocked':
-            toast.error("You have been blocked. Kindly contact the Customer Service! Thank you!", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              theme: "colored",
-            });
-            break;
-          default:
-            setMessage("Unknown account status.");
-            break;
+          }
+        } else {
+          setMessage("Invalid credentials. Please try again.");
         }
-  
-      } else {
-        setMessage("Invalid credentials. Please try again.");
+      } catch (error: any) {
+        setMessage(error.response?.data?.message || "Login failed. Please check your credentials.");
       }
-    } catch (error: any) {
-      setMessage(error.response?.data?.message || "Login failed. Please check your credentials.");
-    }
-  
-    setLoading(false);
-  };
+    
+      setLoading(false);
+    };
   
 
 
   return (
     <>
     <ToastContainer />
-      <Script
-        src="/assets/vendor/js/helpers.js"
-        strategy="beforeInteractive"
-      />
-      <Script src="/assets/js/config.js"
-        strategy="beforeInteractive"
-      />
-      <Script
-        src="/assets/vendor/libs/jquery/jquery.js"
-        strategy="beforeInteractive"
-      />
       <Script
         src="/assets/vendor/libs/popper/popper.js"
         strategy="beforeInteractive"
@@ -130,18 +133,6 @@ export default function Login() {
       />
       <Script
         src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"
-        strategy="afterInteractive"
-      />
-      <Script
-        src="/assets/vendor/libs/apex-charts/apexcharts.js"
-        strategy="afterInteractive"
-      />
-      <Script
-        src="/assets/js/main.js"
-        strategy="afterInteractive"
-      />
-      <Script
-        src="/assets/js/dashboards-analytics.js"
         strategy="afterInteractive"
       />
       <Head>
@@ -211,10 +202,10 @@ export default function Login() {
                       </g>
                     </svg>
                   </span>
-                  <span className="app-brand-text demo text-body fw-bolder">Sneat</span>
+                  <span className="app-brand-text demo text-body fw-bolder">Projext NEXT</span>
                 </a>
               </div>
-                <h4 className="mb-1">Welcome to Sneat! 👋</h4>
+                <h4 className="mb-1">Welcome to Project NEXT! 👋</h4>
                 <p className="mb-2 text-sm">Please sign-in to your account</p>
 
                 <form onSubmit={handleLogin} className="mb-2">

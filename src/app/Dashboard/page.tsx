@@ -55,7 +55,7 @@ export default function Dashboard() {
          try {
             const authToken = sessionStorage.getItem("authToken");
              if (authToken) {
-                 const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/user`, {
+                 const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}user`, {
                      headers: { Authorization: `Bearer ${authToken}` }
                  });
                  setUser({
@@ -289,6 +289,24 @@ useEffect(() => {
                     <div className="col-12 mb-4">
                       <div className="card">
                         <NotificationCard />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/*/ Transactions */}
+              </div>
+              <div className="row">
+                {/* Order Statistics */}
+                <div className="col-12 col-lg-8 order-2 order-md-3 order-lg-3 mb-2">
+                </div>
+                {/*/ Order Statistics */}
+
+
+                {/* Transactions */}
+                <div className="col-md-6 col-lg-4 order-5 mb-4">
+                  <div className="row">
+                    <div className="col-12 mb-4">
+                      <div className="card">
                       </div>
                     </div>
                   </div>
