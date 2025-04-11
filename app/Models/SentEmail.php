@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Form extends Model
+class SentEmail extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['fields', 'tableName', 'status', 'backend', 'count'];
+    protected $fillable = [
+        'to',
+        'cc',
+        'subject',
+        'body'
+    ];
 }

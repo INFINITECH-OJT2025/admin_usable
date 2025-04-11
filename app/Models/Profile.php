@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Form extends Model
+class Profile extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['fields', 'tableName', 'status', 'backend', 'count'];
+    protected $table = 'profile';
+
+    protected $fillable = [
+        'fullname',
+        'file',
+    ];
 }

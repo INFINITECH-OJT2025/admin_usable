@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Form extends Model
+class AuditLog extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['fields', 'tableName', 'status', 'backend', 'count'];
+    protected $fillable = [
+        'message',
+        'status',
+        'path',
+        'created_at'
+    ];
 }

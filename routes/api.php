@@ -2,14 +2,18 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\AdminNotificationController;
-use App\Http\Controllers\FileManagerController;
-use App\Http\Controllers\FormController;
-
 use Illuminate\Support\Facades\Broadcast;
 use Pusher\Pusher;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MailController;
+use App\Http\Controllers\GmailController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminNotificationController;
+use App\Http\Controllers\AuditLogController;
+use App\Http\Controllers\FileManagerController;
+use App\Http\Controllers\FormController;
+use App\Http\Controllers\ColorController;
+
 
 
 /*
@@ -39,11 +43,27 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'user']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+Route::post('/validate-password', [AuthController::class, 'validatePassword']);
 
 Route::get('/show', [AuthController::class, 'show']);
 
 Route::get('/users', [AuthController::class, 'index']);
+Route::get('/check-username/{username}', [AuthController::class, 'checkUsername']);
+Route::get('/check-email/{email}', [AuthController::class, 'checkEmail']);
+Route::get('/verify-email', [AuthController::class, 'verifyEmail']);
 
+
+//MailController
+Route::post('/send-email', [MailController::class, 'sendEmail']);
+Route::get('/sent-emails', [MailController::class, 'getSentEmails']);
+
+//GmailController
+Route::get('/gmail/auth', [GmailController::class, 'redirectToGoogle']);
+Route::get('/gmail/callback', [GmailController::class, 'handleGoogleCallback']);
+Route::get('/gmail/fetch-emails', [GmailController::class, 'fetchEmails']);
+
+Route::get('/gmail/user-info', [GmailController::class, 'getUserInfo']);
+Route::post('/refresh-token', [GmailController::class, 'refreshToken']);
 
 
 
@@ -68,11 +88,14 @@ Route::get('/export-users', [UserController::class, 'exportUsers']);
 
 //AdminNotificationController
 Route::get('/notifications', [AdminNotificationController::class, 'getNotification']); // GRAPH PURPOSES
-Route::get('/activities', [AdminNotificationController::class, 'getActivity']); // GRAPH PURPOSES
+// Route::get('/activities', [AdminNotificationController::class, 'getActivity']); // GRAPH PURPOSES
 Route::put('/notifications/{id}/read', [AdminNotificationController::class, 'markAsRead']);
 Route::put('/notifications/read-all', [AdminNotificationController::class, 'markAllAsRead']);
 // Route::get('/notifications/stream', [NotificationController::class, 'streamNotifications']);
 Route::put('/notifications/read', [AdminNotificationController::class, 'updateStatusToRead']);
+
+//AuditLogs
+Route::get('/activities', [AuditLogController::class, 'getAuditLogs']); // GRAPH PURPOSES
 
 Route::get('/pusher-test', function () {
     try {
@@ -109,3 +132,50 @@ Route::delete('/delete-folder', [FileManagerController::class, 'deleteFolder']);
 Route::post('/forms', [FormController::class, 'store']);
 Route::post('/tables', [FormController::class, 'createTable']);
 Route::get('/forms', [FormController::class, 'show']);
+Route::get('/getTables', [FormController::class, 'getTables']);
+Route::delete('/forms/{id}/{tableName}', [FormController::class, 'delTable']);
+Route::post('/createModelAndController', [FormController::class, 'createModelAndController']);
+Route::put('/forms/{id}', [FormController::class, 'toggleFormStatus']);
+Route::get('/forms', [FormController::class, 'getFormStatus']);
+Route::get('/form-usage', [FormController::class, 'getFormUsage']); // GRAPH PURPOSES
+
+
+Route::get('/colors', [ColorController::class, 'getColors']);
+Route::post('/colors', [ColorController::class, 'addColor']);
+Route::put('/colors/{id}', [ColorController::class, 'updateColor']);
+Route::delete('/colors/{id}', [ColorController::class, 'deleteColor']);
+Route::get('/colors/active', [ColorController::class, 'getActiveColor']);
+
+
+// GENERATED CRUD will generate routes here
+
+Route::put('check_radio_table/{id}', [Check_radio_tableController::class, 'update']);
+
+Route::put('select_radio_check/{id}', [Select_radio_checkController::class, 'update']);
+
+Route::put('text_email_age/{id}', [Text_email_ageController::class, 'update']);
+
+Route::put('datetime_textarea/{id}', [Datetime_textareaController::class, 'update']);
+
+Route::put('all_tools_table/{id}', [All_tools_tableController::class, 'update']);
+
+use App\Http\Controllers\All_tools_all_inController;
+Route::get('all_tools_all_in', [All_tools_all_inController::class, 'index']);
+Route::post('all_tools_all_in', [All_tools_all_inController::class, 'store']);
+Route::get('all_tools_all_in/{id}', [All_tools_all_inController::class, 'show']);
+Route::post('all_tools_all_in/{id}', [All_tools_all_inController::class, 'update']);
+Route::delete('all_tools_all_in/{id}', [All_tools_all_inController::class, 'destroy']);
+
+use App\Http\Controllers\ProfileController;
+Route::get('profile', [ProfileController::class, 'index']);
+Route::post('profile', [ProfileController::class, 'store']);
+Route::get('profile/{id}', [ProfileController::class, 'show']);
+Route::post('profile/{id}', [ProfileController::class, 'update']);
+Route::delete('profile/{id}', [ProfileController::class, 'destroy']);
+
+use App\Http\Controllers\MikmikController;
+Route::get('mikmik', [MikmikController::class, 'index']);
+Route::post('mikmik', [MikmikController::class, 'store']);
+Route::get('mikmik/{id}', [MikmikController::class, 'show']);
+Route::post('mikmik/{id}', [MikmikController::class, 'update']);
+Route::delete('mikmik/{id}', [MikmikController::class, 'destroy']);

@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Form extends Model
+class Mikmik extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['fields', 'tableName', 'status', 'backend', 'count'];
+    protected $table = 'mikmik';
+
+    protected $fillable = [
+        'full_name',
+        'your_age',
+    ];
 }

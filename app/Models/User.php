@@ -26,7 +26,11 @@ class User extends Authenticatable
         'profile_image',
         'usertype',
         'status',
-        'created_at'
+        'google_access_token',
+        'google_refresh_token',
+        'google_token_expires_at',
+        'created_at',
+        'if_verified'
     ];
 
     /**

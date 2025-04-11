@@ -10,7 +10,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Barryvdh\DomPDF\Facade\PDF;
 use App\Events\NotificationSent;
-use App\Models\Notification;
+use App\Events\AuditLogEvent;
+use App\Models\AuditLog;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -32,16 +33,16 @@ class UserController extends Controller
     }
 
 
-    private function sendNotification($message, $path)
+    private function sendLogs($message, $path)
     {
         // Create the notification
-        $notification = Notification::create([
+        $notification = AuditLog::create([
             'message' => $message,
             'path' => $path,
         ]);
 
         // Broadcast the event
-        broadcast(new NotificationSent($notification))->toOthers();
+        broadcast(new AuditLogEvent($notification))->toOthers();
     }
 
 
@@ -106,7 +107,7 @@ class UserController extends Controller
             'profile_image' => $imagePath, // Save relative path in DB
             'usertype' => 'admin', // Default user type
         ]);
-        $this->sendNotification('New admin registered: ' . $request->fullname, '/Profile');
+        $this->sendLogs('New admin registered: ' . $request->fullname, '/Profile');
 
         return response()->json(['message' => 'User registered successfully!', 'user' => $user], 201);
     }
@@ -140,7 +141,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->save();
 
-        $this->sendNotification($request->fullname . ' updated their user profile', '/User');
+        $this->sendLogs($request->fullname . ' updated their user profile', '/User');
     
         Log::info('User updated successfully', ['user' => $user]);
     
@@ -173,7 +174,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->save();
 
-        $this->sendNotification($request->fullname . ' updated their admin profile', '/Profile');
+        $this->sendLogs($request->fullname . ' updated their admin profile', '/Profile');
 
         Log::info('User updated successfully', ['user' => $user]);
     
@@ -207,7 +208,7 @@ class UserController extends Controller
     
         $user->save();
 
-        $this->sendNotification($request->fullname . ' updated their user profile', '/Profile');
+        $this->sendLogs($request->fullname . ' updated their user profile', '/Profile');
 
         return response()->json([
             'message' => 'Profile updated successfully',
@@ -226,7 +227,7 @@ class UserController extends Controller
         }
 
         $user->delete();
-
+        $this->sendLogs($user->fullname . "'s account was deleted!", '/User');
         return response()->json(['message' => 'User deleted successfully'], 200);
     }
 
@@ -241,13 +242,13 @@ class UserController extends Controller
         // Determine the new status
         if ($user->status === 'Pending') {
             $newStatus = 'Allowed';
-            $this->sendNotification($user->fullname . ' was Allowed to Login', '/User');
+            $this->sendLogs($user->fullname . ' was Allowed to Login', '/User');
         } elseif ($user->status === 'Allowed') {
             $newStatus = 'Blocked';
-            $this->sendNotification($user->fullname . ' was Blocked to Login', '/User');
+            $this->sendLogs($user->fullname . ' was Blocked to Login', '/User');
         } else {
             $newStatus = 'Allowed';
-            $this->sendNotification($user->fullname . ' was Allowed to Login', '/User');
+            $this->sendLogs($user->fullname . ' was Allowed to Login', '/User');
         }
 
         // Update the status
@@ -409,6 +410,8 @@ class UserController extends Controller
         // Ensure the input is stored as JSON
         $user->permitted_route = json_encode($request->permitted_route);
         $user->save();
+
+        $this->sendLogs($user->fullname . "'s permission access has been updated!", '/User');
 
         return response()->json(['message' => 'Permissions updated successfully!']);
     }

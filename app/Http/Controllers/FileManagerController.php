@@ -13,7 +13,7 @@ class FileManagerController extends Controller
 
     public function __construct()
     {
-        $this->publicPath = public_path('storage');
+        $this->publicPath = public_path();
     }
 
     public function listFiles(Request $request)
@@ -94,13 +94,26 @@ class FileManagerController extends Controller
 
     public function uploadFile(Request $request)
     {
-        $request->validate(['file' => 'required|file']);
+        $request->validate([
+            'file' => 'required|file',
+            'path' => 'required|string', // Validate the path
+        ]);
+    
         $file = $request->file('file');
-        $file->move($this->publicPath, $file->getClientOriginalName());
-
+        $path = $request->input('path'); // Get the path from the request
+    
+        // Ensure the path is safe and exists
+        $fullPath = public_path($path);
+        if (!is_dir($fullPath)) {
+            return response()->json(['message' => 'Invalid path'], 400);
+        }
+    
+        // Move the file to the specified path
+        $file->move($fullPath, $file->getClientOriginalName());
+    
         return response()->json(['message' => 'File uploaded successfully']);
     }
-
+    
     public function renameFile(Request $request)
     {
         $request->validate(['old_name' => 'required', 'new_name' => 'required']);
