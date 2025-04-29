@@ -13,7 +13,9 @@ use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\FileManagerController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\ColorController;
-
+use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\GalleryController;
 
 
 /*
@@ -65,6 +67,26 @@ Route::get('/gmail/fetch-emails', [GmailController::class, 'fetchEmails']);
 Route::get('/gmail/user-info', [GmailController::class, 'getUserInfo']);
 Route::post('/refresh-token', [GmailController::class, 'refreshToken']);
 
+//AgendaController
+Route::get('/agendas', [AgendaController::class, 'index']);
+Route::post('/agendas', [AgendaController::class, 'store']);
+Route::post('/agendas/{id}/update', [AgendaController::class, 'update']);
+Route::delete('/agendas/{id}/delete', [AgendaController::class, 'destroy']);
+
+//TestimonialController
+Route::get('testimonials', [TestimonialController::class, 'index']);
+Route::post('testimonials', [TestimonialController::class, 'store']);
+Route::put('testimonials/{id}', [TestimonialController::class, 'update']);
+Route::delete('testimonials/{id}', [TestimonialController::class, 'destroy']);
+Route::post('testimonials/{id}/toggle-visibility', [TestimonialController::class, 'toggleVisibility']);
+
+//GalleryController
+Route::get('/galleries', [GalleryController::class, 'index']);
+Route::post('/galleries', [GalleryController::class, 'store']);
+Route::post('/galleries/{id}', [GalleryController::class, 'update']);
+Route::delete('/galleries/{id}', [GalleryController::class, 'destroy']);
+Route::post('/galleries/{id}/enable', [GalleryController::class, 'enable']);
+Route::get('/galleries/enabled', [GalleryController::class, 'enabled']);
 
 
 // UserController
@@ -179,3 +201,17 @@ Route::post('mikmik', [MikmikController::class, 'store']);
 Route::get('mikmik/{id}', [MikmikController::class, 'show']);
 Route::post('mikmik/{id}', [MikmikController::class, 'update']);
 Route::delete('mikmik/{id}', [MikmikController::class, 'destroy']);
+
+use App\Http\Controllers\AdminreusableController;
+Route::get('adminreusable', [AdminreusableController::class, 'index']);
+Route::post('adminreusable', [AdminreusableController::class, 'store']);
+Route::get('adminreusable/{id}', [AdminreusableController::class, 'show']);
+Route::post('adminreusable/{id}', [AdminreusableController::class, 'update']);
+Route::delete('adminreusable/{id}', [AdminreusableController::class, 'destroy']);
+
+use App\Http\Controllers\TestalltoolsController;
+Route::get('testalltools', [TestalltoolsController::class, 'index']);
+Route::post('testalltools', [TestalltoolsController::class, 'store']);
+Route::get('testalltools/{id}', [TestalltoolsController::class, 'show']);
+Route::post('testalltools/{id}', [TestalltoolsController::class, 'update']);
+Route::delete('testalltools/{id}', [TestalltoolsController::class, 'destroy']);
