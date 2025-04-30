@@ -215,3 +215,52 @@ Route::post('testalltools', [TestalltoolsController::class, 'store']);
 Route::get('testalltools/{id}', [TestalltoolsController::class, 'show']);
 Route::post('testalltools/{id}', [TestalltoolsController::class, 'update']);
 Route::delete('testalltools/{id}', [TestalltoolsController::class, 'destroy']);
+
+use App\Http\Controllers\Input_longerController;
+Route::get('input_longer', [Input_longerController::class, 'index']);
+Route::post('input_longer', [Input_longerController::class, 'store']);
+Route::get('input_longer/{id}', [Input_longerController::class, 'show']);
+Route::post('input_longer/{id}', [Input_longerController::class, 'update']);
+Route::delete('input_longer/{id}', [Input_longerController::class, 'destroy']);
+
+use App\Http\Controllers\LongerController;
+Route::get('longer', [LongerController::class, 'index']);
+Route::post('longer', [LongerController::class, 'store']);
+Route::get('longer/{id}', [LongerController::class, 'show']);
+Route::post('longer/{id}', [LongerController::class, 'update']);
+Route::delete('longer/{id}', [LongerController::class, 'destroy']);
+
+use App\Http\Controllers\Table_longerController;
+Route::get('table_longer', [Table_longerController::class, 'index']);
+Route::post('table_longer', [Table_longerController::class, 'store']);
+Route::get('table_longer/{id}', [Table_longerController::class, 'show']);
+Route::post('table_longer/{id}', [Table_longerController::class, 'update']);
+Route::delete('table_longer/{id}', [Table_longerController::class, 'destroy']);
+
+use App\Http\Controllers\Radio_tryController;
+Route::get('radio_try', [Radio_tryController::class, 'index']);
+Route::post('radio_try', [Radio_tryController::class, 'store']);
+Route::get('radio_try/{id}', [Radio_tryController::class, 'show']);
+Route::post('radio_try/{id}', [Radio_tryController::class, 'update']);
+Route::delete('radio_try/{id}', [Radio_tryController::class, 'destroy']);
+
+use App\Http\Controllers\Check_tableController;
+Route::get('check_table', [Check_tableController::class, 'index']);
+Route::post('check_table', [Check_tableController::class, 'store']);
+Route::get('check_table/{id}', [Check_tableController::class, 'show']);
+Route::post('check_table/{id}', [Check_tableController::class, 'update']);
+Route::delete('check_table/{id}', [Check_tableController::class, 'destroy']);
+
+use App\Http\Controllers\Checks_tableController;
+Route::get('checks_table', [Checks_tableController::class, 'index']);
+Route::post('checks_table', [Checks_tableController::class, 'store']);
+Route::get('checks_table/{id}', [Checks_tableController::class, 'show']);
+Route::post('checks_table/{id}', [Checks_tableController::class, 'update']);
+Route::delete('checks_table/{id}', [Checks_tableController::class, 'destroy']);
+
+use App\Http\Controllers\Checkbox_optionsController;
+Route::get('checkbox_options', [Checkbox_optionsController::class, 'index']);
+Route::post('checkbox_options', [Checkbox_optionsController::class, 'store']);
+Route::get('checkbox_options/{id}', [Checkbox_optionsController::class, 'show']);
+Route::post('checkbox_options/{id}', [Checkbox_optionsController::class, 'update']);
+Route::delete('checkbox_options/{id}', [Checkbox_optionsController::class, 'destroy']);
