@@ -215,6 +215,7 @@ export default function Sidebar() {
               </a>
             </li>
 
+
             <li className="menu-header small text-uppercase">
               <span className="menu-header-text">Management</span>
             </li>
@@ -291,6 +292,46 @@ export default function Sidebar() {
                 <div data-i18n="Analytics">Send Mail</div>
               </a>
             </li>
+
+
+            <li className="menu-header small text-uppercase">
+              <span className="menu-header-text">Landing Page</span>
+            </li>
+
+            <li className={`menu-item ${isActive("/ManageTestimonials") ? "active" : ""}`}>
+              <a
+                href="/ManageTestimonials"
+                className="menu-link"
+                onClick={handleNavigation("/ManageTestimonials")}
+              >
+                <i className="menu-icon tf-icons bx bx-chat"></i>
+                <div data-i18n="Analytics">Testimonials</div>
+              </a>
+            </li>
+
+            {/* <li className={`menu-item ${isActive("/Contact") ? "active" : ""}`}>
+              <a
+                href="/Contact"
+                className="menu-link"
+                onClick={handleNavigation("/Contact")}
+              >
+                <i className="menu-icon tf-icons bx bxs-contact"></i>
+                <div data-i18n="Analytics">Contact</div>
+              </a>
+            </li> */}
+
+
+            <li className={`menu-item ${isActive("/Carousel") ? "active" : ""}`}>
+              <a
+                href="/Carousel"
+                className="menu-link"
+                onClick={handleNavigation("/Carousel")}
+              >
+                <i className="menu-icon tf-icons bx bx-carousel"></i>
+                <div data-i18n="Analytics">Carousel</div>
+              </a>
+            </li>
+
 
             <li className="menu-header small text-uppercase">
               <span className="menu-header-text">Settings & Permissions</span>

@@ -214,7 +214,7 @@ export default function Navbar() {
                                 <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                                     <h6 className="mb-0" style={{ color: 'white' }}>Notifications</h6>
                                     <a href="/Notifications">
-                                        <button>See all</button>
+                                        <button style={{ color: 'white'}}>See all</button>
                                     </a>
                                     <button className={styles.button} onClick={markAllAsRead}>Mark All as Read</button>
                                     {/* <button className="btn btn-sm btn-light" onClick={markAllAsRead}>Mark All as Read</button> */}

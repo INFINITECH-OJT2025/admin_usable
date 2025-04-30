@@ -1,0 +1,14 @@
+.about-image-swiper {
+    max-width: 500px;
+    margin: auto;
+  }
+  
+  .about-image-swiper .swiper-pagination-bullet {
+    background: #333;
+    opacity: 0.6;
+  }
+  
+  .about-image-swiper .swiper-pagination-bullet-active {
+    background: #007bff;
+    opacity: 1;
+  }  

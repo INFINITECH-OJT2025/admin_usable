@@ -3,13 +3,29 @@ import axios from 'axios';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { formatDistanceToNow } from 'date-fns';
+import './mailmodal.css';
+import { X } from 'lucide-react';
+
 
 export default function Inboxes() {
     const [emails, setEmails] = useState<any[]>([]);
     const [authUrl, setAuthUrl] = useState<string>('');
     const [token, setToken] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-    const [userInfo, setUserInfo] = useState<{ name: string, email: string, picture: string } | null>(null);
+    const [userInfo, setUserInfo] = useState<{ name: string, email: string, picture: null } | null>(null);
+    const [selectedEmail, setSelectedEmail] = useState<any | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+    const openModal = (email: any) => {
+        setSelectedEmail(email);
+        setIsModalOpen(true);
+        console.log(email);
+    };
+    
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedEmail(null);
+    };
 
     useEffect(() => {
         getAuthUrl();
@@ -20,24 +36,31 @@ export default function Inboxes() {
         if (token) {
             fetchEmails();
             fetchUserInfo();
+    
+            const interval = setInterval(() => {
+                fetchEmails('inbox', true); // Silent = true
+            }, 30000);
+    
+            return () => clearInterval(interval); // Cleanup on unmount
         }
     }, [token]);
-
+    
     const fetchUserInfo = async () => {
         if (!token) return;
-
+        
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}gmail/user-info`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-
-            if (response.data) {
-                setUserInfo(response.data);
-            }
+          const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}gmail/user-info`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          
+          if (response.data) {
+            setUserInfo(response.data);
+          }
         } catch (error) {
-            console.error("Error fetching user info:", error);
+          console.error("Error fetching user info:", error);
         }
-    };
+      };
+      
 
     const getAuthUrl = async () => {
         try {
@@ -62,50 +85,40 @@ export default function Inboxes() {
         }
     };
 
-    const fetchEmails = async (filter = 'inbox') => {
+    const fetchEmails = async (filter = 'inbox', silent = false) => {
         if (!token) return;
-
-        setLoading(true);
+    
+        if (!silent) setLoading(true); // Only show loader if not silent
+    
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}gmail/fetch-emails`, {
                 params: { filter },
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-
-            setEmails(response.data);
+    
+            setEmails(response.data); // instantly reflect in UI
         } catch (error) {
             console.error("Error fetching emails:", error);
-            if (error.response?.status === 401) {
-                // Token expired, try to refresh it
-                await refreshToken();
+    
+            try {
+                // Get new auth URL
+                const authResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}gmail/auth`);
+                const newAuthUrl = authResponse.data.url;
+    
+                // Redirect the user to Google login
+                window.location.href = newAuthUrl;
+            } catch (authError) {
+                console.error("Failed to fetch Google auth URL:", authError);
+                alert('Session expired and re-authentication failed. Please try logging in again.');
             }
         } finally {
-            setLoading(false);
+            if (!silent) setLoading(false);
         }
     };
-
-    const refreshToken = async () => {
-        try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}refresh-token`, {
-                // You may need to send the refresh token if you are storing it
-            });
-
-            if (response.data.access_token) {
-                setToken(response.data.access_token);
-                sessionStorage.setItem('google_token', response.data.access_token);
-                fetchEmails(); // Retry fetching emails after refreshing the token
-            } else {
-                alert('Session expired. Please log in again.');
-                window.location.href = authUrl; // Redirect to login
-            }
-        } catch (error) {
-            console.error("Error refreshing token:", error);
-            alert('Session expired. Please log in again.');
-            window.location.href = authUrl; // Redirect to login
-        }
-    };
+    
 
     return (
+        <>
         <div className="min-h-screen p-6">
             <div className="list-header">
                 <div className="list-actions">
@@ -115,27 +128,118 @@ export default function Inboxes() {
                 </div>
 
                 <label className="view-button">Inbox</label>
+                <p className="text-xs text-gray-500 text-center mt-2">
+                    Last updated {formatDistanceToNow(new Date(), { addSuffix: true })}
+                </p>
 
                 <div className="user-info">
-                    {userInfo ? (
-                        <>
-                            <img src={userInfo.picture} alt="Profile" className="profile-image w-10 h-10 rounded-full" />
-                            <div className="user-details leading-tight">
-                                <h3 className="user-name text-sm font-medium">{userInfo.name}</h3>
-                                <p className="user-email text-xs text-gray-600">{userInfo.email}</p>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <Skeleton circle width={40} height={40} />
-                            <div className="user-details flex flex-col gap-1 ml-2">
-                                <Skeleton width={100} height={12} />
-                                <Skeleton width={150} height={10} />
-                            </div>
-                        </>
-                    )}
+
+                {userInfo ? (
+                    <>
+                        <img src={`${(userInfo.picture)}`} alt="Profile" className="profile-image w-10 h-10 rounded-full" />
+                        <div className="user-details leading-tight">
+                            <h3 className="user-name text-sm font-medium">{userInfo.name}</h3>
+                            <p className="user-email text-xs text-gray-600">{userInfo.email}</p>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <Skeleton circle width={40} height={40} />
+                        <div className="user-details flex flex-col gap-1 ml-2">
+                            <Skeleton width={100} height={12} />
+                            <Skeleton width={150} height={10} />
+                        </div>
+                    </>
+                )}
                 </div>
             </div>
+
+            {isModalOpen && selectedEmail && (
+            <div className="body">
+                <div className="gmail-container">
+                <div className="email-view">
+                    <div className="email-toolbar">
+                    <div className="back-button" onClick={closeModal}>←</div>
+                    <div className="email-actions">
+                        {/* <div className="email-action">Archive</div>
+                        <div className="email-action">Delete</div>
+                        <div className="email-action">Mark as unread</div>
+                        <div className="email-action">More</div> */}
+                    </div>
+                    </div>
+
+                    <div className="email-content">
+                    <div className="email-header-info">
+                        <div className="email-subjects">{selectedEmail.subject || "(no subject)"}</div>
+
+                        <div className="email-metadata">
+                        <div className="sender-info">
+                            <div className="sender-avatar">
+                            <img
+                                src={`${(selectedEmail.gravatarUrl)}`}
+                                alt={selectedEmail.fromName}
+                                style={{ borderRadius: '50%' }}
+                            />
+                            </div>
+                            <div className="sender-details">
+                            <div className="sender-name">{selectedEmail.fromName}</div>
+                            <div className="sender-email">{selectedEmail.fromEmail}</div>
+                            <div>to {selectedEmail.to}</div>
+                            </div>
+                        </div>
+
+                        <div className="email-date">{selectedEmail.time}</div>
+                        </div>
+                    </div>
+
+                    <div className="email-body">
+                        {selectedEmail.bodyHtml ? (
+                        <div
+                            className="email-html"
+                            dangerouslySetInnerHTML={{ __html: selectedEmail.bodyHtml }}
+                        />
+                        ) : (
+                        <pre className="email-text">{selectedEmail.bodyText}</pre>
+                        )}
+                    </div>
+
+                    {selectedEmail.attachments && selectedEmail.attachments.length > 0 && (
+                        <div className="email-attachments">
+                        <h4>Attachments:</h4>
+                        <ul>
+                            {selectedEmail.attachments.map((att, index) => (
+                            <li key={index}>
+                                <a
+                                href={`data:${att.mimeType};base64,${att.base64}`}
+                                download={att.filename}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                >
+                                📎 {att.filename}
+                                </a>
+                            </li>
+                            ))}
+                        </ul>
+                        </div>
+                    )}
+
+                    {/* <div className="email-reply">
+                        <div className="reply-actions">
+                        <div className="formatting-options">
+                            <div className="formatting-option">B</div>
+                            <div className="formatting-option">I</div>
+                            <div className="formatting-option">U</div>
+                            <div className="formatting-option">Attach</div>
+                        </div>
+
+                        <button className="send-button">Send</button>
+                        </div>
+                    </div> */}
+                    </div>
+                </div>
+                </div>
+            </div>
+            )}
 
             {/* Login with Google */}
             {!token && authUrl ? (
@@ -167,7 +271,7 @@ export default function Inboxes() {
                     ))}
                 </div>
             ) : (
-                <div className="emails">
+            <div className="emails">
                 {emails.length === 0 ? (
                     <p className="text-gray-500 p-4 text-center">No emails found.</p>
                 ) : (
@@ -181,7 +285,7 @@ export default function Inboxes() {
                                         {email.subject || '(no subject)'}
                                     </div>
                                     <div className="email-subject text-blue-600 hover:underline text-sm mt-1">
-                                        {email.fromName || (Array.isArray(email.from) ? email.from.join(', ') : email.from)}
+                                        {email.fromName || (Array.isArray(email.from) ? email.fromEmail.join(', ') : email.fromEmail)}
                                     </div>
                                 </div>
                                 <div className="email-to text-gray-500 text-sm">
@@ -201,15 +305,10 @@ export default function Inboxes() {
                                         Forward
                                         </button>
 
-                                        <a
-                                        className="email-action more"
-                                        href={`https://mail.google.com/mail/u/0/#inbox/${email.id}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        >
+                                        <a className="email-action more" onClick={() => openModal(email)}>
                                         <i className="bx bx-link-external"></i>
                                         View
-                                        </a>
+                                    </a>
                                     </div>
                                 </div>
 
@@ -242,6 +341,8 @@ export default function Inboxes() {
                 )}
             </div>
             )}
+
         </div>
+        </>
     );
 }

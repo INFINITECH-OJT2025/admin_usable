@@ -230,41 +230,60 @@ export default function Mail() {
 }
 
 // Reusable Sidebar Content
-const SidebarContent = ({ activeSection, setActiveSection, editor }: any) => (
-    <nav className="folders">
-        <button
-            className="compose-button"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasBackdrop"
-            aria-controls="offcanvasBackdrop"
-        >
-            <span className="text-sm">Compose...</span>
-            <Pencil size={16} className="inline mr-2" />
-            
-        </button>
+const SidebarContent = ({ activeSection, setActiveSection, editor }: any) => {
+    const handleSignOut = () => {
+        sessionStorage.removeItem('google_token'); // Clear token
+        window.location.reload();
+    };
 
-        <ul>
-            <SidebarItem icon={<Inbox size={16} />} label="Inbox" active={activeSection === 'inbox'} onClick={() => setActiveSection('inbox')} />
-            <SidebarItem icon={<Star size={16} />} label="Starred" active={activeSection === 'starred'} onClick={() => setActiveSection('starred')} />
-            <SidebarItem icon={<Send size={16} />} label="Sent" active={activeSection === 'sent'} onClick={() => setActiveSection('sent')} />
-            <SidebarItem icon={<FileText size={16} />} label="Drafts" active={activeSection === 'drafts'} onClick={() => setActiveSection('drafts')} />
-            <SidebarItem icon={<Archive size={16} />} label="All Mail" active={activeSection === 'allmail'} onClick={() => setActiveSection('allmail')} />
-            <SidebarItem icon={<ShieldAlert size={16} />} label="Spam" active={activeSection === 'spam'} onClick={() => setActiveSection('spam')} />
-            <SidebarItem icon={<Trash2 size={16} />} label="Trash" active={activeSection === 'trash'} onClick={() => setActiveSection('trash')} />
-        </ul>
+    return (
+        <nav className="folders">
+            <button
+                className="compose-button"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasBackdrop"
+                aria-controls="offcanvasBackdrop"
+            >
+                <span className="text-sm">Compose...</span>
+                <Pencil size={16} className="inline mr-2" />
+            </button>
 
-        <div className="sidebar2-section">
-            <h3>Labels</h3>
             <ul>
-                <SidebarItem label="Work" className="label-color work" active={activeSection === 'work'} onClick={() => setActiveSection('work')} />
-                <SidebarItem label="Personal" className="label-color personal" active={activeSection === 'personal'} onClick={() => setActiveSection('personal')} />
-                <SidebarItem label="Important" className="label-color important" active={activeSection === 'important'} onClick={() => setActiveSection('important')} />
-                <SidebarItem label="Projects" className="label-color projects" active={activeSection === 'projects'} onClick={() => setActiveSection('projects')} />
+                <SidebarItem icon={<Inbox size={16} />} label="Inbox" active={activeSection === 'inbox'} onClick={() => setActiveSection('inbox')} />
+                <SidebarItem icon={<Star size={16} />} label="Starred" active={activeSection === 'starred'} onClick={() => setActiveSection('starred')} />
+                <SidebarItem icon={<Send size={16} />} label="Sent" active={activeSection === 'sent'} onClick={() => setActiveSection('sent')} />
+                <SidebarItem icon={<FileText size={16} />} label="Drafts" active={activeSection === 'drafts'} onClick={() => setActiveSection('drafts')} />
+                <SidebarItem icon={<Archive size={16} />} label="All Mail" active={activeSection === 'allmail'} onClick={() => setActiveSection('allmail')} />
+                <SidebarItem icon={<ShieldAlert size={16} />} label="Spam" active={activeSection === 'spam'} onClick={() => setActiveSection('spam')} />
+                <SidebarItem icon={<Trash2 size={16} />} label="Trash" active={activeSection === 'trash'} onClick={() => setActiveSection('trash')} />
             </ul>
-        </div>
-    </nav>
-);
+
+            <div className="sidebar2-section">
+                <h3>Labels</h3>
+                <ul>
+                    <SidebarItem label="Work" className="label-color work" active={activeSection === 'work'} onClick={() => setActiveSection('work')} />
+                    <SidebarItem label="Personal" className="label-color personal" active={activeSection === 'personal'} onClick={() => setActiveSection('personal')} />
+                    <SidebarItem label="Important" className="label-color important" active={activeSection === 'important'} onClick={() => setActiveSection('important')} />
+                    <SidebarItem label="Projects" className="label-color projects" active={activeSection === 'projects'} onClick={() => setActiveSection('projects')} />
+                </ul>
+            </div>
+
+            {/* ADD SIGNOUT BUTTON HERE */}
+            <div className="mt-4">
+                <button
+                    onClick={handleSignOut}
+                    className="btn btn-danger"
+                    style={{ width: '180px'}}
+                >
+                    <span><i className='bx bx-log-out' style={{ marginRight: '10px'}}></i>
+                    Sign Out</span>
+                </button>
+            </div>
+        </nav>
+    );
+};
+
 
 const SidebarItem = ({ icon, label, active, onClick, className }: any) => (
     <li className={active ? 'active' : ''}>

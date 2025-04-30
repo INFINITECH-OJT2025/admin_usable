@@ -111,12 +111,12 @@ export default function Profile() {
     
       const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-          const selectedImage = e.target.files[0];
-          setImage(selectedImage);
-          const previewUrl = URL.createObjectURL(selectedImage);
-          setImagePreview(previewUrl); // Set the preview image
+            const selectedImage = e.target.files[0];
+            setImage(selectedImage);
+            const previewUrl = URL.createObjectURL(selectedImage);
+            setImagePreview(previewUrl); // Set the preview image
         }
-      };
+    };
 
 
       const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -239,6 +239,7 @@ export default function Profile() {
           handleCancelClick();
           fetchUserData();
           fetchAdmins();
+          window.location.reload();
         };
         
     
@@ -336,7 +337,7 @@ export default function Profile() {
                                     {/* Existing or Uploaded Image */}
                                     <div className="profile-image-circle"style={{ width: '210px', height: '210px' }}>
                                         <img
-                                            src={user.profile_image ? `http://127.0.0.1:8000/${user.profile_image}` : "/assets/img/avatars/1.png"}
+                                            src={imagePreview || (user.profile_image ? `http://127.0.0.1:8000/${user.profile_image}` : "/assets/img/avatars/1.png")}
                                             alt="Profile Image"
                                             className="profile-image" // Add a class for the image
                                         />
@@ -551,14 +552,14 @@ export default function Profile() {
                                            </div>
 
                                            {/* Action Buttons */}
-                                           <div>
+                                           {/* <div>
                                                <button className="btn btn-sm btn-success me-2">
                                                    <i className='bx bx-user-check' ></i>
                                                </button>
                                                <button className="btn btn-sm btn-danger">
                                                    <i className='bx bxs-user-x' ></i>
                                                </button>
-                                           </div>
+                                           </div> */}
 
                                        </li>
                                    ))}

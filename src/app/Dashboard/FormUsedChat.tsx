@@ -7,16 +7,15 @@ Chart.register(...registerables);
 
 const FormUsedChart = () => {
   const [data, setData] = useState<{ formName: string; count: number }[]>([]);
-  const [groupBy, setGroupBy] = useState<"day" | "month" | "year">("day");
 
   useEffect(() => {
-    fetchData(groupBy);
-  }, [groupBy]);
+    fetchData();
+  }, []);
 
-  const fetchData = async (groupBy: string) => {
+  const fetchData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}form-usage?groupBy=${groupBy}`
+        `${process.env.NEXT_PUBLIC_API_URL}form-usage`
       );
       setData(response.data);
     } catch (error) {
@@ -24,33 +23,32 @@ const FormUsedChart = () => {
     }
   };
 
-  // Soft pastel colors for bars
-  const colors = [
-    "rgba(255, 159, 64, 0.6)",   // Orange
-    "rgba(153, 102, 255, 0.6)",  // Purple
-    "rgba(46, 204, 113, 0.6)",   // Green
-    "rgba(75, 192, 192, 0.6)",   // Teal
-    "rgba(255, 99, 255, 0.6)",   // Magenta
-    "rgba(54, 162, 235, 0.6)",   // Cyan
-    "rgba(255, 206, 86, 0.6)",   // Amber
-    "rgba(181, 101, 167, 0.6)",  // Mauve
-    "rgba(255, 140, 105, 0.6)",  // Light Coral
-  ];
-  
+  // Function to generate different blue tints
+  const generateBlueShades = (count: number) => {
+    const shades = [];
+    for (let i = 0; i < count; i++) {
+      const opacity = 0.9 - (i / count) * 0.5; // From 0.9 to 0.4 opacity
+      shades.push(`rgba(54, 162, 235, ${opacity.toFixed(2)})`);
+    }
+    return shades;
+  };  
+
+  const backgroundColors = generateBlueShades(data.length);
+  const borderColors = backgroundColors.map(color => color.replace(/0\.\d+/, '1')); // Full opacity for borders
+
   const chartData = {
     labels: data.map((item) => item.formName),
     datasets: [
       {
         label: "Number of Times Used",
         data: data.map((item) => item.count),
-        backgroundColor: data.map((_, index) => colors[index % colors.length]),
-        borderColor: data.map((_, index) => colors[index % colors.length].replace("0.6", "1")), // Stronger border
+        backgroundColor: backgroundColors,
+        borderColor: borderColors,
         borderWidth: 0,
-        borderRadius: 20, // Rounded bars
+        borderRadius: 20,
       },
     ],
   };
-  
 
   const chartOptions = {
     responsive: true,
@@ -58,40 +56,24 @@ const FormUsedChart = () => {
     scales: {
       x: {
         grid: {
-          display: false, // Hide vertical grid lines
+          display: false,
         },
       },
       y: {
         beginAtZero: true,
         grid: {
-          display: false, // Hide horizontal grid lines
+          display: false,
         },
       },
     },
   };
-  
-  useEffect(() => {
-    // Reinitialize or load any JS libraries after navigation
-    if (typeof window !== 'undefined') {
-      // Example: Reinitialize Bootstrap or other JS libraries
-    }
-  }, []);
-  
+
   return (
     <div className="col-12 col-lg-12 mb-4">
       <div className="card">
         <div className="card-body">
           <div className="d-flex justify-content-between gap-3 mb-2">
             <h4 className="card-title text-primary mb-0">Form Usage Statistics</h4>
-            <select
-              className="form-select w-auto"
-              value={groupBy}
-              onChange={(e) => setGroupBy(e.target.value as "day" | "month" | "year")}
-            >
-              <option value="day">Daily</option>
-              <option value="month">Monthly</option>
-              <option value="year">Yearly</option>
-            </select>
           </div>
           <div style={{ height: "280px" }}>
             <Bar data={chartData} options={chartOptions} />

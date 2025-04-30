@@ -407,11 +407,13 @@ export default function Users() {
             <div className="container-xxl flex-grow-1 container-p-y">
                 <div className="row">
                     <div className="col-lg-12 mb-4 order-0">
+                    <div className="divider">
+                                        <div className="divider-text"><h4 className="text-3xl font-semibold text-right text-green-600 mb-6">👥 Users List</h4></div>
+                                    </div>
                         <div className="card">
                             <div className="d-flex align-items-end row">
                                 <div className="col-sm-12">
                                     <div className="card-body">
-                                        <h5 className="card-title">Users List</h5>
                                         <div className="mb-3">
                                             {/* ✅ Search Input */}
                                             <input

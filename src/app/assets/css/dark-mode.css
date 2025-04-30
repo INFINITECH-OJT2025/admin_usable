@@ -906,3 +906,122 @@
   .dark-mode .offcanvas {
     background-color: #1e1e1e !important;
   }
+
+
+  .dark-mode .gallery-wrapper {
+    padding: 20px !important;
+    overflow-x: auto !important;
+  }
+  
+  .dark-mode .gallery-table {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 12px !important;
+  }
+  
+  .dark-mode .gallery-table th {
+    background-color: #1f2937 !important;
+    color: #f9fafb !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    padding: 12px !important;
+    text-align: center !important;
+    border-radius: 8px !important;
+  }
+  
+  .dark-mode .gallery-row {
+    background-color: #111827 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+    transition: box-shadow 0.3s ease, transform 0.3s ease !important;
+    border-radius: 12px !important;
+  }
+  
+  .dark-mode .gallery-row:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6) !important;
+    transform: scale(1.005) !important;
+  }
+  
+  .dark-mode .gallery-row td {
+    padding: 16px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+  }
+  
+  .dark-mode .gallery-card {
+    background-color: #1e293b !important;
+    border: 2px solid #60a5fa !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #e0f2fe !important;
+    font-family: Georgia, serif !important;
+    letter-spacing: 1px !important;
+    transition: transform 0.3s ease !important;
+  }
+  
+  .dark-mode .image-count {
+    margin-bottom: 8px !important;
+    font-weight: bold !important;
+    color: #f3f4f6 !important;
+    font-size: 14px !important;
+  }
+  
+  .dark-mode .gallery-slider .swiper-slide {
+    padding: 5px !important;
+  }
+  
+  .dark-mode .slider-image {
+    border-radius: 8px !important;
+    width: 100% !important;
+    height: 100px !important;
+    object-fit: cover !important;
+    cursor: zoom-in !important;
+  }
+  
+  .dark-mode .action-buttons .btn {
+    padding: 6px 12px !important;
+    border: none !important;
+    border-radius: 6px !important;
+    margin: 4px !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s ease !important;
+    color: #fff !important;
+  }
+  
+  .dark-mode .btn.warning {
+    background-color: #f59e0b !important;
+  }
+  
+  .dark-mode .btn.warning:hover {
+    background-color: #d97706 !important;
+  }
+  
+  .dark-mode .btn.danger {
+    background-color: #dc2626 !important;
+  }
+  
+  .dark-mode .btn.danger:hover {
+    background-color: #b91c1c !important;
+  }
+  
+  .dark-mode .btn.success {
+    background-color: #059669 !important;
+  }
+  
+  .dark-mode .btn.success:hover {
+    background-color: #047857 !important;
+  }
+  
+  .dark-mode .badge.success-badge {
+    background-color: #064e3b !important;
+    color: #d1fae5 !important;
+    font-weight: bold !important;
+    padding: 4px 10px !important;
+    border-radius: 50px !important;
+    font-size: 13px !important;
+    display: inline-block !important;
+  }
+  
