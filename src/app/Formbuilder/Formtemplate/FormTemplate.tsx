@@ -590,56 +590,84 @@ export default function FormTemplate() {
                                 <div key={section.id} className="mb-4">
                                   {Array.isArray(section.fields) && section.fields.length > 0 ? (
                                     <form className="row g-3">
-                                      {section.fields.map((field: FormField) => (
-                                        <div key={field.id} className={`col-md-6 ${section.fields.length === 1 ? 'col-12' : ''}`}>
-                                          <label className="block font-medium">{field.label}</label>
-                                          {field.type === "text" || field.type === "email" || field.type === "number" ? (
-                                            <Input type={field.type} placeholder={field.placeholder} readOnly className="form-control" />
-                                          ) : field.type === "select" ? (
-                                            <select className="form-select" disabled>
-                                              {field.options?.map((option, index) => (
-                                                <option key={index} value={option}>{option}</option>
-                                              ))}
-                                            </select>
-                                          ) : field.type === "datetime" ? (
-                                            <Input type="datetime-local" placeholder={field.placeholder} readOnly className="form-control" />
-                                          ) : field.type === "checkbox" ? (
-                                            <div>
-                                              {field.options?.map((option, index) => (
-                                                <div key={index} className="form-check">
-                                                  <input type="checkbox" className="form-check-input" value={option} disabled />
-                                                  <label className="form-check-label ml-2">{option}</label>
-                                                </div>
-                                              ))}
-                                            </div>
-                                          ) : field.type === "radio" ? (
-                                            <div>
-                                              {field.options?.map((option, index) => (
-                                                <div key={index} className="form-check">
-                                                  <input type="radio" className="form-check-input" value={option} disabled />
-                                                  <label className="form-check-label ml-2">{option}</label>
-                                                </div>
-                                              ))}
-                                            </div>
-                                          ) : field.type === "button" ? (
-                                            <button className="btn btn-primary" type="button" disabled>
-                                              {field.label}
-                                            </button>
-                                          ) : field.type === "file" ? (
-                                            <div>
-                                              <input type="file" className="form-control" disabled />
-                                            </div>
-                                          ) : field.type === "textarea" ? (
-                                            <textarea
-                                              className="form-control"
-                                              placeholder={field.placeholder}
-                                              readOnly
-                                              rows={4} // Adjust the number of rows as needed
+                                    {section.fields.map((field: FormField) => (
+                                      <div key={field.id} className={`${section.fields.length === 1 ? 'col-12' : 'col-6'}`}>
+                                        <label className="block font-medium">{field.label}</label>
+                                        {field.type === "text" || field.type === "email" || field.type === "number" ? (
+                                          <Input 
+                                            type={field.type} 
+                                            placeholder={field.placeholder} 
+                                            readOnly 
+                                            className="form-control" 
+                                            style={{ width: '100%' }} // Inline style for full width
+                                          />
+                                        ) : field.type === "select" ? (
+                                          <select className="form-select" disabled style={{ width: '100%' }}> // Inline style for full width
+                                            {field.options?.map((option, index) => (
+                                              <option key={index} value={option}>{option}</option>
+                                            ))}
+                                          </select>
+                                        ) : field.type === "datetime" ? (
+                                          <Input 
+                                            type="datetime-local" 
+                                            placeholder={field.placeholder} 
+                                            readOnly 
+                                            className="form-control" 
+                                            style={{ width: '100%' }} // Inline style for full width
+                                          />
+                                        ) : field.type === "checkbox" ? (
+                                          <div className="options-container"> {/* Apply the grid container class here */}
+                                            {field.options?.map((option, index) => (
+                                              <div key={index} className="form-check">
+                                                <input 
+                                                  type="checkbox" 
+                                                  className="form-check-input" 
+                                                  value={option} 
+                                                  disabled 
+                                                />
+                                                <label className="form-check-label ml-2">{option}</label>
+                                              </div>
+                                            ))}
+                                          </div>
+                                        ) : field.type === "radio" ? (
+                                          <div className="options-container"> {/* Apply the grid container class here */}
+                                            {field.options?.map((option, index) => (
+                                              <div key={index} className="form-check">
+                                                <input 
+                                                  type="radio" 
+                                                  className="form-check-input" 
+                                                  value={option} 
+                                                  disabled 
+                                                />
+                                                <label className="form-check-label ml-2">{option}</label>
+                                              </div>
+                                            ))}
+                                          </div>
+                                        ) : field.type === "button" ? (
+                                          <button className="btn btn-primary" type="button" disabled>
+                                            {field.label}
+                                          </button>
+                                        ) : field.type === "file" ? (
+                                          <div>
+                                            <input 
+                                              type="file" 
+                                              className="form-control" 
+                                              disabled 
+                                              style={{ width: '100%' }} // Inline style for full width
                                             />
-                                          ) : null}
-                                        </div>
-                                      ))}
-                                    </form>
+                                          </div>
+                                        ) : field.type === "textarea" ? (
+                                          <textarea
+                                            className="form-control"
+                                            placeholder={field.placeholder}
+                                            readOnly
+                                            rows={4} // Adjust the number of rows as needed
+                                            style={{ width: '100%' }} // Inline style for full width
+                                          />
+                                        ) : null}
+                                      </div>
+                                    ))}
+                                  </form>
                                   ) : (
                                     <p>No fields available in this section.</p>
                                   )}

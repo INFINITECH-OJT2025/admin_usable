@@ -687,14 +687,14 @@ export default function FormBuilder() {
                       section.fields.length > 0 ? (
                         <div key={section.id} className="row">
                           {section.fields.map((field) => (
-                            <div key={field.id} className={`col-6 ${section.fields.length === 1 ? 'col-12' : ''}`}>
+                            <div key={field.id} className={`${section.fields.length % 2 === 1 ? 'col-12' : 'col-6'}`}>
                               <label className="block font-medium">{field.label}</label>
                               {field.type === "text" || field.type === "email" || field.type === "number" ? (
                                 <Controller
                                   name={field.label}
                                   control={control}
                                   render={({ field }) => (
-                                    <Input {...field} type={field.type} placeholder={field.placeholder} />
+                                    <Input {...field} type={field.type} placeholder={field.placeholder} style={{ width: '100%' }} /> // Inline style for full width
                                   )}
                                 />
                               ) : field.type === "select" ? (
@@ -702,7 +702,7 @@ export default function FormBuilder() {
                                   name={field.label}
                                   control={control}
                                   render={({ field: controllerField }) => (
-                                    <select {...controllerField} className="form-select">
+                                    <select {...controllerField} className="form-select" style={{ width: '100%' }}> // Inline style for full width
                                       <option value="">Select an option</option>
                                       {field.options?.map((option, index) => (
                                         <option key={index} value={option}>
@@ -716,12 +716,14 @@ export default function FormBuilder() {
                                 <Controller
                                   name={field.label}
                                   control={control}
-                                  render={({ field }) => <Input {...field} type="datetime-local" placeholder={field.placeholder} />}
+                                  render={({ field }) => (
+                                    <Input {...field} type="datetime-local" placeholder={field.placeholder} style={{ width: '100%' }} /> // Inline style for full width
+                                  )}
                                 />
                               ) : field.type === "checkbox" ? (
-                                <div>
+                                <div className="options-container">
                                   {field.options?.map((option, index) => (
-                                    <div key={index} className="form-check">
+                                    <div key={index} className="form-check"> {/* Each item will be a row in the grid */}
                                       <Controller
                                         name={`${field.label}-${option}`} // Unique name for each checkbox
                                         control={control}
@@ -742,9 +744,9 @@ export default function FormBuilder() {
                                   ))}
                                 </div>
                               ) : field.type === "radio" ? (
-                                <div>
+                                <div className="options-container">
                                   {field.options?.map((option, index) => (
-                                    <div key={index} className="form-check">
+                                    <div key={index} className="form-check"> {/* Each item will be a row in the grid */}
                                       <Controller
                                         name={field.label} // Use the same name for all radio buttons in the group
                                         control={control}
@@ -765,13 +767,14 @@ export default function FormBuilder() {
                                   ))}
                                 </div>
                               ) : field.type === "file" ? (
-                                  <Controller
+                                <Controller
                                   name={field.label}
                                   control={control}
                                   render={({ field }) => (
                                     <input
                                       type="file"
-                                      className="form-control"
+                                      className="form-control" 
+                                      style={{ width: '100%' }} // Inline style for full width
                                       onChange={(e) => {
                                         field.onChange(e.target.files);
                                       }}
@@ -786,7 +789,8 @@ export default function FormBuilder() {
                                     <textarea
                                       {...field}
                                       placeholder={field.placeholder}
-                                      className="border rounded w-full p-2"
+                                      className="border rounded"
+                                      style={{ width: '100%', padding: '0.5rem' }} // Inline style for full width
                                       rows={4} // Adjust the number of rows as needed
                                     />
                                   )}

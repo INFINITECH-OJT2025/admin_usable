@@ -56,3 +56,17 @@
 .table-bordered td {
   border: 1px solid #dee2e6; /* Border for table cells */
 }
+
+.options-container {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr); /* Create 3 equal columns */
+  grid-auto-flow: column; /* Fill items downwards first */
+  max-height: 150px; /* Set a maximum height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  gap: 10px; /* Optional: Add some space between items */
+}
+
+.form-check {
+  display: flex; /* Align checkbox and label */
+  align-items: center; /* Center vertically */
+}

@@ -9,6 +9,8 @@ import { Button } from "@/app/../components/ui/button"; // Adjust the import pat
 import withAuth from '@/app/utils/withAuth';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
+import 'react-photo-view/dist/react-photo-view.css';
 
 import "@/app/assets/vendor/fonts/boxicons.css";
 import "@/app/assets/vendor/css/core.css";
@@ -18,6 +20,7 @@ import "@/app/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css";
 import "@/app/assets/vendor/libs/apex-charts/apex-charts.css";
 import Sidebar from '@/app/Components/Userface/Sidebar';
 import Navbar from '@/app/Components/Userface/Navbar';
+import "./style.css";
 
 interface User {
   username: string;
@@ -301,226 +304,240 @@ const Form = () => {
                     <div className="col-lg-12 mb-4">
                       <div className="card shadow-sm border-0">
                         <div className="card-body p-4" style={{ backgroundColor: `${activeColor}` }}>
-                          <form onSubmit={handleSubmit}>
-                            {formTemplate.fields.map((section) => (
-                              <div key={section.id}>
-                                {Array.isArray(section.fields) && section.fields.length > 0 ? (
-                                  <div className="row">
-                                    {section.fields.map((field) => (
-                                      <div key={field.id} className="col-md-6 mb-3">
-                                        {field.type === "textarea" ? (
-                                          <div className="form-floating mb-3">
-                                            <textarea
-                                              className={`form-control ${selectedRecord[field.columnName] ? 'active' : ''}`}
-                                              name={field.columnName}
-                                              placeholder={field.label}
-                                              required
-                                              value={selectedRecord[field.columnName] || ''}
-                                              onChange={(e) => {
-                                                const newValue = e.target.value;
-                                                setSelectedRecord((prev) => ({
-                                                  ...prev,
-                                                  [field.columnName]: newValue,
-                                                }));
-                                              }}
-                                            />
-                                            <label style={{ color: 'gray' }}>{field.label}</label>
-                                          </div>
-                                        ) : field.type === "text" || field.type === "email" || field.type === "number" ? (
-                                          <div className="form-floating mb-3">
-                                            <input
-                                              type={field.type}
-                                              className={`form-control ${selectedRecord[field.columnName] ? 'active' : ''}`}
-                                              name={field.columnName}
-                                              placeholder={field.label}
-                                              required
-                                              value={selectedRecord[field.columnName] || ''}
-                                              style={{ backgroundColor: hslToRgba(activeColor, 0.05) }} // Set background color with 5% opacity
-                                              onChange={(e) => {
-                                                const newValue = e.target.value;
-                                                setSelectedRecord((prev) => ({
-                                                  ...prev,
-                                                  [field.columnName]: newValue,
-                                                }));
-                                              }}
-                                            />
-                                            <label style={{ color: 'gray' }}>{field.label}</label>
-                                          </div>
-                                        ) : field.type === "select" ? (
-                                          <div className="form-floating mb-3">
-                                            <select
-                                              className="form-select"
-                                              name={field.columnName}
-                                              required
-                                              value={selectedRecord[field.columnName] || ''}
-                                              onChange={(e) => {
-                                                const newValue = e.target.value;
-                                                setSelectedRecord((prev) => ({
-                                                  ...prev,
-                                                  [field.columnName]: newValue,
-                                                }));
-                                              }}
-                                            >
-                                              <option value="" disabled>Select an option</option>
-                                              {field.options?.map((option, index) => (
-                                                <option key={index} value={option}>{option}</option>
-                                              ))}
-                                            </select>
-                                            <label className="form-label">{field.label}</label>
-                                          </div>
-                                        ) : field.type === "radio" ? (
-                                          <div className="form-group">
-                                            <label>{field.label}</label>
-                                            {field.options?.map((option, index) => (
-                                              <div key={index} className="form-check">
-                                                <input
-                                                  type="radio"
-                                                  className="form-check-input"
-                                                  name={field.columnName}
-                                                  value={option}
-                                                  checked={selectedRecord[field.columnName] === option}
-                                                  onChange={(e) => {
-                                                    const newValue = e.target.value;
-                                                    setSelectedRecord((prev) => ({
-                                                      ...prev,
-                                                      [field.columnName]: newValue,
-                                                    }));
-                                                  }}
-                                                />
-                                                <label className="form-check-label">{option}</label>
-                                              </div>
-                                            ))}
-                                          </div>
-                                        ) : field.type === "checkbox" ? (
-                                          <div className="form-group">
-                                            <label>{field.label}</label>
-                                            {field.options?.map((option, index) => (
-                                              <div key={index} className="form-check">
-                                                <input
-                                                  type="checkbox"
-                                                  className="form-check-input"
-                                                  name={field.columnName}
-                                                  value={option}
-                                                  checked={selectedRecord[field.columnName]?.includes(option) || false}
-                                                  onChange={(e) => {
-                                                    const newValue = e.target.value;
-                                                    setSelectedRecord((prev) => {
-                                                      const currentValues = Array.isArray(prev[field.columnName])
-                                                        ? [...prev[field.columnName]]
-                                                        : [];
-
-                                                      if (e.target.checked) {
-                                                        return {
-                                                          ...prev,
-                                                          [field.columnName]: [...currentValues, newValue],
-                                                        };
-                                                      } else {
-                                                        const index = currentValues.indexOf(newValue);
-                                                        if (index > -1) {
-                                                          currentValues.splice(index, 1);
-                                                        }
-                                                        return {
-                                                          ...prev,
-                                                          [field.columnName]: currentValues,
-                                                        };
-                                                      }
-                                                    });
-                                                  }}
-                                                />
-                                                <label className="form-check-label">{option}</label>
-                                              </div>
-                                            ))}
-                                          </div>
-                                        ) : field.type === "datetime" ? (
-                                          <div className="form-floating mb-3">
-                                            <input
-                                              type="datetime-local"
-                                              className={`form-control ${selectedRecord[field.columnName] ? 'active' : ''}`}
-                                              name={field.columnName}
-                                              required
-                                              placeholder={field.label}
-                                              value={selectedRecord[field.columnName] || ''}
-                                              onChange={(e) => {
-                                                const newValue = e.target.value;
-                                                setSelectedRecord((prev) => ({
-                                                  ...prev,
-                                                  [field.columnName]: newValue,
-                                                }));
-                                              }}
-                                            />
-                                            <label style={{ color: 'gray' }}>{field.label}</label>
-                                          </div>
-                                        ) : field.type === "file" ? (
-                                          <div className="mb-3">
-                                            <label className="form-label">{field.label}</label>
-                                            <input
-                                              type="file"
-                                              className="form-control"
-                                              onChange={(e) => {
-                                                if (e.target.files && e.target.files.length > 0) {
-                                                  const selectedFile = e.target.files[0];
-                                                  setFile(selectedFile);
-                                                  setFileName(selectedFile.name);
-                                                  const fileURL = URL.createObjectURL(selectedFile);
-                                                  setFilePreview(fileURL);
-                                                }
-                                              }}
-                                            />
-                                            {fileName && <p className="mt-2">Selected file: {fileName}</p>}
-                                            {filePreview && (
-                                              <div className="mt-3">
-                                                <h5>File Preview:</h5>
-                                                {file?.type.startsWith("image/") ? (
-                                                  <img
-                                                    src={filePreview}
-                                                    alt="File Preview"
-                                                    style={{ maxWidth: "100%", maxHeight: "300px" }}
-                                                  />
-                                                ) : file?.type === "application/pdf" ? (
-                                                  <iframe
-                                                    src={filePreview}
-                                                    style={{ width: "100%", height: "300px" }}
-                                                  />
-                                                ) : (
-                                                  <p>Preview not available for this file type.</p>
-                                                )}
-                                              </div>
-                                            )}
-                                            {isEditing && selectedRecord.file && (
-                                              <div className="mt-3">
-                                                <h5>Existing File Preview:</h5>
-                                                {selectedRecord.file.endsWith(".jpg") ||
-                                                selectedRecord.file.endsWith(".jpeg") ||
-                                                selectedRecord.file.endsWith(".png") ? (
-                                                  <img
-                                                    src={`http://127.0.0.1:8000/saved_files/file_upload/${selectedRecord.file}`}
-                                                    alt="Existing File"
-                                                    style={{ maxWidth: "100%", maxHeight: "300px" }}
-                                                  />
-                                                ) : selectedRecord.file.endsWith(".pdf") ? (
-                                                  <iframe
-                                                    src={`http://127.0.0.1:8000/saved_files/file_upload/${selectedRecord.file}`}
-                                                    style={{ width: "100%", height: "300px" }}
-                                                  />
-                                                ) : (
-                                                  <p>No existing file to preview.</p>
-                                                )}
-                                              </div>
-                                            )}
-                                          </div>
-                                        ) : null}
+                        <form onSubmit={handleSubmit}>
+                        {formTemplate.fields.map((section) => (
+                          <div key={section.id}>
+                            {Array.isArray(section.fields) && section.fields.length > 0 ? (
+                              <div className="row">
+                                {section.fields.map((field) => (
+                                  <div key={field.id} className={`${section.fields.length === 1 ? 'col-12' : 'col-6'}`}>
+                                    {field.type === "textarea" ? (
+                                      <div className="form-floating mb-3">
+                                        <textarea
+                                          className={`form-control ${selectedRecord[field.columnName] ? 'active' : ''}`}
+                                          name={field.columnName}
+                                          placeholder={field.label}
+                                          required
+                                          value={selectedRecord[field.columnName] || ''}
+                                          onChange={(e) => {
+                                            const newValue = e.target.value;
+                                            setSelectedRecord((prev) => ({
+                                              ...prev,
+                                              [field.columnName]: newValue,
+                                            }));
+                                          }}
+                                          style={{ width: '100%' }} // Inline style for full width
+                                        />
+                                        <label style={{ color: 'gray' }}>{field.label}</label>
                                       </div>
-                                    ))}
+                                    ) : field.type === "text" || field.type === "email" || field.type === "number" ? (
+                                      <div className="form-floating mb-3">
+                                        <input
+                                          type={field.type}
+                                          className={`form-control ${selectedRecord[field.columnName] ? 'active' : ''}`}
+                                          name={field.columnName}
+                                          placeholder={field.label}
+                                          required
+                                          value={selectedRecord[field.columnName] || ''}
+                                          style={{ backgroundColor: hslToRgba(activeColor, 0.05), width: '100%' }} // Set background color with 5% opacity and full width
+                                          onChange={(e) => {
+                                            const newValue = e.target.value;
+                                            setSelectedRecord((prev) => ({
+                                              ...prev,
+                                              [field.columnName]: newValue,
+                                            }));
+                                          }}
+                                        />
+                                        <label style={{ color: 'gray' }}>{field.label}</label>
+                                      </div>
+                                    ) : field.type === "select" ? (
+                                      <div className="form-floating mb-3">
+                                        <select
+                                          className="form-select"
+                                          name={field.columnName}
+                                          required
+                                          value={selectedRecord[field.columnName] || ''}
+                                          onChange={(e) => {
+                                            const newValue = e.target.value;
+                                            setSelectedRecord((prev) => ({
+                                              ...prev,
+                                              [field.columnName]: newValue,
+                                            }));
+                                          }}
+                                          style={{ width: '100%' }} // Inline style for full width
+                                        >
+                                          <option value="" disabled>Select an option</option>
+                                          {field.options?.map((option, index) => (
+                                            <option key={index} value={option}>{option}</option>
+                                          ))}
+                                        </select>
+                                        <label className="form-label">{field.label}</label>
+                                      </div>
+                                    ) : field.type === "radio" ? (
+                                      <div className="form-group">
+                                        <label>{field.label}</label>
+                                        <div className="options-container"> {/* Apply the grid container class here */}
+                                          {field.options?.map((option, index) => (
+                                            <div key={index} className="form-check">
+                                              <input
+                                                type="radio"
+                                                className="form-check-input"
+                                                name={field.columnName}
+                                                value={option}
+                                                checked={selectedRecord[field.columnName] === option}
+                                                onChange={(e) => {
+                                                  const newValue = e.target.value;
+                                                  setSelectedRecord((prev) => ({
+                                                    ...prev,
+                                                    [field.columnName]: newValue,
+                                                  }));
+                                                }}
+                                              />
+                                              <label className="form-check-label">{option}</label>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    ) : field.type === "checkbox" ? (
+                                      <div className="form-group">
+                                        <label>{field.label}</label>
+                                        <div className="options-container"> {/* Apply the grid container class here */}
+                                          {field.options?.map((option, index) => (
+                                            <div key={index} className="form-check">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                name={field.columnName}
+                                                value={option}
+                                                checked={selectedRecord[field.columnName]?.includes(option) || false}
+                                                onChange={(e) => {
+                                                  const newValue = e.target.value;
+                                                  setSelectedRecord((prev) => {
+                                                    const currentValues = Array.isArray(prev[field.columnName])
+                                                      ? [...prev[field.columnName]]
+                                                      : [];
+                                    
+                                                    if (e.target.checked) {
+                                                      return {
+                                                        ...prev,
+                                                        [field.columnName]: [...currentValues, newValue],
+                                                      };
+                                                    } else {
+                                                      const index = currentValues.indexOf(newValue);
+                                                      if (index > -1) {
+                                                        currentValues.splice(index, 1);
+                                                      }
+                                                      return {
+                                                        ...prev,
+                                                        [field.columnName]: currentValues,
+                                                      };
+                                                    }
+                                                  });
+                                                }}
+                                              />
+                                              <label className="form-check-label">{option}</label>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    ) : field.type === "datetime" ? (
+                                      <div className="form-floating mb-3">
+                                        <input
+                                          type="datetime-local"
+                                          className={`form-control ${selectedRecord[field.columnName] ? 'active' : ''}`}
+                                          name={field.columnName}
+                                          required
+                                          placeholder={field.label}
+                                          value={selectedRecord[field.columnName] || ''}
+                                          onChange={(e) => {
+                                            const newValue = e.target.value;
+                                            setSelectedRecord((prev) => ({
+                                              ...prev,
+                                              [field.columnName]: newValue,
+                                            }));
+                                          }}
+                                          style={{ width: '100%' }} // Inline style for full width
+                                        />
+                                        <label style={{ color: 'gray' }}>{field.label}</label>
+                                      </div>
+                                    ) : field.type === "file" ? (
+                                      <div className="mb-3">
+                                        <label className="form-label">{field.label}</label>
+                                        <input
+                                          type="file"
+                                          className="form-control"
+                                          style={{ width: '100%' }} // Inline style for full width
+                                          onChange={(e) => {
+                                            if (e.target.files && e.target.files.length > 0) {
+                                              const selectedFile = e.target.files[0];
+                                              setFile(selectedFile);
+                                              setFileName(selectedFile.name);
+                                              const fileURL = URL.createObjectURL(selectedFile);
+                                              setFilePreview(fileURL);
+                                            }
+                                          }}
+                                        />
+                                        {fileName && <p className="mt-2">Selected file: {fileName}</p>}
+                                        {filePreview && (
+                                          <div className="mt-3">
+                                            <h5>File Preview:</h5>
+                                            {file?.type.startsWith("image/") ? (
+                                              <img
+                                                src={filePreview}
+                                                alt="File Preview"
+                                                style={{ maxWidth: "100%", maxHeight: "300px" }}
+                                              />
+                                            ) : file?.type === "application/pdf" ? (
+                                              <iframe
+                                                src={filePreview}
+                                                style={{ width: "100%", height: "300px" }}
+                                              />
+                                            ) : (
+                                              <p>Preview not available for this file type.</p>
+                                            )}
+                                          </div>
+                                        )}
+                                        {isEditing && selectedRecord.file && (
+                                          <div className="mt-3">
+                                            <h5>Existing File Preview:</h5>
+                                            {selectedRecord.file.endsWith(".jpg") ||
+                                            selectedRecord.file.endsWith(".jpeg") ||
+                                            selectedRecord.file.endsWith(".png") ? (
+                                              <img
+                                                src={`http://127.0.0.1:8000/saved_files/file_upload/${selectedRecord.file}`}
+                                                alt="Existing File"
+                                                style={{ maxWidth: "100%", maxHeight: "300px" }}
+                                              />
+                                            ) : selectedRecord.file.endsWith(".pdf") ? (
+                                              <iframe
+                                                src={`http://127.0.0.1:8000/saved_files/file_upload/${selectedRecord.file}`}
+                                                style={{ width: "100%", height: "300px" }}
+                                              />
+                                            ) : (
+                                              <p>No existing file to preview.</p>
+                                            )}
+                                          </div>
+                                        )}
+                                      </div>
+                                    ) : null}
                                   </div>
-                                ) : (
-                                  <p>No fields available in this section.</p>
-                                )}
-                                </div>
-                              ))}
-                              <button className="btn btn-sm btn-primary" type="submit">
-                                {isEditing ? "Update" : "Submit"}
-                              </button>
-                            </form>
+                                ))}
+                              </div>
+                            ) : (
+                              <p>No fields available in this section.</p>
+                            )}
+                          </div>
+                        ))}
+                        <button className="btn btn-sm btn-primary" type="submit">
+                          {isEditing ? "Update" : "Submit"}
+                        </button>
+                      </form>
+
+
+
+
+
+
                           </div>
                         </div>
                       </div>
@@ -549,26 +566,106 @@ const Form = () => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {currentRecords.map((record) => (
-                                    <tr key={record.id}>
-                                      {formTemplate.fields.flatMap((section) => 
-                                        section.fields.map((field) => (
+                                {currentRecords.map((record) => (
+                                  <tr key={record.id}>
+                                    {formTemplate.fields.flatMap((section) => 
+                                      section.fields.map((field) => {
+                                        const value = record[field.columnName];
+
+                                        // Check if the field is of JSON type
+                                        if (field.type === "checkbox") {
+                                          return (
+                                            <td key={field.id}>
+                                              {(() => {
+                                                let items: string[] = [];
+                                        
+                                                if (typeof value === "string") {
+                                                  try {
+                                                    const cleaned = value
+                                                      .replace(/[\[\]"]/g, "") // remove brackets and double quotes
+                                                      .replace(/\\/g, "")      // remove backslashes
+                                                      .replace(/\s+/g, " ");   // normalize spacing
+                                        
+                                                    items = cleaned.split(",").map(item => item.trim());
+                                                  } catch (error) {
+                                                    console.error("Error parsing values:", error);
+                                                    return (
+                                                      <div className="text-red-500 text-sm">Error parsing values</div>
+                                                    );
+                                                  }
+                                                } else if (Array.isArray(value)) {
+                                                  items = value.map(item =>
+                                                    String(item)
+                                                      .replace(/[\[\]"]/g, "")
+                                                      .replace(/\\/g, "")
+                                                      .replace(/\s+/g, " ")
+                                                      .trim()
+                                                  );
+                                                }
+                                        
+                                                return items.length > 0 ? (
+                                                  items.map((item, index) => (
+                                                    <div
+                                                      key={index}
+                                                      className="bg-[#2a2a40] border border-cyan-400/20 rounded-md p-3 text-sm sm:text-base text-cyan-100 shadow-sm hover:bg-[#3b3b5c] transition"
+                                                    >
+                                                      {index + 1}. {item}
+                                                    </div>
+                                                  ))
+                                                ) : (
+                                                  <div className="text-gray-400 italic">No values selected</div>
+                                                );
+                                              })()}
+                                            </td>
+                                          );
+                                        }
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+
+                                        // Check if the field is a file type
+                                        if (field.type === "file") {
+                                          return (
+                                            <td key={field.id}>
+                                              {value ? (
+                                                <PhotoProvider>
+                                                  <PhotoView src={value}>
+                                                    <img
+                                                      src={value}
+                                                      alt="File Preview"
+                                                      style={{ maxWidth: "100px", maxHeight: "100px", cursor: "pointer" }}
+                                                    />
+                                                  </PhotoView>
+                                                </PhotoProvider>
+                                              ) : (
+                                                'No file'
+                                              )}
+                                            </td>
+                                          );
+                                        }
+
+                                        // Default case for other types
+                                        return (
                                           <td key={field.id}>
-                                            {record[field.columnName] !== undefined ? record[field.columnName] : 'N/A'}
+                                            {value !== undefined ? value : 'N/A'}
                                           </td>
-                                        ))
-                                      )}
-                                      <td>
-                                        <button className="btn btn-sm btn-warning" onClick={() => handleEdit(record)}>
-                                          <i className='bx bx-edit'></i>
-                                        </button>
-                                        <button className="btn btn-sm btn-danger" onClick={() => handleDelete(record.id)}>
-                                          <i className='bx bx-trash'></i>
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
+                                        );
+                                      })
+                                    )}
+                                    <td>
+                                      <button className="btn btn-sm btn-warning" onClick={() => handleEdit(record)}>
+                                        <i className='bx bx-edit'></i>
+                                      </button>
+                                      <button className="btn btn-sm btn-danger" onClick={() => handleDelete(record.id)}>
+                                        <i className='bx bx-trash'></i>
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
                               </table>
                             </div>
                             {/* Pagination Controls */}

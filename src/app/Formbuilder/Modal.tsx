@@ -128,144 +128,144 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, field }) => {
   if (!isOpen || !formData) return null;
 
   return (
-<div className="modal">
-  <div className="modal-content">
-    <div className="modal-curve"></div>
-    <div className="bottom-left-gradient"></div>
-    <div className="divider">
-      <div className="divider-text">
-        <h4 className="text-3xl font-semibold text-right text-green-600 mb-6">📝Edit Tool</h4>
-      </div>
-    </div>
-    <form onSubmit={handleSubmit} className="form">
-      <div className="form-group">
-        <label className="form-label">Label <span style={{ color: 'red' }}>*</span></label>
-        <input
-          type="text"
-          name="label"
-          onChange={handleChange}
-          placeholder="Enter Label"
-          className="form-input"
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <label className="form-label">Type <span style={{ color: 'red' }}>*</span></label>
-        <select name="type" value={formData.type} onChange={handleChange} className="form-select" required>
-          <option value="text">Text</option>
-          <option value="number">Number</option>
-          <option value="email">Email</option>
-          <option value="select">Select</option>
-          <option value="datetime">Datetime</option>
-          <option value="checkbox">Checkbox</option>
-          <option value="radio">Radio</option>
-          <option value="button">Button</option>
-          <option value="file">File Upload</option>
-          <option value="textarea">Text Area</option>
-        </select>
-      </div>
-
-      <div className="form-group">
-        <label className="form-label">Column Name <span style={{ color: 'red' }}>*</span></label>
-        <input
-          type="text"
-          name="columnName"
-          value={formData.columnName || ''}
-          readOnly
-          className="form-input"
-        />
-      </div>
-
-      <div className="form-group">
-        <label className="form-label">Data Type <span style={{ color: 'red' }}>*</span></label>
-        <input
-          type="text"
-          name="datatype"
-          value={formData.datatype || ''}
-          readOnly
-          className="form-input"
-        />
-      </div>
-
-      <div className="form-group">
-        <label className="form-label">Length/Values <span style={{ color: 'red' }}>*</span></label>
-        <input
-          type="number"
-          name="length"
-          value={formData.length || ''}
-          onChange={handleChange}
-          placeholder="Enter length or values"
-          className="form-input"
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <label className="form-label">Default</label>
-        <select name="defaultOption" value={formData.defaultValue || ''} onChange={handleDefaultChange} className="form-select">
-          <option value="none">None</option>
-          <option value="defined">As defined:</option>
-          <option value="NULL">NULL</option>
-          <option value="CURRENT_TIMESTAMP">CURRENT_TIMESTAMP</option>
-        </select>
-
-        {showInput && (
-          <input
-            type="text"
-            name="defaultValue"
-            value={formData.defaultValue || ""}
-            onChange={handleChange}
-            placeholder="Enter default value"
-            className="form-input"
-          />
-        )}
-      </div>
-
-      <div className="form-group">
-        {(formData.type === "select" || formData.type === "radio" || formData.type === "checkbox") && (
-          <>
-            <label className="form-label">Options (for Select, Radio, and Checkbox Types)</label>
-            <div className="option-input-container">
-              <input
-                type="text"
-                value={newOption}
-                onChange={(e) => setNewOption(e.target.value)}
-                placeholder="Add new option"
-                className="form-input attached-input"
-              />
-              <button type="button" onClick={addOption} className="form-button small-button attached-button">
-                Add
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-
-      <div className="form-group">
-        {(formData.type === "select" || formData.type === "radio" || formData.type === "checkbox") && (
-                    <div className="options-list-container">
-                    <label className="form-label">Options:</label>
-                    <div className="options-list">
-                      {formData.options?.map((option, index) => (
-                        <div key={index} className="option-item">
-                          {option}
-                          <button onClick={() => removeOption(option)} className="btn btn-outline-primary">
-                            🗑️
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className="modal-footer">
-                <button type="reset" onClick={onClose} className="btn btn-cancel">Cancel</button>
-                <button type="submit" className="btn btn-save">Save</button>
-              </div>
-            </form>
+    <div className="modal">
+      <div className="modal-content">
+        <div className="modal-curve"></div>
+        <div className="bottom-left-gradient"></div>
+        <div className="divider">
+          <div className="divider-text">
+            <h4 className="text-3xl font-semibold text-right text-green-600 mb-6">📝Edit Tool</h4>
           </div>
         </div>
+        <form onSubmit={handleSubmit} className="form">
+          <div className="form-group">
+            <label className="form-label">Label <span style={{ color: 'red' }}>*</span></label>
+            <input
+              type="text"
+              name="label"
+              onChange={handleChange}
+              placeholder="Enter Label"
+              className="form-input"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Type <span style={{ color: 'red' }}>*</span></label>
+            <select name="type" value={formData.type} onChange={handleChange} className="form-select" required>
+              <option value="text">Text</option>
+              <option value="number">Number</option>
+              <option value="email">Email</option>
+              <option value="select">Select</option>
+              <option value="datetime">Datetime</option>
+              <option value="checkbox">Checkbox</option>
+              <option value="radio">Radio</option>
+              <option value="button">Button</option>
+              <option value="file">File Upload</option>
+              <option value="textarea">Text Area</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Column Name <span style={{ color: 'red' }}>*</span></label>
+            <input
+              type="text"
+              name="columnName"
+              value={formData.columnName || ''}
+              readOnly
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Data Type <span style={{ color: 'red' }}>*</span></label>
+            <input
+              type="text"
+              name="datatype"
+              value={formData.datatype || ''}
+              readOnly
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Length/Values <span style={{ color: 'red' }}>*</span></label>
+            <input
+              type="number"
+              name="length"
+              value={formData.length || ''}
+              onChange={handleChange}
+              placeholder="Enter length or values"
+              className={`form-input ${formData.datatype !== "VARCHAR" ? 'hidden-input' : ''}`} // Apply hidden-input class if not VARCHAR
+              readOnly={formData.datatype !== "VARCHAR"} // Make the input read-only if datatype is not VARCHAR
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Default</label>
+            <select name="defaultOption" value={formData.defaultValue || ''} onChange={handleDefaultChange} className="form-select">
+              <option value="none">None</option>
+              <option value="defined">As defined:</option>
+              <option value="NULL">NULL</option>
+              <option value="CURRENT_TIMESTAMP">CURRENT_TIMESTAMP</option>
+            </select>
+
+            {showInput && (
+              <input
+                type="text"
+                name="defaultValue"
+                value={formData.defaultValue || ""}
+                onChange={handleChange}
+                placeholder="Enter default value"
+                className="form-input"
+              />
+            )}
+          </div>
+
+          <div className="form-group">
+            {(formData.type === "select" || formData.type === "radio" || formData.type === "checkbox") && (
+              <>
+                <label className="form-label">Options (for Select, Radio, and Checkbox Types)</label>
+                <div className="option-input-container">
+                  <input
+                    type="text"
+                    value={newOption}
+                    onChange={(e) => setNewOption(e.target.value)}
+                    placeholder="Add new option"
+                    className="form-input attached-input"
+                  />
+                  <button type="button" onClick={addOption} className="form-button small-button attached-button">
+                    Add
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="form-group">
+            {(formData.type === "select" || formData.type === "radio" || formData.type === "checkbox") && (
+              <div className="options-list-container">
+                <label className="form-label">Options:</label>
+                <div className="options-list" style={{ maxHeight: '150px', overflowY: 'auto', scrollbarWidth: 'thin' }}> {/* Set max height and enable scrolling */}
+                  {formData.options?.map((option, index) => (
+                    <div key={index} className="option-item d-flex justify-content-between align-items-center">
+                      {option}
+                      <button onClick={() => removeOption(option)} className="btn btn-outline-primary btn-sm">
+                        🗑️
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="modal-footer">
+            <button type="reset" onClick={onClose} className="btn btn-cancel">Cancel</button>
+            <button type="submit" className="btn btn-save">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 
